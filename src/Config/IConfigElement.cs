@@ -1,26 +1,21 @@
-using UnityExplorer.Translation;
+namespace UnityExplorer.Config;
 
-namespace UnityExplorer.Config
+public interface IConfigElement
 {
-    public interface IConfigElement
-    {
-        string Name { get; }
-        string Description { get; }
-        string DefaultDescription { get; }
+    string Key { get; }
+    string NameLabel { get; }
+    string DescriptionLabel { get; }
+    string DefaultDescription { get; }
 
-        TranslationKey NameKey { get; }
-        TranslationKey DescriptionKey { get; }
+    bool IsInternal { get; }
+    Type ElementType { get; }
 
-        bool IsInternal { get; }
-        Type ElementType { get; }
+    object BoxedValue { get; set; }
+    object DefaultValue { get; }
 
-        object BoxedValue { get; set; }
-        object DefaultValue { get; }
+    object GetLoaderConfigValue();
 
-        object GetLoaderConfigValue();
+    void RevertToDefaultValue();
 
-        void RevertToDefaultValue();
-
-        Action OnValueChangedNotify { get; set; }
-    }
+    Action OnValueChangedNotify { get; set; }
 }

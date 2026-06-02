@@ -4,83 +4,84 @@ using UnityExplorer.Config;
 using UniverseLib.UI;
 using UniverseLib.UI.Widgets.ScrollView;
 
-namespace UnityExplorer.UI.Panels
+namespace UnityExplorer.UI.Panels;
+
+public class OptionsPanel : UEPanel, ICacheObjectController, ICellPoolDataSource<ConfigEntryCell>
 {
-    public class OptionsPanel : UEPanel, ICacheObjectController, ICellPoolDataSource<ConfigEntryCell>
+    public override string Name => TranslationManager.Get(TranslationKey.Options);
+    public override UIManager.Panels PanelType => UIManager.Panels.Options;
+
+    public override int MinWidth => 600;
+    public override int MinHeight => 200;
+    public override Vector2 DefaultAnchorMin => new(0.5f, 0.1f);
+    public override Vector2 DefaultAnchorMax => new(0.5f, 0.85f);
+
+    public override bool ShouldSaveActiveState => false;
+    public override bool ShowByDefault => false;
+
+    // Entry holders
+    private readonly List<CacheConfigEntry> configEntries = new();
+
+    // ICacheObjectController
+    public CacheObjectBase ParentCacheObject => null;
+    public object Target => null;
+    public Type TargetType => null;
+    public bool CanWrite => true;
+
+    // ICellPoolDataSource
+    public int ItemCount => configEntries.Count;
+
+    public OptionsPanel(UIBase owner) : base(owner)
     {
-        public override string Name => TranslationManager.Get(TranslationKey.Options);
-        public override UIManager.Panels PanelType => UIManager.Panels.Options;
-
-        public override int MinWidth => 600;
-        public override int MinHeight => 200;
-        public override Vector2 DefaultAnchorMin => new(0.5f, 0.1f);
-        public override Vector2 DefaultAnchorMax => new(0.5f, 0.85f);
-
-        public override bool ShouldSaveActiveState => false;
-        public override bool ShowByDefault => false;
-
-        // Entry holders
-        private readonly List<CacheConfigEntry> configEntries = new();
-
-        // ICacheObjectController
-        public CacheObjectBase ParentCacheObject => null;
-        public object Target => null;
-        public Type TargetType => null;
-        public bool CanWrite => true;
-
-        // ICellPoolDataSource
-        public int ItemCount => configEntries.Count;
-
-        public OptionsPanel(UIBase owner) : base(owner)
+        foreach (KeyValuePair<string, IConfigElement> entry in ConfigManager.ConfigElements)
         {
-            foreach (KeyValuePair<TranslationKey, IConfigElement> entry in ConfigManager.ConfigElements)
+            CacheConfigEntry cache = new(entry.Value)
             {
-                CacheConfigEntry cache = new(entry.Value)
-                {
-                    Owner = this
-                };
-                configEntries.Add(cache);
-            }
-
-            foreach (CacheConfigEntry config in configEntries)
-                config.UpdateValueFromSource();
+                Owner = this
+            };
+            configEntries.Add(cache);
         }
 
-        public void OnCellBorrowed(ConfigEntryCell cell)
+        foreach (CacheConfigEntry config in configEntries)
         {
+            config.UpdateValueFromSource();
         }
+    }
 
-        public void SetCell(ConfigEntryCell cell, int index)
-        {
-            CacheObjectControllerHelper.SetCell(cell, index, this.configEntries, null);
-        }
+    public void OnCellBorrowed(ConfigEntryCell cell)
+    {
+    }
 
-        // UI Construction
+    public void SetCell(ConfigEntryCell cell, int index)
+    {
+        CacheObjectControllerHelper.SetCell(cell, index, this.configEntries, null);
+    }
 
-        public override void SetDefaultSizeAndPosition()
-        {
-            base.SetDefaultSizeAndPosition();
+    // UI Construction
 
-            Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 600f);
-        }
+    public override void SetDefaultSizeAndPosition()
+    {
+        base.SetDefaultSizeAndPosition();
 
-        protected override void ConstructPanelContent()
-        {
-            // Save button
+        Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 600f);
+    }
 
-            UniverseLib.UI.Models.ButtonRef saveBtn = UIFactory.CreateButton(this.ContentRoot, "Save", TranslationManager.Get(TranslationKey.SaveOptions), new Color(0.2f, 0.3f, 0.2f));
-            UIFactory.SetLayoutElement(saveBtn.Component.gameObject, flexibleWidth: 9999, minHeight: 30, flexibleHeight: 0);
-            saveBtn.OnClick += ConfigManager.Handler.SaveConfig;
+    protected override void ConstructPanelContent()
+    {
+        // Save button
 
-            // Config entries
+        UniverseLib.UI.Models.ButtonRef saveBtn = UIFactory.CreateButton(this.ContentRoot, "Save", TranslationManager.Get(TranslationKey.SaveOptions), new Color(0.2f, 0.3f, 0.2f));
+        UIFactory.SetLayoutElement(saveBtn.Component.gameObject, flexibleWidth: 9999, minHeight: 30, flexibleHeight: 0);
+        saveBtn.OnClick += ConfigManager.Handler.SaveConfig;
 
-            ScrollPool<ConfigEntryCell> scrollPool = UIFactory.CreateScrollPool<ConfigEntryCell>(
-                this.ContentRoot, 
-                "ConfigEntries", 
-                out GameObject scrollObj,
-                out GameObject scrollContent);
+        // Config entries
 
-            scrollPool.Initialize(this);
-        }
+        ScrollPool<ConfigEntryCell> scrollPool = UIFactory.CreateScrollPool<ConfigEntryCell>(
+            this.ContentRoot, 
+            "ConfigEntries", 
+            out GameObject scrollObj,
+            out GameObject scrollContent);
+
+        scrollPool.Initialize(this);
     }
 }
