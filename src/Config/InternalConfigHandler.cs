@@ -49,13 +49,11 @@ public class InternalConfigHandler : ConfigHandler
             TomlDocument document = TomlParser.ParseFile(CONFIG_PATH);
             foreach (string key in document.Keys)
             {
-                if (!(
-                        Enum.IsDefined(typeof(UIManager.Panels), key) &&
-                        Enum.TryParse<UIManager.Panels>(key, out var panelKey)
-                    ))
+                if (!Enum.IsDefined(typeof(UIManager.Panels), key))
                 {
                     continue;
                 }
+                var panelKey = (UIManager.Panels)Enum.Parse(typeof(UIManager.Panels), key);
                 ConfigManager.GetPanelSaveData(panelKey).Value = document.GetString(key);
             }
 
