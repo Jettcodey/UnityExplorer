@@ -165,21 +165,22 @@ namespace UnityExplorer.UI
         public static void SetNavBarAnchor()
         {
             float height = ConfigManager.Lang_Toggle.Value == TranslationManager.Lang.Japanese ? 62 : 35;
+            float width = lastScreenWidth * 0.8f;
 
             switch (NavbarAnchor)
             {
                 case VerticalAnchor.Top:
-                    NavBarRect.anchorMin = new Vector2(0f, 1f);
-                    NavBarRect.anchorMax = new Vector2(1f, 1f);
+                    NavBarRect.anchorMin = new Vector2(0.5f, 1f);
+                    NavBarRect.anchorMax = new Vector2(0.5f, 1f);
                     NavBarRect.anchoredPosition = new Vector2(0, 0);
-                    NavBarRect.sizeDelta = new Vector2(0, height);
+                    NavBarRect.sizeDelta = new Vector2(width, height);
                     break;
 
                 case VerticalAnchor.Bottom:
-                    NavBarRect.anchorMin = new Vector2(0f, 0f);
-                    NavBarRect.anchorMax = new Vector2(1f, 0f);
+                    NavBarRect.anchorMin = new Vector2(0.5f, 0f);
+                    NavBarRect.anchorMax = new Vector2(0.5f, 0f);
                     NavBarRect.anchoredPosition = new Vector2(0, height);
-                    NavBarRect.sizeDelta = new Vector2(0, height);
+                    NavBarRect.sizeDelta = new Vector2(width, height);
                     break;
             }
         }
@@ -191,6 +192,8 @@ namespace UnityExplorer.UI
             Display display = DisplayManager.ActiveDisplay;
             lastScreenWidth = display.renderingWidth;
             lastScreenHeight = display.renderingHeight;
+
+            SetNavBarAnchor();
 
             foreach (KeyValuePair<Panels, UEPanel> panel in UIPanels)
             {
