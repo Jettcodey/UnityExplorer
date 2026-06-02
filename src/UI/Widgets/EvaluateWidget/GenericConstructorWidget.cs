@@ -106,15 +106,15 @@ namespace UnityExplorer.UI.Widgets
                 childAlignment: TextAnchor.MiddleCenter);
             UIFactory.SetLayoutElement(UIRoot, flexibleWidth: 9999, flexibleHeight: 9999);
 
-            ButtonRef submitButton = UIFactory.CreateButton(UIRoot, "SubmitButton", "Submit", new Color(0.2f, 0.3f, 0.2f));
+            ButtonRef submitButton = UIFactory.CreateButton(UIRoot, "SubmitButton", TranslationManager.Get(TranslationKey.Submit), new Color(0.2f, 0.3f, 0.2f));
             UIFactory.SetLayoutElement(submitButton.GameObject, minHeight: 25, minWidth: 200);
             submitButton.OnClick += TrySubmit;
 
-            ButtonRef cancelButton = UIFactory.CreateButton(UIRoot, "CancelButton", "Cancel", new Color(0.3f, 0.2f, 0.2f));
+            ButtonRef cancelButton = UIFactory.CreateButton(UIRoot, "CancelButton", TranslationManager.Get(TranslationKey.Cancel), new Color(0.3f, 0.2f, 0.2f));
             UIFactory.SetLayoutElement(cancelButton.GameObject, minHeight: 25, minWidth: 200);
             cancelButton.OnClick += Cancel;
 
-            Title = UIFactory.CreateLabel(UIRoot, "Title", "Generic Arguments", TextAnchor.MiddleCenter);
+            Title = UIFactory.CreateLabel(UIRoot, "Title", TranslationManager.Get(TranslationKey.GenericArguments), TextAnchor.MiddleCenter);
             UIFactory.SetLayoutElement(Title.gameObject, minHeight: 25, flexibleWidth: 9999);
 
             GameObject scrollview = UIFactory.CreateScrollView(UIRoot, "GenericArgsScrollView", out ArgsHolder, out _, new(0.1f, 0.1f, 0.1f));

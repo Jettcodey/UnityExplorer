@@ -9,7 +9,7 @@ namespace UnityExplorer.UI.Panels
     {
         public override UIManager.Panels PanelType => UIManager.Panels.UIInspectorResults;
 
-        public override string Name => "UI Inspector Results";
+        public override string Name => TranslationManager.Get(TranslationKey.UiInspectorResults);
 
         public override int MinWidth => 500;
         public override int MinHeight => 500;

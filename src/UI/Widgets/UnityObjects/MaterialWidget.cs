@@ -277,7 +277,7 @@ namespace UnityExplorer.UI.Widgets
 
             // Button
 
-            toggleButton = UIFactory.CreateButton(UIRoot, "MaterialButton", "View Material", new Color(0.2f, 0.3f, 0.2f));
+            toggleButton = UIFactory.CreateButton(UIRoot, "MaterialButton", TranslationManager.Get(TranslationKey.ViewMaterial), new Color(0.2f, 0.3f, 0.2f));
             toggleButton.Transform.SetSiblingIndex(0);
             UIFactory.SetLayoutElement(toggleButton.Component.gameObject, minHeight: 25, minWidth: 150);
             toggleButton.OnClick += ToggleTextureViewer;
@@ -293,7 +293,7 @@ namespace UnityExplorer.UI.Widgets
             GameObject dropdownRow = UIFactory.CreateHorizontalGroup(textureViewerRoot, "DropdownRow", false, true, true, true, 5, new(3, 3, 3, 3));
             UIFactory.SetLayoutElement(dropdownRow, minHeight: 30, flexibleWidth: 9999);
 
-            Text dropdownLabel = UIFactory.CreateLabel(dropdownRow, "DropdownLabel", "Texture:");
+            Text dropdownLabel = UIFactory.CreateLabel(dropdownRow, "DropdownLabel", TranslationManager.Get(TranslationKey.Texture));
             UIFactory.SetLayoutElement(dropdownLabel.gameObject, minWidth: 75, minHeight: 25);
 
             GameObject dropdownObj = UIFactory.CreateDropdown(dropdownRow, "TextureDropdown", out textureDropdown, "NOT SET", 13, OnTextureDropdownChanged);
@@ -304,7 +304,7 @@ namespace UnityExplorer.UI.Widgets
             GameObject saveRowObj = UIFactory.CreateHorizontalGroup(textureViewerRoot, "SaveRow", false, false, true, true, 2, new Vector4(2, 2, 2, 2),
                 new Color(0.1f, 0.1f, 0.1f));
 
-            ButtonRef saveBtn = UIFactory.CreateButton(saveRowObj, "SaveButton", "Save .PNG", new Color(0.2f, 0.25f, 0.2f));
+            ButtonRef saveBtn = UIFactory.CreateButton(saveRowObj, "SaveButton", TranslationManager.Get(TranslationKey.SavePng), new Color(0.2f, 0.25f, 0.2f));
             UIFactory.SetLayoutElement(saveBtn.Component.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 0);
             saveBtn.OnClick += OnSaveTextureClicked;
 

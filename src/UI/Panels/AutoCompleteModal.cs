@@ -15,7 +15,7 @@ namespace UnityExplorer.UI.Panels
     {
         public static AutoCompleteModal Instance => UIManager.GetPanel<AutoCompleteModal>(UIManager.Panels.AutoCompleter);
 
-        public override string Name => TranslationManager.Get("autocompleter");
+        public override string Name => TranslationManager.Get(TranslationKey.Autocompleter);
         public override UIManager.Panels PanelType => UIManager.Panels.AutoCompleter;
 
         public override int MinWidth => 100;
@@ -322,7 +322,7 @@ namespace UnityExplorer.UI.Panels
 
             navigationTipRow = UIFactory.CreateHorizontalGroup(this.ContentRoot, "BottomRow", true, true, true, true, 0, new Vector4(2, 2, 2, 2));
             UIFactory.SetLayoutElement(navigationTipRow, minHeight: 20, flexibleWidth: 9999);
-            UIFactory.CreateLabel(navigationTipRow, "HelpText", TranslationManager.Get("help_updown_esc"),
+            UIFactory.CreateLabel(navigationTipRow, "HelpText", TranslationManager.Get(TranslationKey.HelpUpdownEsc),
                 TextAnchor.MiddleLeft, Color.grey, false, 13);
 
             UIRoot.SetActive(false);

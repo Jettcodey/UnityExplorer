@@ -224,7 +224,7 @@ namespace UnityExplorer.UI.Widgets
 
             // Toggle Button
 
-            toggleButton = UIFactory.CreateButton(UIRoot, "AudioWidgetToggleButton", "Show Player", new Color(0.2f, 0.3f, 0.2f));
+            toggleButton = UIFactory.CreateButton(UIRoot, "AudioWidgetToggleButton", TranslationManager.Get(TranslationKey.ShowPlayer), new Color(0.2f, 0.3f, 0.2f));
             toggleButton.Transform.SetSiblingIndex(0);
             UIFactory.SetLayoutElement(toggleButton.Component.gameObject, minHeight: 25, minWidth: 170);
             toggleButton.OnClick += ToggleAudioWidget;
@@ -240,7 +240,7 @@ namespace UnityExplorer.UI.Widgets
             GameObject playerRow = UIFactory.CreateHorizontalGroup(audioPlayerRoot, "PlayerWidget", false, false, true, true,
                 spacing: 5, padding: new() { x = 3f, w = 3f, y = 3f, z = 3f });
 
-            playStopButton = UIFactory.CreateButton(playerRow, "PlayerButton", "Play", normalColor: new(0.2f, 0.4f, 0.2f));
+            playStopButton = UIFactory.CreateButton(playerRow, "PlayerButton", TranslationManager.Get(TranslationKey.Play), normalColor: new(0.2f, 0.4f, 0.2f));
             playStopButton.OnClick += OnPlayStopClicked;
             UIFactory.SetLayoutElement(playStopButton.GameObject, minWidth: 60, minHeight: 25);
 
@@ -254,7 +254,7 @@ namespace UnityExplorer.UI.Widgets
             saveObjectRow = UIFactory.CreateHorizontalGroup(audioPlayerRoot, "SaveRow", false, false, true, true, 2, new Vector4(2, 2, 2, 2),
                 new Color(0.1f, 0.1f, 0.1f));
 
-            ButtonRef saveBtn = UIFactory.CreateButton(saveObjectRow, "SaveButton", "Save .WAV", new Color(0.2f, 0.25f, 0.2f));
+            ButtonRef saveBtn = UIFactory.CreateButton(saveObjectRow, "SaveButton", TranslationManager.Get(TranslationKey.SaveWav), new Color(0.2f, 0.25f, 0.2f));
             UIFactory.SetLayoutElement(saveBtn.Component.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 0);
             saveBtn.OnClick += OnSaveClipClicked;
 
