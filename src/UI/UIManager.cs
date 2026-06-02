@@ -164,20 +164,23 @@ namespace UnityExplorer.UI
 
         public static void SetNavBarAnchor()
         {
+            float height = ConfigManager.Lang_Toggle.Value == TranslationManager.Lang.Japanese ? 62 : 35;
+            Vector2 dimensions = new(NAVBAR_DIMENSIONS.x, height);
+
             switch (NavbarAnchor)
             {
                 case VerticalAnchor.Top:
                     NavBarRect.anchorMin = new Vector2(0.5f, 1f);
                     NavBarRect.anchorMax = new Vector2(0.5f, 1f);
                     NavBarRect.anchoredPosition = new Vector2(NavBarRect.anchoredPosition.x, 0);
-                    NavBarRect.sizeDelta = NAVBAR_DIMENSIONS;
+                    NavBarRect.sizeDelta = dimensions;
                     break;
 
                 case VerticalAnchor.Bottom:
                     NavBarRect.anchorMin = new Vector2(0.5f, 0f);
                     NavBarRect.anchorMax = new Vector2(0.5f, 0f);
-                    NavBarRect.anchoredPosition = new Vector2(NavBarRect.anchoredPosition.x, 35);
-                    NavBarRect.sizeDelta = NAVBAR_DIMENSIONS;
+                    NavBarRect.anchoredPosition = new Vector2(NavBarRect.anchoredPosition.x, height);
+                    NavBarRect.sizeDelta = dimensions;
                     break;
             }
         }
@@ -215,7 +218,8 @@ namespace UnityExplorer.UI
         private static void CreateTopNavBar()
         {
             GameObject navbarPanel = UIFactory.CreateUIObject("MainNavbar", UIRoot);
-            UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(navbarPanel, false, false, true, true, 5, 4, 4, 4, 4, TextAnchor.MiddleCenter);
+            bool isJP = ConfigManager.Lang_Toggle.Value == TranslationManager.Lang.Japanese;
+            UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(navbarPanel, false, false, true, !isJP, 5, 4, 4, 4, 4, TextAnchor.MiddleCenter);
             navbarPanel.AddComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f);
             NavBarRect = navbarPanel.GetComponent<RectTransform>();
             NavBarRect.pivot = new Vector2(0.5f, 1f);
@@ -232,20 +236,34 @@ namespace UnityExplorer.UI
 
             string titleTxt = $"UE <i><color=grey>{ExplorerCore.VERSION}</color></i>";
             Text title = UIFactory.CreateLabel(navbarPanel, "Title", titleTxt, TextAnchor.MiddleCenter, default, true, 14);
-            UIFactory.SetLayoutElement(title.gameObject, minWidth: 75, flexibleWidth: 0);
+            UIFactory.SetLayoutElement(title.gameObject, minWidth: 75, minHeight: 25, flexibleWidth: 0);
 
             // panel tabs
 
             NavbarTabButtonHolder = UIFactory.CreateUIObject("NavTabButtonHolder", navbarPanel);
-            UIFactory.SetLayoutElement(NavbarTabButtonHolder, minHeight: 25, flexibleHeight: 999, flexibleWidth: 999);
-            UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(NavbarTabButtonHolder, false, true, true, true, 4, 2, 2, 2, 2);
+            if (isJP)
+            {
+                UIFactory.SetLayoutElement(NavbarTabButtonHolder, minHeight: 54, flexibleHeight: 0, flexibleWidth: 999);
+                GridLayoutGroup grid = NavbarTabButtonHolder.AddComponent<GridLayoutGroup>();
+                grid.cellSize = new Vector2(160, 25);
+                grid.spacing = new Vector2(4, 4);
+                grid.childAlignment = TextAnchor.MiddleCenter;
+                grid.constraint = GridLayoutGroup.Constraint.FixedRowCount;
+                grid.constraintCount = 2;
+                grid.startAxis = GridLayoutGroup.Axis.Horizontal;
+            }
+            else
+            {
+                UIFactory.SetLayoutElement(NavbarTabButtonHolder, minHeight: 25, flexibleHeight: 999, flexibleWidth: 999);
+                UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(NavbarTabButtonHolder, false, true, true, true, 4, 2, 2, 2, 2);
+            }
 
             // Time scale widget
             TimeScaleWidget.SetUp(navbarPanel);
 
             //spacer
             GameObject spacer = UIFactory.CreateUIObject("Spacer", navbarPanel);
-            UIFactory.SetLayoutElement(spacer, minWidth: 15);
+            UIFactory.SetLayoutElement(spacer, minWidth: 15, minHeight: 25);
 
             // Hide menu button
 
