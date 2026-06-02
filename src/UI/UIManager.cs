@@ -219,7 +219,7 @@ namespace UnityExplorer.UI
         {
             GameObject navbarPanel = UIFactory.CreateUIObject("MainNavbar", UIRoot);
             bool isJP = ConfigManager.Lang_Toggle.Value == TranslationManager.Lang.Japanese;
-            UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(navbarPanel, false, false, true, !isJP, 5, 4, 4, 4, 4, TextAnchor.MiddleCenter);
+            UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(navbarPanel, false, false, true, true, 5, 4, 4, 4, 4, TextAnchor.MiddleCenter);
             navbarPanel.AddComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f);
             NavBarRect = navbarPanel.GetComponent<RectTransform>();
             NavBarRect.pivot = new Vector2(0.5f, 1f);
@@ -236,7 +236,7 @@ namespace UnityExplorer.UI
 
             string titleTxt = $"UE <i><color=grey>{ExplorerCore.VERSION}</color></i>";
             Text title = UIFactory.CreateLabel(navbarPanel, "Title", titleTxt, TextAnchor.MiddleCenter, default, true, 14);
-            UIFactory.SetLayoutElement(title.gameObject, minWidth: 75, minHeight: 25, flexibleWidth: 0);
+            UIFactory.SetLayoutElement(title.gameObject, minWidth: 75, flexibleWidth: 0);
 
             // panel tabs
 
@@ -263,7 +263,7 @@ namespace UnityExplorer.UI
 
             //spacer
             GameObject spacer = UIFactory.CreateUIObject("Spacer", navbarPanel);
-            UIFactory.SetLayoutElement(spacer, minWidth: 15, minHeight: 25);
+            UIFactory.SetLayoutElement(spacer, minWidth: 15);
 
             // Hide menu button
 
