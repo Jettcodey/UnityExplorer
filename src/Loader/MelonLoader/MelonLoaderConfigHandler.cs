@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityExplorer.Config;
+using UnityExplorer.Translation;
 
 namespace UnityExplorer.Loader.ML
 {
@@ -24,7 +25,7 @@ namespace UnityExplorer.Loader.ML
         {
             foreach (var entry in ConfigManager.ConfigElements)
             {
-                var key = entry.Key;
+                var key = entry.Key.ToString();
                 if (prefCategory.GetEntry(key) is MelonPreferences_Entry)
                 {
                     var config = entry.Value;
@@ -59,13 +60,13 @@ namespace UnityExplorer.Loader.ML
 
         public override void RegisterConfigElement<T>(ConfigElement<T> config)
         {
-            var entry = prefCategory.CreateEntry(config.Name, config.Value, null, config.Description, config.IsInternal, false);
+            var entry = prefCategory.CreateEntry(config.InternalName, config.Value, config.Name, config.Description, config.IsInternal, false);
             new EntryDelegateWrapper<T>(entry, config);
         }
 
         public override void SetConfigValue<T>(ConfigElement<T> config, T value)
         {
-            if (prefCategory.GetEntry<T>(config.Name) is MelonPreferences_Entry<T> entry)
+            if (prefCategory.GetEntry<T>(config.InternalName) is MelonPreferences_Entry<T> entry)
             { 
                 entry.Value = value;
                 //entry.Save();
@@ -74,7 +75,7 @@ namespace UnityExplorer.Loader.ML
 
         public override T GetConfigValue<T>(ConfigElement<T> config)
         {
-            if (prefCategory.GetEntry<T>(config.Name) is MelonPreferences_Entry<T> entry)
+            if (prefCategory.GetEntry<T>(config.InternalName) is MelonPreferences_Entry<T> entry)
                 return entry.Value;
 
             return default;

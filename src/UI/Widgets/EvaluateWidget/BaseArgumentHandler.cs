@@ -24,7 +24,7 @@ namespace UnityExplorer.UI.Widgets
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(UIRoot, false, false, true, true, 5);
             UIRoot.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            argNameLabel = UIFactory.CreateLabel(UIRoot, "ArgLabel", "not set", TextAnchor.MiddleLeft);
+            argNameLabel = UIFactory.CreateLabel(UIRoot, "ArgLabel", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(argNameLabel.gameObject, minWidth: 40, flexibleWidth: 90, minHeight: 25, flexibleHeight: 50);
             argNameLabel.horizontalOverflow = HorizontalWrapMode.Wrap;
 

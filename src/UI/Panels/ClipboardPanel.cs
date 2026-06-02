@@ -6,7 +6,7 @@ namespace UnityExplorer.UI.Panels
     {
         public static object Current { get; private set; }
 
-        public override string Name => TranslationManager.Get("clipboard");
+        public override string Name => TranslationManager.Get(TranslationKey.Clipboard);
         public override UIManager.Panels PanelType => UIManager.Panels.Clipboard;
 
         public override int MinWidth => 500;
@@ -28,7 +28,7 @@ namespace UnityExplorer.UI.Panels
         public static void Copy(object obj)
         {
             Current = obj;
-            Notification.ShowMessage(TranslationManager.Get("copied"));
+            Notification.ShowMessage(TranslationManager.Get(TranslationKey.Copied));
             UpdateCurrentPasteInfo();
         }
 
@@ -40,11 +40,11 @@ namespace UnityExplorer.UI.Panels
             if (Current != null && !targetType.IsAssignableFrom(pasteType))
             {
                 Notification.ShowMessage(
-                    TranslationManager.Get("cannot_assign", pasteType.Name, targetType.Name));
+                    TranslationManager.Get(TranslationKey.CannotAssign, pasteType.Name, targetType.Name));
                 return false;
             }
 
-            Notification.ShowMessage(TranslationManager.Get("pasted"));
+            Notification.ShowMessage(TranslationManager.Get(TranslationKey.Pasted));
             return true;
         }
 
@@ -63,7 +63,7 @@ namespace UnityExplorer.UI.Panels
         {
             if (Current.IsNullOrDestroyed())
             {
-                Notification.ShowMessage(TranslationManager.Get("cannot_inspect"));
+                Notification.ShowMessage(TranslationManager.Get(TranslationKey.CannotInspect));
                 return;
             }
 
@@ -88,11 +88,11 @@ namespace UnityExplorer.UI.Panels
             UIFactory.SetLayoutElement(firstRow, minHeight: 25, flexibleWidth: 999);
 
             // Title for "Current Paste:"
-            Text currentPasteTitle = UIFactory.CreateLabel(firstRow, "CurrentPasteTitle", TranslationManager.Get("current_paste"), TextAnchor.MiddleLeft, color: Color.grey);
+            Text currentPasteTitle = UIFactory.CreateLabel(firstRow, "CurrentPasteTitle", TranslationManager.Get(TranslationKey.CurrentPaste), TextAnchor.MiddleLeft, color: Color.grey);
             UIFactory.SetLayoutElement(currentPasteTitle.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 999);
 
             // Clear clipboard button
-            UniverseLib.UI.Models.ButtonRef clearButton = UIFactory.CreateButton(firstRow, "ClearPasteButton", TranslationManager.Get("clear_clipboard"));
+            UniverseLib.UI.Models.ButtonRef clearButton = UIFactory.CreateButton(firstRow, "ClearPasteButton", TranslationManager.Get(TranslationKey.ClearClipboard));
             UIFactory.SetLayoutElement(clearButton.Component.gameObject, minWidth: 120, minHeight: 25, flexibleWidth: 0);
             clearButton.OnClick += () => Copy(null);
 
@@ -101,12 +101,12 @@ namespace UnityExplorer.UI.Panels
                 new(2, 2, 2, 2), childAlignment: TextAnchor.UpperCenter);
 
             // Actual current paste info label
-            CurrentPasteLabel = UIFactory.CreateLabel(currentPasteHolder, "CurrentPasteInfo", TranslationManager.Get("not_set"), TextAnchor.UpperLeft);
+            CurrentPasteLabel = UIFactory.CreateLabel(currentPasteHolder, "CurrentPasteInfo", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.UpperLeft);
             UIFactory.SetLayoutElement(CurrentPasteLabel.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 999, flexibleHeight: 999);
             UpdateCurrentPasteInfo();
 
             // Inspect button
-            UniverseLib.UI.Models.ButtonRef inspectButton = UIFactory.CreateButton(currentPasteHolder, "InspectButton", TranslationManager.Get("inspect"));
+            UniverseLib.UI.Models.ButtonRef inspectButton = UIFactory.CreateButton(currentPasteHolder, "InspectButton", TranslationManager.Get(TranslationKey.Inspect));
             UIFactory.SetLayoutElement(inspectButton.Component.gameObject, minHeight: 25, flexibleHeight: 0, minWidth: 80, flexibleWidth: 0);
             inspectButton.OnClick += InspectClipboard;
         }

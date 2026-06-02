@@ -204,7 +204,7 @@ namespace UnityExplorer.UI.Widgets
 
             // Button
 
-            toggleButton = UIFactory.CreateButton(UIRoot, "TextureButton", "View Texture", new Color(0.2f, 0.3f, 0.2f));
+            toggleButton = UIFactory.CreateButton(UIRoot, "TextureButton", TranslationManager.Get(TranslationKey.ViewTexture), new Color(0.2f, 0.3f, 0.2f));
             toggleButton.Transform.SetSiblingIndex(0);
             UIFactory.SetLayoutElement(toggleButton.Component.gameObject, minHeight: 25, minWidth: 150);
             toggleButton.OnClick += ToggleTextureViewer;
@@ -220,7 +220,7 @@ namespace UnityExplorer.UI.Widgets
             GameObject saveRowObj = UIFactory.CreateHorizontalGroup(textureViewerRoot, "SaveRow", false, false, true, true, 2, new Vector4(2, 2, 2, 2),
                 new Color(0.1f, 0.1f, 0.1f));
 
-            ButtonRef saveBtn = UIFactory.CreateButton(saveRowObj, "SaveButton", "Save .PNG", new Color(0.2f, 0.25f, 0.2f));
+            ButtonRef saveBtn = UIFactory.CreateButton(saveRowObj, "SaveButton", TranslationManager.Get(TranslationKey.SavePng), new Color(0.2f, 0.25f, 0.2f));
             UIFactory.SetLayoutElement(saveBtn.Component.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 0);
             saveBtn.OnClick += OnSaveTextureClicked;
 

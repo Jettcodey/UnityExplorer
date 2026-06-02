@@ -8,7 +8,7 @@ namespace UnityExplorer.UI.Panels
 {
     public class CSConsolePanel : UEPanel
     {
-        public override string Name => "C# Console";
+        public override string Name => TranslationManager.Get(TranslationKey.CSharpConsole);
         public override UIManager.Panels PanelType => UIManager.Panels.CSConsole;
 
         public override int MinWidth => 750;
@@ -70,12 +70,12 @@ namespace UnityExplorer.UI.Panels
 
             // Buttons
 
-            ButtonRef compileButton = UIFactory.CreateButton(toolsRow, "CompileButton", "Compile", new Color(0.33f, 0.5f, 0.33f));
+            ButtonRef compileButton = UIFactory.CreateButton(toolsRow, "CompileButton", TranslationManager.Get(TranslationKey.Compile), new Color(0.33f, 0.5f, 0.33f));
             UIFactory.SetLayoutElement(compileButton.Component.gameObject, minHeight: 28, minWidth: 130, flexibleHeight: 0);
             compileButton.ButtonText.fontSize = 15;
             compileButton.OnClick += () => { OnCompileClicked?.Invoke(); };
 
-            ButtonRef resetButton = UIFactory.CreateButton(toolsRow, "ResetButton", "Refresh", new Color(0.33f, 0.33f, 0.33f));
+            ButtonRef resetButton = UIFactory.CreateButton(toolsRow, "ResetButton", TranslationManager.Get(TranslationKey.Refresh), new Color(0.33f, 0.33f, 0.33f));
             UIFactory.SetLayoutElement(resetButton.Component.gameObject, minHeight: 28, minWidth: 80, flexibleHeight: 0);
             resetButton.ButtonText.fontSize = 15;
             resetButton.OnClick += () => { OnResetClicked?.Invoke(); };

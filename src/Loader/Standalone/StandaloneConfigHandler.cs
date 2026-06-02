@@ -1,9 +1,10 @@
-﻿#if STANDALONE
+#if STANDALONE
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityExplorer.Config;
+using UnityExplorer.Translation;
 using System.IO;
 using UnityEngine;
 using Tomlet;
@@ -53,8 +54,10 @@ namespace UnityExplorer.Loader.Standalone
                 var document = TomlParser.ParseFile(CONFIG_PATH);
                 foreach (var key in document.Keys)
                 {
-                    var config = ConfigManager.ConfigElements[key];
-                    config.BoxedValue = StringToConfigValue(document.GetValue(key).StringValue, config.ElementType);
+                    if (Enum.TryParse(key, out TranslationKey transKey) && ConfigManager.ConfigElements.TryGetValue(transKey, out IConfigElement config))
+                    {
+                        config.BoxedValue = StringToConfigValue(document.GetValue(key).StringValue, config.ElementType);
+                    }
                 }
 
                 return true;
@@ -90,7 +93,7 @@ namespace UnityExplorer.Loader.Standalone
         {
             var document = TomlDocument.CreateEmpty();
             foreach (var config in ConfigManager.ConfigElements)
-                document.Put(config.Key, config.Value.BoxedValue.ToString());
+                document.Put(config.Key.ToString(), config.Value.BoxedValue.ToString());
 
             if (!Directory.Exists(ExplorerCore.ExplorerFolder))
                 Directory.CreateDirectory(ExplorerCore.ExplorerFolder);

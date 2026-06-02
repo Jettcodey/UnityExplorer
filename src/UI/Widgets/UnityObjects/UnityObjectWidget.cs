@@ -108,18 +108,18 @@ namespace UnityExplorer.UI.Widgets
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(UIRoot, false, false, true, true, 5);
             UIFactory.SetLayoutElement(UIRoot, minHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
 
-            Text nameLabel = UIFactory.CreateLabel(UIRoot, "NameLabel", "Name:", TextAnchor.MiddleLeft, Color.grey);
+            Text nameLabel = UIFactory.CreateLabel(UIRoot, "NameLabel", TranslationManager.Get(TranslationKey.Name), TextAnchor.MiddleLeft, Color.grey);
             UIFactory.SetLayoutElement(nameLabel.gameObject, minHeight: 25, minWidth: 45, flexibleWidth: 0);
 
             nameInput = UIFactory.CreateInputField(UIRoot, "NameInput", "untitled");
             UIFactory.SetLayoutElement(nameInput.UIRoot, minHeight: 25, minWidth: 100, flexibleWidth: 1000);
             nameInput.Component.readOnly = true;
 
-            gameObjectButton = UIFactory.CreateButton(UIRoot, "GameObjectButton", "Inspect GameObject", new Color(0.2f, 0.2f, 0.2f));
+            gameObjectButton = UIFactory.CreateButton(UIRoot, "GameObjectButton", TranslationManager.Get(TranslationKey.InspectGameObject), new Color(0.2f, 0.2f, 0.2f));
             UIFactory.SetLayoutElement(gameObjectButton.Component.gameObject, minHeight: 25, minWidth: 160);
             gameObjectButton.OnClick += OnGameObjectButtonClicked;
 
-            Text instanceLabel = UIFactory.CreateLabel(UIRoot, "InstanceLabel", "Instance ID:", TextAnchor.MiddleRight, Color.grey);
+            Text instanceLabel = UIFactory.CreateLabel(UIRoot, "InstanceLabel", TranslationManager.Get(TranslationKey.InstanceId), TextAnchor.MiddleRight, Color.grey);
             UIFactory.SetLayoutElement(instanceLabel.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 0);
 
             instanceIdInput = UIFactory.CreateInputField(UIRoot, "InstanceIDInput", "ERROR");

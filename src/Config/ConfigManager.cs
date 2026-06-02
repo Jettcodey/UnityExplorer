@@ -1,10 +1,11 @@
-﻿using UnityExplorer.UI;
+using UnityExplorer.UI;
+using UnityExplorer.Translation;
 
 namespace UnityExplorer.Config
 {
     public static class ConfigManager
     {
-        internal static readonly Dictionary<string, IConfigElement> ConfigElements = new();
+        internal static readonly Dictionary<TranslationKey, IConfigElement> ConfigElements = new();
         internal static readonly Dictionary<string, IConfigElement> InternalConfigs = new();
 
         // Each Mod Loader has its own ConfigHandler.
@@ -78,75 +79,66 @@ namespace UnityExplorer.Config
             else
             {
                 InternalHandler.RegisterConfigElement(configElement);
-                InternalConfigs.Add(configElement.NameKey, configElement);
+                string key = configElement.NameKey == TranslationKey.None ? configElement.InternalName : configElement.NameKey.ToString();
+                InternalConfigs.Add(key, configElement);
             }
         }
 
         private static void CreateConfigElements()
         {
-            Lang_Toggle = new("translation", TranslationManager.Lang.English);
+            Lang_Toggle = new(TranslationKey.Translation, TranslationManager.Lang.English);
 
-            Master_Toggle = new("ue_toggle", KeyCode.F7);
+            Master_Toggle = new(TranslationKey.UeToggle, KeyCode.F7);
 
-            Hide_On_Startup = new("hide_on_startup", false);
+            Hide_On_Startup = new(TranslationKey.HideOnStartup, false);
 
-            Startup_Delay_Time = new("startup_delay_time", 1f);
+            Startup_Delay_Time = new(TranslationKey.StartupDelayTime, 1f);
 
-            Target_Display = new("target_display", 0);
+            Target_Display = new(TranslationKey.TargetDisplay, 0);
 
-            Force_Unlock_Mouse = new("force_unlock_mouse", true);
+            Force_Unlock_Mouse = new(TranslationKey.ForceUnlockMouse, true);
             Force_Unlock_Mouse.OnValueChanged += (bool value) => UniverseLib.Config.ConfigManager.Force_Unlock_Mouse = value;
 
-            Force_Unlock_Toggle = new("force_unlock_toggle_key", KeyCode.None);
+            Force_Unlock_Toggle = new(TranslationKey.ForceUnlockToggleKey, KeyCode.None);
 
-            Disable_EventSystem_Override = new("disable_eventsystem_override", false);
+            Disable_EventSystem_Override = new(TranslationKey.DisableEventsystemOverride, false);
             Disable_EventSystem_Override.OnValueChanged += (bool value) => UniverseLib.Config.ConfigManager.Disable_EventSystem_Override = value;
 
-            Disable_Setup_Force_ReLoad_ManagedAssemblies = new("Disable Force reload ManagedAssemblies",
-                "If enabled, UnityExplorer will not reload ManagedAssemblies on setup(Currently only Mono is supported).\n<b>May require restart to take effect.</b>",
+            Disable_Setup_Force_ReLoad_ManagedAssemblies = new(TranslationKey.DisableForceReloadManagedAssemblies,
                 false);
 
-            Bypass_UniverseLib_ICall = new("Bypass UniverseLib ICall",
-                "If enabled, UnityExplorer will bypass UniverseLib's ICall Reflection system. This may help with compatibility in some games.\n<b>May require restart to take effect.</b>",
+            Bypass_UniverseLib_ICall = new(TranslationKey.BypassUniverseLibICall,
                 false);
 
-            Default_Output_Path = new("default_output_path",
+            Default_Output_Path = new(TranslationKey.DefaultOutputPath,
                 Path.Combine(ExplorerCore.ExplorerFolder, "Output"));
 
-            DnSpy_Path = new("dnspy_path",  @"C:/Program Files/dnspy/dnSpy.exe");
+            DnSpy_Path = new(TranslationKey.DnspyPath,  @"C:/Program Files/dnspy/dnSpy.exe");
 
-            Main_Navbar_Anchor = new("main_navbar_anchor", UIManager.VerticalAnchor.Top);
+            Main_Navbar_Anchor = new(TranslationKey.MainNavbarAnchor, UIManager.VerticalAnchor.Top);
 
-            Log_Unity_Debug = new("log_unity_debug", false);
+            Log_Unity_Debug = new(TranslationKey.LogUnityDebug, false);
 
-            Log_To_Disk = new("log_to_disk", true);
+            Log_To_Disk = new(TranslationKey.LogToDisk, true);
 
-            World_MouseInspect_Keybind = new("world_mouse_inspect_keybind", KeyCode.None);
+            World_MouseInspect_Keybind = new(TranslationKey.WorldMouseInspectKeybind, KeyCode.None);
 
-            UI_MouseInspect_Keybind = new("ui_mouse_inspect_keybind", KeyCode.None);
+            UI_MouseInspect_Keybind = new(TranslationKey.UiMouseInspectKeybind, KeyCode.None);
 
-            CSConsole_Assembly_Blacklist = new("csharp_console_assembly_blacklist", "");
+            CSConsole_Assembly_Blacklist = new(TranslationKey.CsharpConsoleAssemblyBlacklist, "");
 
-            Reflection_Signature_Blacklist = new("Member Signature Blacklist",
-                "Use this to blacklist certain member signatures if they are known to cause a crash or other issues.\r\n" +
-                "Seperate signatures with a semicolon ';'.\r\n" +
-                "For example, to blacklist Camera.main, you would add 'UnityEngine.Camera.main;'",
+            Reflection_Signature_Blacklist = new(TranslationKey.MemberSignatureBlacklist,
                 "");
 
-            TIME_SCALE_TOGGLE = new("TimeScale Toggle",
-                "Shortcut key for locking/unlocking TimeScale",
+            TIME_SCALE_TOGGLE = new(TranslationKey.TimeScaleToggle,
                 KeyCode.None);
-            LOCK_TIME_SCALE_TO_ZERO = new("Pause Keybind",
-                "Shortcut key for setting TimeScale to 0.0",
+            LOCK_TIME_SCALE_TO_ZERO = new(TranslationKey.PauseKeybind,
                 KeyCode.None);
-            LOCK_TIME_SCALE_TO_NORMAL = new("Playback Keybind",
-                "Shortcut key for setting TimeScale to 1.0",
+            LOCK_TIME_SCALE_TO_NORMAL = new(TranslationKey.PlaybackKeybind,
                 KeyCode.None);
-            LOCK_TIME_SCALE_TO_HALF = new("Speed-Down Keybind",
-                "Shortcut key for setting TimeScale to half",
+            LOCK_TIME_SCALE_TO_HALF = new(TranslationKey.SpeedDownKeybind,
                 KeyCode.None);
-            LOCK_TIME_SCALE_TO_DOUBLE = new("Speed-Up Keybind",
-                "Shortcut key for setting TimeScale to double",
+            LOCK_TIME_SCALE_TO_DOUBLE = new(TranslationKey.SpeedUpKeybind,
                 KeyCode.None);
         }
     }

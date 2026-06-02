@@ -16,7 +16,7 @@ namespace UnityExplorer.UI.Panels
         {
         }
 
-        public override string Name => "Freecam";
+        public override string Name => TranslationManager.Get(TranslationKey.Freecam);
         public override UIManager.Panels PanelType => UIManager.Panels.Freecam;
         public override int MinWidth => 400;
         public override int MinHeight => 320;
@@ -177,7 +177,7 @@ namespace UnityExplorer.UI.Panels
 
         protected override void ConstructPanelContent()
         {
-            startStopButton = UIFactory.CreateButton(ContentRoot, "ToggleButton", "Freecam");
+            startStopButton = UIFactory.CreateButton(ContentRoot, "ToggleButton", TranslationManager.Get(TranslationKey.Freecam));
             UIFactory.SetLayoutElement(startStopButton.GameObject, minWidth: 150, minHeight: 25, flexibleWidth: 9999);
             startStopButton.OnClick += StartStopButton_OnClick;
             SetToggleButtonState();
@@ -188,19 +188,19 @@ namespace UnityExplorer.UI.Panels
             UIFactory.SetLayoutElement(toggleObj, minHeight: 25, flexibleWidth: 9999);
             useGameCameraToggle.onValueChanged.AddListener(OnUseGameCameraToggled);
             useGameCameraToggle.isOn = false;
-            toggleText.text = "Use Game Camera?";
+            toggleText.text = TranslationManager.Get(TranslationKey.UseGameCamera);
 
             AddSpacer(5);
 
-            GameObject posRow = AddInputField("Position", "Freecam Pos:", "eg. 0 0 0", out positionInput, PositionInput_OnEndEdit);
+            GameObject posRow = AddInputField("Position", TranslationManager.Get(TranslationKey.FreecamPos), "eg. 0 0 0", out positionInput, PositionInput_OnEndEdit);
 
-            ButtonRef resetPosButton = UIFactory.CreateButton(posRow, "ResetButton", "Reset");
+            ButtonRef resetPosButton = UIFactory.CreateButton(posRow, "ResetButton", TranslationManager.Get(TranslationKey.Reset));
             UIFactory.SetLayoutElement(resetPosButton.GameObject, minWidth: 70, minHeight: 25);
             resetPosButton.OnClick += OnResetPosButtonClicked;
 
             AddSpacer(5);
 
-            AddInputField("MoveSpeed", "Move Speed:", "Default: 1", out moveSpeedInput, MoveSpeedInput_OnEndEdit);
+            AddInputField("MoveSpeed", TranslationManager.Get(TranslationKey.MoveSpeed), "Default: 1", out moveSpeedInput, MoveSpeedInput_OnEndEdit);
             moveSpeedInput.Text = desiredMoveSpeed.ToString();
 
             AddSpacer(5);
@@ -217,7 +217,7 @@ namespace UnityExplorer.UI.Panels
 
             AddSpacer(5);
 
-            inspectButton = UIFactory.CreateButton(ContentRoot, "InspectButton", "Inspect Free Camera");
+            inspectButton = UIFactory.CreateButton(ContentRoot, "InspectButton", TranslationManager.Get(TranslationKey.InspectFreeCamera));
             UIFactory.SetLayoutElement(inspectButton.GameObject, flexibleWidth: 9999, minHeight: 25);
             inspectButton.OnClick += () => { InspectorManager.Inspect(ourCamera); };
             inspectButton.GameObject.SetActive(false);
@@ -262,12 +262,12 @@ namespace UnityExplorer.UI.Panels
             if (inFreeCamMode)
             {
                 RuntimeHelper.SetColorBlockAuto(startStopButton.Component, new(0.4f, 0.2f, 0.2f));
-                startStopButton.ButtonText.text = "End Freecam";
+                startStopButton.ButtonText.text = TranslationManager.Get(TranslationKey.EndFreecam);
             }
             else
             {
                 RuntimeHelper.SetColorBlockAuto(startStopButton.Component, new(0.2f, 0.4f, 0.2f));
-                startStopButton.ButtonText.text = "Begin Freecam";
+                startStopButton.ButtonText.text = TranslationManager.Get(TranslationKey.BeginFreecam);
             }
         }
 

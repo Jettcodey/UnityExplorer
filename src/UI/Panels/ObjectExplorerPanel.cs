@@ -6,7 +6,7 @@ namespace UnityExplorer.UI.Panels
 {
     public class ObjectExplorerPanel : UEPanel
     {
-        public override string Name => "Object Explorer";
+        public override string Name => TranslationManager.Get(TranslationKey.ObjectExplorer);
         public override UIManager.Panels PanelType => UIManager.Panels.ObjectExplorer;
 
         public override int MinWidth => 350;
@@ -99,16 +99,16 @@ namespace UnityExplorer.UI.Panels
             tabPages.Add(ObjectSearch);
 
             // set up tabs
-            AddTabButton(tabGroup, "Scene Explorer");
-            AddTabButton(tabGroup, "Object Search");
+            AddTabButton(tabGroup, TranslationManager.Get(TranslationKey.SceneExplorer), "Scene Explorer");
+            AddTabButton(tabGroup, TranslationManager.Get(TranslationKey.ObjectSearch), "Object Search");
 
             // default active state: Active
             this.SetActive(true);
         }
 
-        private void AddTabButton(GameObject tabGroup, string label)
+        private void AddTabButton(GameObject tabGroup, string label, string name)
         {
-            ButtonRef button = UIFactory.CreateButton(tabGroup, $"Button_{label}", label);
+            ButtonRef button = UIFactory.CreateButton(tabGroup, $"Button_{name}", label);
 
             int idx = tabButtons.Count;
             //button.onClick.AddListener(() => { SetTab(idx); });

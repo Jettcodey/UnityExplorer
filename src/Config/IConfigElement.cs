@@ -1,4 +1,6 @@
-﻿namespace UnityExplorer.Config
+using UnityExplorer.Translation;
+
+namespace UnityExplorer.Config
 {
     public interface IConfigElement
     {
@@ -6,8 +8,8 @@
         string Description { get; }
         string DefaultDescription { get; }
 
-        string NameKey { get; }
-        string DescriptionKey { get; }
+        TranslationKey NameKey { get; }
+        TranslationKey DescriptionKey { get; }
 
         bool IsInternal { get; }
         Type ElementType { get; }

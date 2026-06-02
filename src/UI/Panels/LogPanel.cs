@@ -19,7 +19,7 @@ namespace UnityExplorer.UI.Panels
         private static readonly List<LogInfo> Logs = new();
         private static string CurrentStreamPath;
 
-        public override string Name => "Log";
+        public override string Name => TranslationManager.Get(TranslationKey.Log);
         public override UIManager.Panels PanelType => UIManager.Panels.ConsoleLog;
 
         public override int MinWidth => 350;
@@ -154,12 +154,12 @@ namespace UnityExplorer.UI.Panels
             UIFactory.SetLayoutElement(optionsRow, minHeight: 25, flexibleWidth: 9999);
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(optionsRow, false, false, true, true, 5, 2, 2, 2, 2);
 
-            ButtonRef clearButton = UIFactory.CreateButton(optionsRow, "ClearButton", "Clear", new Color(0.2f, 0.2f, 0.2f));
+            ButtonRef clearButton = UIFactory.CreateButton(optionsRow, "ClearButton", TranslationManager.Get(TranslationKey.Clear), new Color(0.2f, 0.2f, 0.2f));
             UIFactory.SetLayoutElement(clearButton.Component.gameObject, minHeight: 23, flexibleHeight: 0, minWidth: 60);
             clearButton.OnClick += ClearLogs;
             clearButton.Component.transform.SetSiblingIndex(1);
 
-            ButtonRef fileButton = UIFactory.CreateButton(optionsRow, "FileButton", "Open Log File", new Color(0.2f, 0.2f, 0.2f));
+            ButtonRef fileButton = UIFactory.CreateButton(optionsRow, "FileButton", TranslationManager.Get(TranslationKey.OpenLogFile), new Color(0.2f, 0.2f, 0.2f));
             UIFactory.SetLayoutElement(fileButton.Component.gameObject, minHeight: 23, flexibleHeight: 0, minWidth: 100);
             fileButton.OnClick += OpenLogFile;
             fileButton.Component.transform.SetSiblingIndex(2);

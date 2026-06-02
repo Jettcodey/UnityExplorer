@@ -155,10 +155,10 @@ namespace UnityExplorer.UI.Widgets
 
             basicLabelHolder = UIFactory.CreateHorizontalGroup(UIRoot, "BasicLabelHolder", true, true, true, true, bgColor: new(0.1f, 0.1f, 0.1f));
             UIFactory.SetLayoutElement(basicLabelHolder, minHeight: 25, flexibleHeight: 50, minWidth: 100, flexibleWidth: 1000);
-            basicLabel = UIFactory.CreateLabel(basicLabelHolder, "BasicLabel", "null", TextAnchor.MiddleLeft);
+            basicLabel = UIFactory.CreateLabel(basicLabelHolder, "BasicLabel", TranslationManager.Get(TranslationKey.Null), TextAnchor.MiddleLeft);
             basicLabel.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            pasteButton = UIFactory.CreateButton(UIRoot, "PasteButton", "Paste", new Color(0.13f, 0.13f, 0.13f, 1f));
+            pasteButton = UIFactory.CreateButton(UIRoot, "PasteButton", TranslationManager.Get(TranslationKey.Paste), new Color(0.13f, 0.13f, 0.13f, 1f));
             UIFactory.SetLayoutElement(pasteButton.Component.gameObject, minHeight: 25, minWidth: 28, flexibleWidth: 0);
             pasteButton.ButtonText.color = Color.green;
             pasteButton.ButtonText.fontSize = 10;

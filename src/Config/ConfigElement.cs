@@ -1,13 +1,16 @@
-﻿namespace UnityExplorer.Config
+using UnityExplorer.Translation;
+
+namespace UnityExplorer.Config
 {
     public class ConfigElement<T> : IConfigElement
     {
-        public string Name => TranslationManager.Get(NameKey);
-        public string Description => TranslationManager.Get(DescriptionKey);
-        public string DefaultDescription => TranslationManager.Get(TranslationManager.Lang.English, DescriptionKey);
+        public string Name => NameKey == TranslationKey.None ? InternalName : TranslationManager.Get(NameKey);
+        public string Description => DescriptionKey == TranslationKey.None ? "" : TranslationManager.Get(DescriptionKey);
+        public string DefaultDescription => DescriptionKey == TranslationKey.None ? "" : TranslationManager.Get(TranslationManager.Lang.English, DescriptionKey);
 
-        public string NameKey { get; }
-        public string DescriptionKey => $"{NameKey}_hint";
+        public TranslationKey NameKey { get; }
+        public TranslationKey DescriptionKey { get; }
+        public string InternalName { get; }
 
         public bool IsInternal { get; }
         public Type ElementType => typeof(T);
@@ -34,9 +37,39 @@
             set => SetValue((T)value);
         }
 
-        public ConfigElement(string name, T defaultValue, bool isInternal = false)
+        public ConfigElement(TranslationKey nameKey, T defaultValue)
         {
-            NameKey = name;
+            NameKey = nameKey;
+            DescriptionKey = GetHintKey(nameKey);
+            InternalName = nameKey.ToString();
+
+            m_value = defaultValue;
+            DefaultValue = defaultValue;
+
+            IsInternal = false;
+
+            ConfigManager.RegisterConfigElement(this);
+        }
+
+        public ConfigElement(TranslationKey nameKey, TranslationKey descriptionKey, T defaultValue)
+        {
+            NameKey = nameKey;
+            DescriptionKey = descriptionKey;
+            InternalName = nameKey.ToString();
+
+            m_value = defaultValue;
+            DefaultValue = defaultValue;
+
+            IsInternal = false;
+
+            ConfigManager.RegisterConfigElement(this);
+        }
+
+        public ConfigElement(string internalName, T defaultValue, bool isInternal = false)
+        {
+            this.InternalName = internalName;
+            NameKey = TranslationKey.None;
+            DescriptionKey = TranslationKey.None;
 
             m_value = defaultValue;
             DefaultValue = defaultValue;
@@ -44,6 +77,13 @@
             IsInternal = isInternal;
 
             ConfigManager.RegisterConfigElement(this);
+        }
+
+        private TranslationKey GetHintKey(TranslationKey key)
+        {
+            if (Enum.TryParse(key.ToString() + "Hint", out TranslationKey hintKey))
+                return hintKey;
+            return TranslationKey.None;
         }
 
         private void SetValue(T value)

@@ -8,7 +8,7 @@ namespace UnityExplorer.UI.Panels
 {
     public class OptionsPanel : UEPanel, ICacheObjectController, ICellPoolDataSource<ConfigEntryCell>
     {
-        public override string Name => "Options";
+        public override string Name => TranslationManager.Get(TranslationKey.Options);
         public override UIManager.Panels PanelType => UIManager.Panels.Options;
 
         public override int MinWidth => 600;
@@ -33,7 +33,7 @@ namespace UnityExplorer.UI.Panels
 
         public OptionsPanel(UIBase owner) : base(owner)
         {
-            foreach (KeyValuePair<string, IConfigElement> entry in ConfigManager.ConfigElements)
+            foreach (KeyValuePair<TranslationKey, IConfigElement> entry in ConfigManager.ConfigElements)
             {
                 CacheConfigEntry cache = new(entry.Value)
                 {
@@ -68,7 +68,7 @@ namespace UnityExplorer.UI.Panels
         {
             // Save button
 
-            UniverseLib.UI.Models.ButtonRef saveBtn = UIFactory.CreateButton(this.ContentRoot, "Save", "Save Options", new Color(0.2f, 0.3f, 0.2f));
+            UniverseLib.UI.Models.ButtonRef saveBtn = UIFactory.CreateButton(this.ContentRoot, "Save", TranslationManager.Get(TranslationKey.SaveOptions), new Color(0.2f, 0.3f, 0.2f));
             UIFactory.SetLayoutElement(saveBtn.Component.gameObject, flexibleWidth: 9999, minHeight: 30, flexibleHeight: 0);
             saveBtn.OnClick += ConfigManager.Handler.SaveConfig;
 
