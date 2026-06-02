@@ -189,7 +189,7 @@ public sealed partial class TranslationManager
         { TranslationKey.UiInspectorResults, "UIインスペクタ結果" },
         { TranslationKey.Freecam, "フリーカメラ" },
         { TranslationKey.CSharpConsole, "C# コンソール" },
-        { TranslationKey.SaveOptions, "設定保存" },
+        { TranslationKey.SaveOptions, "設定を保存" },
         { TranslationKey.Clear, "クリア" },
         { TranslationKey.OpenLogFile, "ログファイルを開く" },
         { TranslationKey.CloseAll, "すべて閉じる" },
