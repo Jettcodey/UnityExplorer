@@ -44,7 +44,7 @@ namespace UnityExplorer.UI
 
         public static RectTransform NavBarRect;
         public static GameObject NavbarTabButtonHolder;
-        private static readonly Vector2 NAVBAR_DIMENSIONS = new(1020f, 35f);
+        private static readonly float NAVBAR_WIDTH = 1020f;
 
         private static ButtonRef closeBtn;
 
@@ -165,7 +165,6 @@ namespace UnityExplorer.UI
         public static void SetNavBarAnchor()
         {
             float height = ConfigManager.Lang_Toggle.Value == TranslationManager.Lang.Japanese ? 62 : 35;
-            float width = lastScreenWidth * 0.8f;
 
             switch (NavbarAnchor)
             {
@@ -173,14 +172,14 @@ namespace UnityExplorer.UI
                     NavBarRect.anchorMin = new Vector2(0.5f, 1f);
                     NavBarRect.anchorMax = new Vector2(0.5f, 1f);
                     NavBarRect.anchoredPosition = new Vector2(0, 0);
-                    NavBarRect.sizeDelta = new Vector2(width, height);
+                    NavBarRect.sizeDelta = new Vector2(NAVBAR_WIDTH, height);
                     break;
 
                 case VerticalAnchor.Bottom:
                     NavBarRect.anchorMin = new Vector2(0.5f, 0f);
                     NavBarRect.anchorMax = new Vector2(0.5f, 0f);
                     NavBarRect.anchoredPosition = new Vector2(0, height);
-                    NavBarRect.sizeDelta = new Vector2(width, height);
+                    NavBarRect.sizeDelta = new Vector2(NAVBAR_WIDTH, height);
                     break;
             }
         }
@@ -192,8 +191,6 @@ namespace UnityExplorer.UI
             Display display = DisplayManager.ActiveDisplay;
             lastScreenWidth = display.renderingWidth;
             lastScreenHeight = display.renderingHeight;
-
-            SetNavBarAnchor();
 
             foreach (KeyValuePair<Panels, UEPanel> panel in UIPanels)
             {
@@ -245,9 +242,9 @@ namespace UnityExplorer.UI
             NavbarTabButtonHolder = UIFactory.CreateUIObject("NavTabButtonHolder", navbarPanel);
             if (isJP)
             {
-                UIFactory.SetLayoutElement(NavbarTabButtonHolder, minHeight: 54, flexibleHeight: 0, flexibleWidth: 999);
+                UIFactory.SetLayoutElement(NavbarTabButtonHolder, minHeight: 44, flexibleHeight: 0, flexibleWidth: 999);
                 GridLayoutGroup grid = NavbarTabButtonHolder.AddComponent<GridLayoutGroup>();
-                grid.cellSize = new Vector2(180, 25);
+                grid.cellSize = new Vector2(224, 20);
                 grid.spacing = new Vector2(4, 4);
                 grid.childAlignment = TextAnchor.MiddleCenter;
                 grid.constraint = GridLayoutGroup.Constraint.FixedRowCount;
