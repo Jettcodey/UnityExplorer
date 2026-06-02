@@ -62,8 +62,6 @@ public sealed partial class TranslationManager
         { TranslationKey.Inspect, "Inspect" },
         { TranslationKey.Autocompleter, "AutoCompleter" },
         { TranslationKey.HelpUpdownEsc, "Up/Down to select, Enter to use, Esc to close" },
-
-        // New keys
         { TranslationKey.Options, "Options" },
         { TranslationKey.Log, "Log" },
         { TranslationKey.Hooks, "Hooks" },
@@ -110,8 +108,6 @@ public sealed partial class TranslationManager
         { TranslationKey.Name, "Name:" },
         { TranslationKey.Null, "null" },
         { TranslationKey.Texture, "Texture:" },
-
-        // Even more keys
         { TranslationKey.DisableForceReloadManagedAssemblies, "Disable Force reload ManagedAssemblies" },
         { TranslationKey.DisableForceReloadManagedAssembliesHint, "If enabled, UnityExplorer will not reload ManagedAssemblies on setup(Currently only Mono is supported).\n<b>May require restart to take effect.</b>" },
         { TranslationKey.BypassUniverseLibICall, "Bypass UniverseLib ICall" },
@@ -188,8 +184,6 @@ public sealed partial class TranslationManager
         { TranslationKey.Inspect, "Inspect" },
         { TranslationKey.Autocompleter, "AutoCompleter" },
         { TranslationKey.HelpUpdownEsc, "Up/Down to select, Enter to use, Esc to close" },
-
-        // New keys (Placeholder English)
         { TranslationKey.Options, "Options" },
         { TranslationKey.Log, "Log" },
         { TranslationKey.Hooks, "Hooks" },
@@ -236,8 +230,6 @@ public sealed partial class TranslationManager
         { TranslationKey.Name, "Name:" },
         { TranslationKey.Null, "null" },
         { TranslationKey.Texture, "Texture:" },
-
-        // Even more keys (Placeholder English)
         { TranslationKey.DisableForceReloadManagedAssemblies, "Disable Force reload ManagedAssemblies" },
         { TranslationKey.DisableForceReloadManagedAssembliesHint, "If enabled, UnityExplorer will not reload ManagedAssemblies on setup(Currently only Mono is supported).\n<b>May require restart to take effect.</b>" },
         { TranslationKey.BypassUniverseLibICall, "Bypass UniverseLib ICall" },
