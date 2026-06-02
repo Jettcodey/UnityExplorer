@@ -164,21 +164,21 @@ namespace UnityExplorer.UI
 
         public static void SetNavBarAnchor()
         {
-            float height = ConfigManager.Lang_Toggle.Value == TranslationManager.Lang.Japanese ? 62 : 35;
+            float height = IsTabNavBarUseSecondRow() ? 62 : 35;
 
             switch (NavbarAnchor)
             {
                 case VerticalAnchor.Top:
                     NavBarRect.anchorMin = new Vector2(0.5f, 1f);
                     NavBarRect.anchorMax = new Vector2(0.5f, 1f);
-                    NavBarRect.anchoredPosition = new Vector2(0, 0);
+                    NavBarRect.anchoredPosition = new Vector2(NavBarRect.anchoredPosition.x, 0);
                     NavBarRect.sizeDelta = new Vector2(NAVBAR_WIDTH, height);
                     break;
 
                 case VerticalAnchor.Bottom:
                     NavBarRect.anchorMin = new Vector2(0.5f, 0f);
                     NavBarRect.anchorMax = new Vector2(0.5f, 0f);
-                    NavBarRect.anchoredPosition = new Vector2(0, height);
+                    NavBarRect.anchoredPosition = new Vector2(NavBarRect.anchoredPosition.x, height);
                     NavBarRect.sizeDelta = new Vector2(NAVBAR_WIDTH, height);
                     break;
             }
@@ -217,7 +217,6 @@ namespace UnityExplorer.UI
         private static void CreateTopNavBar()
         {
             GameObject navbarPanel = UIFactory.CreateUIObject("MainNavbar", UIRoot);
-            bool isJP = ConfigManager.Lang_Toggle.Value == TranslationManager.Lang.Japanese;
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(navbarPanel, false, false, true, true, 5, 4, 4, 4, 4, TextAnchor.MiddleCenter);
             navbarPanel.AddComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f);
             NavBarRect = navbarPanel.GetComponent<RectTransform>();
@@ -240,7 +239,7 @@ namespace UnityExplorer.UI
             // panel tabs
 
             NavbarTabButtonHolder = UIFactory.CreateUIObject("NavTabButtonHolder", navbarPanel);
-            if (isJP)
+            if (IsTabNavBarUseSecondRow())
             {
                 UIFactory.SetLayoutElement(NavbarTabButtonHolder, minHeight: 44, flexibleHeight: 0, flexibleWidth: 999);
                 GridLayoutGroup grid = NavbarTabButtonHolder.AddComponent<GridLayoutGroup>();
@@ -273,6 +272,11 @@ namespace UnityExplorer.UI
 
             ConfigManager.Master_Toggle.OnValueChanged += Master_Toggle_OnValueChanged;
             closeBtn.OnClick += OnCloseButtonClicked;
+        }
+
+        private static bool IsTabNavBarUseSecondRow()
+        {
+            return ConfigManager.Lang_Toggle.Value is TranslationManager.Lang.Japanese;
         }
     }
 }
