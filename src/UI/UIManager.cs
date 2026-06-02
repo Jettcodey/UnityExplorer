@@ -165,22 +165,21 @@ namespace UnityExplorer.UI
         public static void SetNavBarAnchor()
         {
             float height = ConfigManager.Lang_Toggle.Value == TranslationManager.Lang.Japanese ? 62 : 35;
-            Vector2 dimensions = new(NAVBAR_DIMENSIONS.x, height);
 
             switch (NavbarAnchor)
             {
                 case VerticalAnchor.Top:
-                    NavBarRect.anchorMin = new Vector2(0.5f, 1f);
-                    NavBarRect.anchorMax = new Vector2(0.5f, 1f);
-                    NavBarRect.anchoredPosition = new Vector2(NavBarRect.anchoredPosition.x, 0);
-                    NavBarRect.sizeDelta = dimensions;
+                    NavBarRect.anchorMin = new Vector2(0f, 1f);
+                    NavBarRect.anchorMax = new Vector2(1f, 1f);
+                    NavBarRect.anchoredPosition = new Vector2(0, 0);
+                    NavBarRect.sizeDelta = new Vector2(0, height);
                     break;
 
                 case VerticalAnchor.Bottom:
-                    NavBarRect.anchorMin = new Vector2(0.5f, 0f);
-                    NavBarRect.anchorMax = new Vector2(0.5f, 0f);
-                    NavBarRect.anchoredPosition = new Vector2(NavBarRect.anchoredPosition.x, height);
-                    NavBarRect.sizeDelta = dimensions;
+                    NavBarRect.anchorMin = new Vector2(0f, 0f);
+                    NavBarRect.anchorMax = new Vector2(1f, 0f);
+                    NavBarRect.anchoredPosition = new Vector2(0, height);
+                    NavBarRect.sizeDelta = new Vector2(0, height);
                     break;
             }
         }
@@ -245,7 +244,7 @@ namespace UnityExplorer.UI
             {
                 UIFactory.SetLayoutElement(NavbarTabButtonHolder, minHeight: 54, flexibleHeight: 0, flexibleWidth: 999);
                 GridLayoutGroup grid = NavbarTabButtonHolder.AddComponent<GridLayoutGroup>();
-                grid.cellSize = new Vector2(160, 25);
+                grid.cellSize = new Vector2(180, 25);
                 grid.spacing = new Vector2(4, 4);
                 grid.childAlignment = TextAnchor.MiddleCenter;
                 grid.constraint = GridLayoutGroup.Constraint.FixedRowCount;
