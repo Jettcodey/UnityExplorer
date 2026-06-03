@@ -1,4 +1,5 @@
 ﻿using UnityExplorer.CacheObject.IValues;
+using UnityExplorer.Translation;
 using UniverseLib.UI;
 using UniverseLib.UI.Models;
 
@@ -53,23 +54,23 @@ namespace UnityExplorer.CacheObject.Views
 
             // key Inspect
 
-            KeyInspectButton = UIFactory.CreateButton(keyGroup, "KeyInspectButton", "Inspect", new Color(0.15f, 0.15f, 0.15f));
+            KeyInspectButton = UIFactory.CreateButton(keyGroup, "KeyInspectButton", TranslationManager.Get(TranslationKey.Inspect), new Color(0.15f, 0.15f, 0.15f));
             UIFactory.SetLayoutElement(KeyInspectButton.Component.gameObject, minWidth: 60, flexibleWidth: 0, minHeight: 25, flexibleHeight: 0);
             KeyInspectButton.OnClick += KeyInspectClicked;
 
             // label
 
-            KeyLabel = UIFactory.CreateLabel(keyGroup, "KeyLabel", "<i>empty</i>", TextAnchor.MiddleLeft);
+            KeyLabel = UIFactory.CreateLabel(keyGroup, "KeyLabel", $"<i>{TranslationManager.Get(TranslationKey.Empty)}</i>", TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(KeyLabel.gameObject, minWidth: 50, flexibleWidth: 999, minHeight: 25);
 
             // Type label for input field
 
-            KeyInputTypeLabel = UIFactory.CreateLabel(keyGroup, "InputTypeLabel", "<i>null</i>", TextAnchor.MiddleLeft);
+            KeyInputTypeLabel = UIFactory.CreateLabel(keyGroup, "InputTypeLabel", $"<i>{TranslationManager.Get(TranslationKey.Null)}</i>", TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(KeyInputTypeLabel.gameObject, minWidth: 55, flexibleWidth: 0, minHeight: 25, flexibleHeight: 0);
 
             // input field
 
-            KeyInputField = UIFactory.CreateInputField(keyGroup, "KeyInput", "empty");
+            KeyInputField = UIFactory.CreateInputField(keyGroup, "KeyInput", TranslationManager.Get(TranslationKey.Empty));
             UIFactory.SetLayoutElement(KeyInputField.UIRoot, minHeight: 25, flexibleHeight: 0, flexibleWidth: 0, preferredWidth: 200);
             //KeyInputField.lineType = InputField.LineType.MultiLineNewline;
             KeyInputField.Component.readOnly = true;

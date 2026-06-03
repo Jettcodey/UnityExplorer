@@ -1,3 +1,4 @@
+using UnityExplorer.Translation;
 ﻿using UniverseLib.UI;
 using UniverseLib.UI.Models;
 using UniverseLib.UI.Widgets.ButtonList;
@@ -34,6 +35,7 @@ namespace UnityExplorer.UI.Widgets
 
             GameObject toggleObj = UIFactory.CreateToggle(UIRoot, "BehaviourToggle", out BehaviourToggle, out Text behavText);
             UIFactory.SetLayoutElement(toggleObj, minHeight: 25, minWidth: 25);
+            behavText.text = TranslationManager.Get(TranslationKey.Enabled);
             BehaviourToggle.onValueChanged.AddListener(BehaviourToggled);
             // put at first object
             toggleObj.transform.SetSiblingIndex(0);

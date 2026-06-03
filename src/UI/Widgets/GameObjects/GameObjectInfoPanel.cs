@@ -93,7 +93,7 @@ namespace UnityExplorer.UI.Widgets
             if (force || Target.scene.handle != lastSceneHandle)
             {
                 lastSceneHandle = Target.scene.handle;
-                SceneButton.ButtonText.text = Target.scene.IsValid() ? Target.scene.name : "None (Asset/Resource)";
+                SceneButton.ButtonText.text = Target.scene.IsValid() ? Target.scene.name : TranslationManager.Get(TranslationKey.NoneAssetResource);
             }
 
             if (force || (!TagInput.Component.isFocused && Target.tag != lastTag))
@@ -313,7 +313,7 @@ namespace UnityExplorer.UI.Widgets
 
             // name
 
-            NameInput = UIFactory.CreateInputField(titleRow, "NameInput", "untitled");
+            NameInput = UIFactory.CreateInputField(titleRow, "NameInput", TranslationManager.Get(TranslationKey.Untitled));
             UIFactory.SetLayoutElement(NameInput.Component.gameObject, minHeight: 30, minWidth: 100, flexibleWidth: 9999);
             NameInput.Component.textComponent.fontSize = 15;
             NameInput.Component.GetOnEndEdit().AddListener((string val) => { OnNameEndEdit(val); });
@@ -341,7 +341,7 @@ namespace UnityExplorer.UI.Widgets
             Text instanceIdLabel = UIFactory.CreateLabel(secondRow, "InstanceIDLabel", TranslationManager.Get(TranslationKey.InstanceId), TextAnchor.MiddleRight, Color.grey);
             UIFactory.SetLayoutElement(instanceIdLabel.gameObject, minHeight: 25, minWidth: 90);
 
-            InstanceIDInput = UIFactory.CreateInputField(secondRow, "InstanceIDInput", "error");
+            InstanceIDInput = UIFactory.CreateInputField(secondRow, "InstanceIDInput", TranslationManager.Get(TranslationKey.Error));
             UIFactory.SetLayoutElement(InstanceIDInput.Component.gameObject, minHeight: 25, minWidth: 110);
             InstanceIDInput.Component.textComponent.color = Color.grey;
             InstanceIDInput.Component.readOnly = true;
@@ -350,7 +350,7 @@ namespace UnityExplorer.UI.Widgets
             Text tagLabel = UIFactory.CreateLabel(secondRow, "TagLabel", TranslationManager.Get(TranslationKey.Tag), TextAnchor.MiddleRight, Color.grey);
             UIFactory.SetLayoutElement(tagLabel.gameObject, minHeight: 25, minWidth: 40);
 
-            TagInput = UIFactory.CreateInputField(secondRow, "TagInput", "none");
+            TagInput = UIFactory.CreateInputField(secondRow, "TagInput", TranslationManager.Get(TranslationKey.None));
             UIFactory.SetLayoutElement(TagInput.Component.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 999);
             TagInput.Component.textComponent.color = Color.white;
             TagInput.Component.GetOnEndEdit().AddListener((string val) => { OnTagEndEdit(val); });
@@ -381,7 +381,7 @@ namespace UnityExplorer.UI.Widgets
             Text sceneLabel = UIFactory.CreateLabel(thirdrow, "SceneLabel", TranslationManager.Get(TranslationKey.Scene), TextAnchor.MiddleLeft, Color.grey);
             UIFactory.SetLayoutElement(sceneLabel.gameObject, minHeight: 25, minWidth: 50);
 
-            SceneButton = UIFactory.CreateButton(thirdrow, "SceneButton", "untitled");
+            SceneButton = UIFactory.CreateButton(thirdrow, "SceneButton", TranslationManager.Get(TranslationKey.Untitled));
             UIFactory.SetLayoutElement(SceneButton.Component.gameObject, minHeight: 25, minWidth: 120, flexibleWidth: 999);
             SceneButton.OnClick += OnSceneButtonClicked;
 

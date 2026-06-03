@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityExplorer.CacheObject.Views;
+using UnityExplorer.Translation;
 using UnityExplorer.UI.Panels;
 using UniverseLib.UI;
 using UniverseLib.UI.Widgets.ScrollView;
@@ -203,7 +204,7 @@ namespace UnityExplorer.CacheObject.IValues
 
             // Entries label
 
-            TopLabel = UIFactory.CreateLabel(UIRoot, "EntryLabel", "not set", TextAnchor.MiddleLeft, fontSize: 16);
+            TopLabel = UIFactory.CreateLabel(UIRoot, "EntryLabel", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft, fontSize: 16);
             TopLabel.horizontalOverflow = HorizontalWrapMode.Overflow;
 
             // key / value titles
@@ -212,11 +213,11 @@ namespace UnityExplorer.CacheObject.IValues
             UIFactory.SetLayoutElement(titleGroup, minHeight: 25, flexibleWidth: 9999, flexibleHeight: 0);
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(titleGroup, false, true, true, true, padLeft: 65, padRight: 0, childAlignment: TextAnchor.LowerLeft);
 
-            Text keyTitle = UIFactory.CreateLabel(titleGroup, "KeyTitle", "Keys", TextAnchor.MiddleLeft);
+            Text keyTitle = UIFactory.CreateLabel(titleGroup, "KeyTitle", TranslationManager.Get(TranslationKey.Keys), TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(keyTitle.gameObject, minWidth: 100, flexibleWidth: 0);
             KeyTitleLayout = keyTitle.GetComponent<LayoutElement>();
 
-            Text valueTitle = UIFactory.CreateLabel(titleGroup, "ValueTitle", "Values", TextAnchor.MiddleLeft);
+            Text valueTitle = UIFactory.CreateLabel(titleGroup, "ValueTitle", TranslationManager.Get(TranslationKey.Values), TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(valueTitle.gameObject, minWidth: 100, flexibleWidth: 0);
             ValueTitleLayout = valueTitle.GetComponent<LayoutElement>();
 
@@ -229,7 +230,7 @@ namespace UnityExplorer.CacheObject.IValues
             scrollLayout = scrollObj.GetComponent<LayoutElement>();
 
             NotSupportedLabel = UIFactory.CreateLabel(DictScrollPool.Content.gameObject, "NotSupportedMessage",
-                "The IDictionary failed to enumerate. This is likely due to an issue with Unhollowed interfaces.",
+                TranslationManager.Get(TranslationKey.IDictionaryFailedEnumerate),
                 TextAnchor.MiddleLeft, Color.red);
 
             UIFactory.SetLayoutElement(NotSupportedLabel.gameObject, minHeight: 25, flexibleWidth: 9999);

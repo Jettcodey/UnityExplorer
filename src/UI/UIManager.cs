@@ -1,5 +1,6 @@
 ﻿using UnityExplorer.Config;
 using UnityExplorer.CSConsole;
+using UnityExplorer.Translation;
 using UnityExplorer.Inspectors;
 using UnityExplorer.UI.Panels;
 using UnityExplorer.UI.Widgets;

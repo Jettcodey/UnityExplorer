@@ -1,3 +1,4 @@
+using UnityExplorer.Translation;
 ﻿using UniverseLib.UI;
 using UniverseLib.UI.Models;
 using UniverseLib.UI.Widgets.ScrollView;
@@ -44,14 +45,14 @@ namespace UnityExplorer.Hooks
             UIFactory.SetLayoutElement(UIRoot, minWidth: 100, flexibleWidth: 9999, minHeight: 30, flexibleHeight: 600);
             UIRoot.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            MethodNameLabel = UIFactory.CreateLabel(UIRoot, "MethodName", "NOT SET", TextAnchor.MiddleLeft);
+            MethodNameLabel = UIFactory.CreateLabel(UIRoot, "MethodName", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(MethodNameLabel.gameObject, minHeight: 25, flexibleWidth: 9999);
 
-            ToggleActiveButton = UIFactory.CreateButton(UIRoot, "ToggleActiveBtn", "On", new Color(0.15f, 0.2f, 0.15f));
+            ToggleActiveButton = UIFactory.CreateButton(UIRoot, "ToggleActiveBtn", TranslationManager.Get(TranslationKey.On), new Color(0.15f, 0.2f, 0.15f));
             UIFactory.SetLayoutElement(ToggleActiveButton.Component.gameObject, minHeight: 25, minWidth: 35);
             ToggleActiveButton.OnClick += OnToggleActiveClicked;
 
-            EditPatchButton = UIFactory.CreateButton(UIRoot, "EditButton", "Edit", new Color(0.15f, 0.15f, 0.15f));
+            EditPatchButton = UIFactory.CreateButton(UIRoot, "EditButton", TranslationManager.Get(TranslationKey.Edit), new Color(0.15f, 0.15f, 0.15f));
             UIFactory.SetLayoutElement(EditPatchButton.Component.gameObject, minHeight: 25, minWidth: 35);
             EditPatchButton.OnClick += OnEditPatchClicked;
 

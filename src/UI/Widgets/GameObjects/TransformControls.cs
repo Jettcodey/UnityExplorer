@@ -1,3 +1,4 @@
+using UnityExplorer.Translation;
 ﻿using UniverseLib.Input;
 using UniverseLib.UI;
 
@@ -94,10 +95,10 @@ namespace UnityExplorer.UI.Widgets
                 new Vector4(2, 2, 0, 0), new Color(0.1f, 0.1f, 0.1f));
             UIFactory.SetLayoutElement(transformGroup, minHeight: 100, flexibleWidth: 9999);
 
-            PositionControl = Vector3Control.Create(this, transformGroup, "Position:", TransformType.Position);
-            LocalPositionControl = Vector3Control.Create(this, transformGroup, "Local Position:", TransformType.LocalPosition);
-            RotationControl = Vector3Control.Create(this, transformGroup, "Rotation:", TransformType.Rotation);
-            ScaleControl = Vector3Control.Create(this, transformGroup, "Scale:", TransformType.Scale);
+            PositionControl = Vector3Control.Create(this, transformGroup, TranslationManager.Get(TranslationKey.Position), TransformType.Position);
+            LocalPositionControl = Vector3Control.Create(this, transformGroup, TranslationManager.Get(TranslationKey.LocalPosition), TransformType.LocalPosition);
+            RotationControl = Vector3Control.Create(this, transformGroup, TranslationManager.Get(TranslationKey.Rotation), TransformType.Rotation);
+            ScaleControl = Vector3Control.Create(this, transformGroup, TranslationManager.Get(TranslationKey.Scale), TransformType.Scale);
         }
     }
 }

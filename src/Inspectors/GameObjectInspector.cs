@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityExplorer.Translation;
 using UnityExplorer.UI.Panels;
 using UnityExplorer.UI.Widgets;
 using UnityExplorer.UI.Widgets.AutoComplete;
@@ -284,17 +285,17 @@ namespace UnityExplorer.Inspectors
             UIFactory.SetLayoutElement(leftGroup, flexibleWidth: 9999, flexibleHeight: 9999);
             UIFactory.SetLayoutGroup<VerticalLayoutGroup>(leftGroup, false, false, true, true, 2);
 
-            Text childrenLabel = UIFactory.CreateLabel(leftGroup, "ChildListTitle", "Children", TextAnchor.MiddleCenter, default, false, 16);
+            Text childrenLabel = UIFactory.CreateLabel(leftGroup, "ChildListTitle", TranslationManager.Get(TranslationKey.Children), TextAnchor.MiddleCenter, default, false, 16);
             UIFactory.SetLayoutElement(childrenLabel.gameObject, flexibleWidth: 9999);
 
             // Add Child
             GameObject addChildRow = UIFactory.CreateUIObject("AddChildRow", leftGroup);
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(addChildRow, false, false, true, true, 2);
 
-            addChildInput = UIFactory.CreateInputField(addChildRow, "AddChildInput", "Enter a name...");
+            addChildInput = UIFactory.CreateInputField(addChildRow, "AddChildInput", TranslationManager.Get(TranslationKey.EnterName));
             UIFactory.SetLayoutElement(addChildInput.Component.gameObject, minHeight: 25, preferredWidth: 9999);
 
-            ButtonRef addChildButton = UIFactory.CreateButton(addChildRow, "AddChildButton", "Add Child");
+            ButtonRef addChildButton = UIFactory.CreateButton(addChildRow, "AddChildButton", TranslationManager.Get(TranslationKey.AddChild));
             UIFactory.SetLayoutElement(addChildButton.Component.gameObject, minHeight: 25, minWidth: 80);
             addChildButton.OnClick += () => { OnAddChildClicked(addChildInput.Text); };
 
@@ -311,17 +312,17 @@ namespace UnityExplorer.Inspectors
             UIFactory.SetLayoutElement(rightGroup, flexibleWidth: 9999, flexibleHeight: 9999);
             UIFactory.SetLayoutGroup<VerticalLayoutGroup>(rightGroup, false, false, true, true, 2);
 
-            Text compLabel = UIFactory.CreateLabel(rightGroup, "CompListTitle", "Components", TextAnchor.MiddleCenter, default, false, 16);
+            Text compLabel = UIFactory.CreateLabel(rightGroup, "CompListTitle", TranslationManager.Get(TranslationKey.Components), TextAnchor.MiddleCenter, default, false, 16);
             UIFactory.SetLayoutElement(compLabel.gameObject, flexibleWidth: 9999);
 
             // Add Comp
             GameObject addCompRow = UIFactory.CreateUIObject("AddCompRow", rightGroup);
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(addCompRow, false, false, true, true, 2);
 
-            addCompInput = UIFactory.CreateInputField(addCompRow, "AddCompInput", "Enter a Component type...");
+            addCompInput = UIFactory.CreateInputField(addCompRow, "AddCompInput", TranslationManager.Get(TranslationKey.EnterComponentType));
             UIFactory.SetLayoutElement(addCompInput.Component.gameObject, minHeight: 25, preferredWidth: 9999);
 
-            ButtonRef addCompButton = UIFactory.CreateButton(addCompRow, "AddCompButton", "Add Comp");
+            ButtonRef addCompButton = UIFactory.CreateButton(addCompRow, "AddCompButton", TranslationManager.Get(TranslationKey.AddComp));
             UIFactory.SetLayoutElement(addCompButton.Component.gameObject, minHeight: 25, minWidth: 80);
             addCompButton.OnClick += () => { OnAddComponentClicked(addCompInput.Text); };
 

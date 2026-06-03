@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityExplorer.Config;
+using UnityExplorer.Translation;
 using UnityExplorer.Inspectors;
 using UnityExplorer.UI.Panels;
 using UniverseLib.Runtime;
@@ -89,7 +90,7 @@ namespace UnityExplorer.UI.Widgets
                 // disable
                 textureViewerWanted = false;
                 textureViewerRoot.SetActive(false);
-                toggleButton.ButtonText.text = "View Texture";
+                toggleButton.ButtonText.text = TranslationManager.Get(TranslationKey.ViewTexture);
 
                 owner.ContentRoot.SetActive(true);
             }
@@ -103,7 +104,7 @@ namespace UnityExplorer.UI.Widgets
 
                 textureViewerWanted = true;
                 textureViewerRoot.SetActive(true);
-                toggleButton.ButtonText.text = "Hide Texture";
+                toggleButton.ButtonText.text = TranslationManager.Get(TranslationKey.HideTexture);
 
                 owner.ContentRoot.gameObject.SetActive(false);
             }

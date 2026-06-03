@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using UnityExplorer.CSConsole;
 using UnityExplorer.Runtime;
+using UnityExplorer.Translation;
 using UnityExplorer.UI.Panels;
 using UnityExplorer.UI.Widgets.AutoComplete;
 using UniverseLib.UI;
@@ -98,7 +99,7 @@ namespace UnityExplorer.Hooks
 
         public void SetAddHooksLabelType(string typeText)
         {
-            AddHooksLabel.text = $"Adding hooks to: {typeText}";
+            AddHooksLabel.text = TranslationManager.Get(TranslationKey.AddingHooksTo, typeText);
 
             AddHooksMethodFilterInput.GameObject.SetActive(true);
             AddHooksScrollPool.UIRoot.SetActive(true);
@@ -200,7 +201,7 @@ namespace UnityExplorer.Hooks
         internal static void SetEditedHook(HookInstance hook)
         {
             CurrentEditedHook = hook;
-            EditingHookLabel.text = $"Editing: {SignatureHighlighter.Parse(hook.TargetMethod.DeclaringType, false, hook.TargetMethod)}";
+            EditingHookLabel.text = TranslationManager.Get(TranslationKey.Editing, SignatureHighlighter.Parse(hook.TargetMethod.DeclaringType, false, hook.TargetMethod));
             EditorInput.Text = hook.PatchSourceCode;
         }
 
@@ -244,19 +245,19 @@ namespace UnityExplorer.Hooks
                 new Vector4(2, 2, 2, 2), new Color(0.2f, 0.2f, 0.2f));
             UIFactory.SetLayoutElement(addRow, minHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
 
-            ClassSelectorInputField = UIFactory.CreateInputField(addRow, "ClassInput", "Enter a class to add hooks to...");
+            ClassSelectorInputField = UIFactory.CreateInputField(addRow, "ClassInput", TranslationManager.Get(TranslationKey.EnterClassToAddHooks));
             UIFactory.SetLayoutElement(ClassSelectorInputField.Component.gameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
             TypeCompleter completer = new(typeof(object), ClassSelectorInputField, true, false, true);
             //completer.AllTypes = true;
 
-            ButtonRef addButton = UIFactory.CreateButton(addRow, "AddButton", "View Methods");
+            ButtonRef addButton = UIFactory.CreateButton(addRow, "AddButton", TranslationManager.Get(TranslationKey.ViewMethods));
             UIFactory.SetLayoutElement(addButton.Component.gameObject, minWidth: 110, minHeight: 25);
             addButton.OnClick += () => { OnClassSelectedForHooks(ClassSelectorInputField.Text); };
 
-            AddHooksLabel = UIFactory.CreateLabel(AddHooksRoot, "AddLabel", "Choose a class to begin...", TextAnchor.MiddleCenter);
+            AddHooksLabel = UIFactory.CreateLabel(AddHooksRoot, "AddLabel", TranslationManager.Get(TranslationKey.ChooseClassToBegin), TextAnchor.MiddleCenter);
             UIFactory.SetLayoutElement(AddHooksLabel.gameObject, minHeight: 30, minWidth: 100, flexibleWidth: 9999);
 
-            AddHooksMethodFilterInput = UIFactory.CreateInputField(AddHooksRoot, "FilterInputField", "Filter method names...");
+            AddHooksMethodFilterInput = UIFactory.CreateInputField(AddHooksRoot, "FilterInputField", TranslationManager.Get(TranslationKey.FilterMethodNames));
             UIFactory.SetLayoutElement(AddHooksMethodFilterInput.Component.gameObject, minHeight: 30, flexibleWidth: 9999);
             AddHooksMethodFilterInput.OnValueChanged += OnAddHookFilterInputChanged;
 
@@ -275,26 +276,24 @@ namespace UnityExplorer.Hooks
             UIFactory.SetLayoutElement(EditorRoot, flexibleHeight: 9999, flexibleWidth: 9999);
             UIFactory.SetLayoutGroup<VerticalLayoutGroup>(EditorRoot, true, true, true, true, 2, 3, 3, 3, 3);
 
-            EditingHookLabel = UIFactory.CreateLabel(EditorRoot, "EditingHookLabel", "NOT SET", TextAnchor.MiddleCenter);
+            EditingHookLabel = UIFactory.CreateLabel(EditorRoot, "EditingHookLabel", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleCenter);
             EditingHookLabel.fontStyle = FontStyle.Bold;
             UIFactory.SetLayoutElement(EditingHookLabel.gameObject, flexibleWidth: 9999, minHeight: 25);
 
             Text editorLabel = UIFactory.CreateLabel(EditorRoot,
                 "EditorLabel",
-                "* Accepted method names are <b>Prefix</b>, <b>Postfix</b>, <b>Finalizer</b> and <b>Transpiler</b> (can define multiple).\n" +
-                "* Your patch methods must be static.\n" +
-                "* Hooks are temporary! Copy the source into your IDE to avoid losing work if you wish to keep it!",
+                TranslationManager.Get(TranslationKey.HookEditorInstructions),
                 TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(editorLabel.gameObject, minHeight: 25, flexibleWidth: 9999);
 
             GameObject editorButtonRow = UIFactory.CreateHorizontalGroup(EditorRoot, "ButtonRow", false, false, true, true, 5);
             UIFactory.SetLayoutElement(editorButtonRow, minHeight: 25, flexibleWidth: 9999);
 
-            ButtonRef editorSaveButton = UIFactory.CreateButton(editorButtonRow, "DoneButton", "Save and Return", new Color(0.2f, 0.3f, 0.2f));
+            ButtonRef editorSaveButton = UIFactory.CreateButton(editorButtonRow, "DoneButton", TranslationManager.Get(TranslationKey.SaveAndReturn), new Color(0.2f, 0.3f, 0.2f));
             UIFactory.SetLayoutElement(editorSaveButton.Component.gameObject, minHeight: 25, flexibleWidth: 9999);
             editorSaveButton.OnClick += EditorInputSave;
 
-            ButtonRef editorDoneButton = UIFactory.CreateButton(editorButtonRow, "DoneButton", "Cancel and Return", new Color(0.2f, 0.2f, 0.2f));
+            ButtonRef editorDoneButton = UIFactory.CreateButton(editorButtonRow, "DoneButton", TranslationManager.Get(TranslationKey.CancelAndReturn), new Color(0.2f, 0.2f, 0.2f));
             UIFactory.SetLayoutElement(editorDoneButton.Component.gameObject, minHeight: 25, flexibleWidth: 9999);
             editorDoneButton.OnClick += EditorInputCancel;
 

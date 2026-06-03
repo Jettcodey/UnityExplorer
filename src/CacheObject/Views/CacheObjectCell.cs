@@ -1,3 +1,4 @@
+using UnityExplorer.Translation;
 ﻿using UnityExplorer.UI.Panels;
 using UniverseLib.UI;
 using UniverseLib.UI.Models;
@@ -115,7 +116,7 @@ namespace UnityExplorer.CacheObject.Views
 
             // Left name label
 
-            NameLabel = UIFactory.CreateLabel(horiRow, "NameLabel", "<notset>", TextAnchor.MiddleLeft);
+            NameLabel = UIFactory.CreateLabel(horiRow, "NameLabel", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft);
             NameLabel.horizontalOverflow = HorizontalWrapMode.Wrap;
             NameLayout = UIFactory.SetLayoutElement(NameLabel.gameObject, minHeight: 25, minWidth: 20, flexibleHeight: 300, flexibleWidth: 0);
             UIFactory.SetLayoutGroup<VerticalLayoutGroup>(NameLabel.gameObject, true, true, true, true);
@@ -152,7 +153,7 @@ namespace UnityExplorer.CacheObject.Views
 
             // Type label
 
-            TypeLabel = UIFactory.CreateLabel(rightHoriGroup, "ReturnLabel", "<notset>", TextAnchor.MiddleLeft);
+            TypeLabel = UIFactory.CreateLabel(rightHoriGroup, "ReturnLabel", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft);
             TypeLabel.horizontalOverflow = HorizontalWrapMode.Wrap;
             UIFactory.SetLayoutElement(TypeLabel.gameObject, minHeight: 25, flexibleHeight: 150, minWidth: 45, flexibleWidth: 0);
 
@@ -160,6 +161,7 @@ namespace UnityExplorer.CacheObject.Views
 
             GameObject toggleObj = UIFactory.CreateToggle(rightHoriGroup, "Toggle", out Toggle, out ToggleText);
             UIFactory.SetLayoutElement(toggleObj, minWidth: 70, minHeight: 25, flexibleWidth: 0, flexibleHeight: 0);
+            ToggleText.text = TranslationManager.Get(TranslationKey.Enabled);
             ToggleText.color = SignatureHighlighter.KeywordBlue;
             Toggle.onValueChanged.AddListener(ToggleClicked);
 
@@ -168,19 +170,19 @@ namespace UnityExplorer.CacheObject.Views
 
             // Apply
 
-            ApplyButton = UIFactory.CreateButton(rightHoriGroup, "ApplyButton", "Apply", new Color(0.15f, 0.19f, 0.15f));
+            ApplyButton = UIFactory.CreateButton(rightHoriGroup, "ApplyButton", TranslationManager.Get(TranslationKey.Apply), new Color(0.15f, 0.19f, 0.15f));
             UIFactory.SetLayoutElement(ApplyButton.Component.gameObject, minWidth: 70, minHeight: 25, flexibleWidth: 0, flexibleHeight: 0);
             ApplyButton.OnClick += ApplyClicked;
 
             // Inspect 
 
-            InspectButton = UIFactory.CreateButton(rightHoriGroup, "InspectButton", "Inspect", new Color(0.15f, 0.15f, 0.15f));
+            InspectButton = UIFactory.CreateButton(rightHoriGroup, "InspectButton", TranslationManager.Get(TranslationKey.Inspect), new Color(0.15f, 0.15f, 0.15f));
             UIFactory.SetLayoutElement(InspectButton.Component.gameObject, minWidth: 70, flexibleWidth: 0, minHeight: 25);
             InspectButton.OnClick += InspectClicked;
 
             // Main value label
 
-            ValueLabel = UIFactory.CreateLabel(rightHoriGroup, "ValueLabel", "Value goes here", TextAnchor.MiddleLeft);
+            ValueLabel = UIFactory.CreateLabel(rightHoriGroup, "ValueLabel", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft);
             ValueLabel.horizontalOverflow = HorizontalWrapMode.Wrap;
             UIFactory.SetLayoutElement(ValueLabel.gameObject, minHeight: 25, flexibleHeight: 150, flexibleWidth: 9999);
 
@@ -190,13 +192,13 @@ namespace UnityExplorer.CacheObject.Views
                 bgColor: new(1, 1, 1, 0), childAlignment: TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(buttonHolder, minWidth: 60, flexibleWidth: 0);
 
-            CopyButton = UIFactory.CreateButton(buttonHolder, "CopyButton", "Copy", new Color(0.13f, 0.13f, 0.13f, 1f));
+            CopyButton = UIFactory.CreateButton(buttonHolder, "CopyButton", TranslationManager.Get(TranslationKey.Copy), new Color(0.13f, 0.13f, 0.13f, 1f));
             UIFactory.SetLayoutElement(CopyButton.Component.gameObject, minHeight: 25, minWidth: 28, flexibleWidth: 0);
             CopyButton.ButtonText.color = Color.yellow;
             CopyButton.ButtonText.fontSize = 10;
             CopyButton.OnClick += OnCopyClicked;
 
-            PasteButton = UIFactory.CreateButton(buttonHolder, "PasteButton", "Paste", new Color(0.13f, 0.13f, 0.13f, 1f));
+            PasteButton = UIFactory.CreateButton(buttonHolder, "PasteButton", TranslationManager.Get(TranslationKey.Paste), new Color(0.13f, 0.13f, 0.13f, 1f));
             UIFactory.SetLayoutElement(PasteButton.Component.gameObject, minHeight: 25, minWidth: 28, flexibleWidth: 0);
             PasteButton.ButtonText.color = Color.green;
             PasteButton.ButtonText.fontSize = 10;
