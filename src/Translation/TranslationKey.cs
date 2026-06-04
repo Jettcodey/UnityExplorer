@@ -3,7 +3,6 @@ namespace UnityExplorer.Translation;
 public enum TranslationKey
 {
     None,
-    // Original keys
     Translation,
     TranslationHint,
     UeToggle,
@@ -49,8 +48,6 @@ public enum TranslationKey
     Inspect,
     Autocompleter,
     HelpUpdownEsc,
-
-    // New keys from UI
     Options,
     Log,
     Hooks,
@@ -97,8 +94,6 @@ public enum TranslationKey
     Name,
     Null,
     Texture,
-
-    // Even more keys
     DisableForceReloadManagedAssemblies,
     DisableForceReloadManagedAssembliesHint,
     BypassUniverseLibICall,
@@ -121,8 +116,6 @@ public enum TranslationKey
     NoParent,
     ActiveSelf,
     IsStatic,
-
-    // Even MORE keys
     Search,
     SearchingFor,
     ClassFilter,
@@ -194,5 +187,4 @@ public enum TranslationKey
     CannotSaveAudioClip,
     HideMaterial,
     HideTexture,
-    None,
 }
