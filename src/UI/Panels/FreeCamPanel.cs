@@ -1,3 +1,4 @@
+using UnityExplorer.Translation;
 ﻿using UniverseLib.Input;
 using UniverseLib.UI;
 using UniverseLib.UI.Models;
@@ -205,14 +206,7 @@ namespace UnityExplorer.UI.Panels
 
             AddSpacer(5);
 
-            string instructions = @"Controls:
-- WASD / Arrows: Movement
-- Space / PgUp: Move up
-- LeftCtrl / PgDown: Move down
-- Right Mouse Button: Free look
-- Shift: Super speed";
-
-            Text instructionsText = UIFactory.CreateLabel(ContentRoot, "Instructions", instructions, TextAnchor.UpperLeft);
+            Text instructionsText = UIFactory.CreateLabel(ContentRoot, "Instructions", TranslationManager.Get(TranslationKey.FreecamInstructions), TextAnchor.UpperLeft);
             UIFactory.SetLayoutElement(instructionsText.gameObject, flexibleWidth: 9999, flexibleHeight: 9999);
 
             AddSpacer(5);

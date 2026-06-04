@@ -82,7 +82,7 @@ namespace UnityExplorer.UI.Panels
 
             // Help dropdown
 
-            GameObject helpDrop = UIFactory.CreateDropdown(toolsRow, "HelpDropdown", out Dropdown dropdown, "Help", 14, null);
+            GameObject helpDrop = UIFactory.CreateDropdown(toolsRow, "HelpDropdown", out Dropdown dropdown, TranslationManager.Get(TranslationKey.Help), 14, null);
             UIFactory.SetLayoutElement(helpDrop, minHeight: 25, minWidth: 100, flexibleWidth: 9999);
             Dropdown = dropdown;
             Dropdown.onValueChanged.AddListener((int val) => { this.OnDropdownChanged?.Invoke(val); });
@@ -92,7 +92,7 @@ namespace UnityExplorer.UI.Panels
             GameObject ctrlRToggleObj = UIFactory.CreateToggle(toolsRow, "CtrlRToggle", out Toggle CtrlRToggle, out Text ctrlRToggleText);
             UIFactory.SetLayoutElement(ctrlRToggleObj, minWidth: 150, flexibleWidth: 0, minHeight: 25);
             ctrlRToggleText.alignment = TextAnchor.UpperLeft;
-            ctrlRToggleText.text = "Compile on Ctrl+R";
+            ctrlRToggleText.text = TranslationManager.Get(TranslationKey.CtrlRToCompile);
             CtrlRToggle.onValueChanged.AddListener((bool val) => { OnCtrlRToggled?.Invoke(val); });
 
             // Enable Suggestions toggle
@@ -100,7 +100,7 @@ namespace UnityExplorer.UI.Panels
             GameObject suggestToggleObj = UIFactory.CreateToggle(toolsRow, "SuggestionToggle", out Toggle SuggestionsToggle, out Text suggestToggleText);
             UIFactory.SetLayoutElement(suggestToggleObj, minWidth: 120, flexibleWidth: 0, minHeight: 25);
             suggestToggleText.alignment = TextAnchor.UpperLeft;
-            suggestToggleText.text = "Suggestions";
+            suggestToggleText.text = TranslationManager.Get(TranslationKey.Suggestions);
             SuggestionsToggle.onValueChanged.AddListener((bool val) => { OnSuggestionsToggled?.Invoke(val); });
 
             // Enable Auto-indent toggle
@@ -108,7 +108,7 @@ namespace UnityExplorer.UI.Panels
             GameObject autoIndentToggleObj = UIFactory.CreateToggle(toolsRow, "IndentToggle", out Toggle AutoIndentToggle, out Text autoIndentToggleText);
             UIFactory.SetLayoutElement(autoIndentToggleObj, minWidth: 120, flexibleWidth: 0, minHeight: 25);
             autoIndentToggleText.alignment = TextAnchor.UpperLeft;
-            autoIndentToggleText.text = "Auto-indent";
+            autoIndentToggleText.text = TranslationManager.Get(TranslationKey.AutoIndent);
             AutoIndentToggle.onValueChanged.AddListener((bool val) => { OnAutoIndentToggled?.Invoke(val); });
 
             // Console Input

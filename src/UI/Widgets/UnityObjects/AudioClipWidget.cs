@@ -267,7 +267,7 @@ namespace UnityExplorer.UI.Widgets
             UIFactory.CreateLabel(
                 cantSaveRow,
                 "CantSaveLabel",
-                "Cannot save this AudioClip as the data is compressed or streamed. Try a tool such as AssetRipper to unpack it.",
+                TranslationManager.Get(TranslationKey.CannotSaveAudioClip),
                 color: Color.grey);
 
             return ret;

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using UnityExplorer.Translation;
 using UnityExplorer.UI.Panels;
 using UnityExplorer.UI.Widgets.AutoComplete;
 using UniverseLib.UI;
@@ -133,11 +134,11 @@ namespace UnityExplorer.CacheObject.IValues
             UIFactory.SetLayoutElement(hori, minHeight: 25, flexibleWidth: 9999);
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(hori, false, false, true, true, 2);
 
-            ButtonRef applyButton = UIFactory.CreateButton(hori, "ApplyButton", "Apply", new Color(0.2f, 0.27f, 0.2f));
+            ButtonRef applyButton = UIFactory.CreateButton(hori, "ApplyButton", TranslationManager.Get(TranslationKey.Apply), new Color(0.2f, 0.27f, 0.2f));
             UIFactory.SetLayoutElement(applyButton.Component.gameObject, minHeight: 25, minWidth: 100);
             applyButton.OnClick += OnApplyClicked;
 
-            inputField = UIFactory.CreateInputField(hori, "InputField", "Enter name or underlying value...");
+            inputField = UIFactory.CreateInputField(hori, "InputField", TranslationManager.Get(TranslationKey.EnterNameOrUnderlyingValue));
             UIFactory.SetLayoutElement(inputField.UIRoot, minHeight: 25, flexibleHeight: 50, minWidth: 100, flexibleWidth: 1000);
             inputField.Component.lineType = InputField.LineType.MultiLineNewline;
             inputField.UIRoot.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;

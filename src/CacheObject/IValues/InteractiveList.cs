@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityExplorer.CacheObject.Views;
+using UnityExplorer.Translation;
 using UnityExplorer.UI.Panels;
 using UniverseLib.UI;
 using UniverseLib.UI.Widgets.ScrollView;
@@ -234,7 +235,7 @@ namespace UnityExplorer.CacheObject.IValues
 
             // Entries label
 
-            TopLabel = UIFactory.CreateLabel(UIRoot, "EntryLabel", "not set", TextAnchor.MiddleLeft, fontSize: 16);
+            TopLabel = UIFactory.CreateLabel(UIRoot, "EntryLabel", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft, fontSize: 16);
             TopLabel.horizontalOverflow = HorizontalWrapMode.Overflow;
 
             // entry scroll pool
@@ -246,7 +247,7 @@ namespace UnityExplorer.CacheObject.IValues
             scrollLayout = scrollObj.GetComponent<LayoutElement>();
 
             NotSupportedLabel = UIFactory.CreateLabel(ListScrollPool.Content.gameObject, "NotSupportedMessage",
-                "The IEnumerable failed to enumerate. This is likely due to an issue with Unhollowed interfaces.",
+                TranslationManager.Get(TranslationKey.IEnumerableFailedEnumerate),
                 TextAnchor.MiddleLeft, Color.red);
 
             UIFactory.SetLayoutElement(NotSupportedLabel.gameObject, minHeight: 25, flexibleWidth: 9999);

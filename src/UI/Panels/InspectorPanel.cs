@@ -1,4 +1,5 @@
 ﻿using UnityExplorer.Inspectors;
+using UnityExplorer.Translation;
 using UniverseLib.UI;
 
 namespace UnityExplorer.UI.Panels
@@ -48,10 +49,10 @@ namespace UnityExplorer.UI.Panels
 
             // Inspect under mouse dropdown on title bar
 
-            GameObject mouseDropdown = UIFactory.CreateDropdown(closeHolder, "MouseInspectDropdown", out MouseInspectDropdown, "Mouse Inspect", 14,
+            GameObject mouseDropdown = UIFactory.CreateDropdown(closeHolder, "MouseInspectDropdown", out MouseInspectDropdown, TranslationManager.Get(TranslationKey.Inspect), 14,
                 MouseInspector.OnDropdownSelect);
             UIFactory.SetLayoutElement(mouseDropdown, minHeight: 25, minWidth: 140);
-            MouseInspectDropdown.options.Add(new Dropdown.OptionData("Mouse Inspect"));
+            MouseInspectDropdown.options.Add(new Dropdown.OptionData(TranslationManager.Get(TranslationKey.Inspect)));
             MouseInspectDropdown.options.Add(new Dropdown.OptionData("World"));
             MouseInspectDropdown.options.Add(new Dropdown.OptionData("UI"));
             mouseDropdown.transform.SetSiblingIndex(0);

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System.Collections.Specialized;
+using UnityExplorer.Translation;
 using UnityExplorer.UI.Panels;
 using UniverseLib.UI;
 using UniverseLib.UI.Widgets.ScrollView;
@@ -65,7 +66,7 @@ namespace UnityExplorer.Hooks
 
             cell.MethodNameLabel.text = SignatureHighlighter.ParseMethod(hook.TargetMethod);
 
-            cell.ToggleActiveButton.ButtonText.text = hook.Enabled ? "On" : "Off";
+            cell.ToggleActiveButton.ButtonText.text = hook.Enabled ? TranslationManager.Get(TranslationKey.On) : TranslationManager.Get(TranslationKey.Off);
             RuntimeHelper.SetColorBlockAuto(cell.ToggleActiveButton.Component,
                 hook.Enabled ? new Color(0.15f, 0.2f, 0.15f) : new Color(0.2f, 0.2f, 0.15f));
         }
@@ -78,7 +79,7 @@ namespace UnityExplorer.Hooks
             UIFactory.SetLayoutElement(UIRoot, preferredHeight: 150, flexibleHeight: 0, flexibleWidth: 9999);
             UIFactory.SetLayoutGroup<VerticalLayoutGroup>(UIRoot, true, true, true, true);
 
-            Text hooksLabel = UIFactory.CreateLabel(UIRoot, "HooksLabel", "Current Hooks", TextAnchor.MiddleCenter);
+            Text hooksLabel = UIFactory.CreateLabel(UIRoot, "HooksLabel", TranslationManager.Get(TranslationKey.CurrentHooks), TextAnchor.MiddleCenter);
             UIFactory.SetLayoutElement(hooksLabel.gameObject, minHeight: 30, flexibleWidth: 9999);
 
             HooksScrollPool = UIFactory.CreateScrollPool<HookCell>(UIRoot, "HooksScrollPool",

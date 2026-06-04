@@ -1,3 +1,4 @@
+using UnityExplorer.Translation;
 ﻿using UniverseLib.UI;
 using UniverseLib.UI.Models;
 
@@ -173,7 +174,7 @@ namespace UnityExplorer.CacheObject.IValues
 
             fieldRows.Add(row);
 
-            Text label = UIFactory.CreateLabel(row, "Label", "notset", TextAnchor.MiddleLeft);
+            Text label = UIFactory.CreateLabel(row, "Label", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(label.gameObject, minHeight: 25, minWidth: 50, flexibleWidth: 0);
             label.horizontalOverflow = HorizontalWrapMode.Wrap;
             labels.Add(label);
@@ -195,7 +196,7 @@ namespace UnityExplorer.CacheObject.IValues
                 new Color(0.06f, 0.06f, 0.06f), TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(UIRoot, minHeight: 25, flexibleWidth: 9999);
 
-            applyButton = UIFactory.CreateButton(UIRoot, "ApplyButton", "Apply", new Color(0.2f, 0.27f, 0.2f));
+            applyButton = UIFactory.CreateButton(UIRoot, "ApplyButton", TranslationManager.Get(TranslationKey.Apply), new Color(0.2f, 0.27f, 0.2f));
             UIFactory.SetLayoutElement(applyButton.Component.gameObject, minHeight: 25, minWidth: 175);
             applyButton.OnClick += OnApplyClicked;
 

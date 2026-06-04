@@ -4,6 +4,7 @@ using System.Reflection.Emit;
 using UnityExplorer.CacheObject;
 using UnityExplorer.CacheObject.Views;
 using UnityExplorer.Config;
+using UnityExplorer.Translation;
 using UnityExplorer.UI;
 using UnityExplorer.UI.Panels;
 using UnityExplorer.UI.Widgets;
@@ -160,7 +161,7 @@ namespace UnityExplorer.Inspectors
                 asmText = Path.GetFileName(TargetType.Assembly.Location);
                 dnSpyButton.GameObject.SetActive(true);
             }
-            assemblyText.text = $"<color=grey>Assembly:</color> {asmText}";
+            assemblyText.text = $"<color=grey>{TranslationManager.Get(TranslationKey.Assembly)}</color> {asmText}";
 
             // Unity object helper widget
 
@@ -417,14 +418,14 @@ namespace UnityExplorer.Inspectors
             GameObject titleHolder = UIFactory.CreateUIObject("TitleHolder", topRow);
             UIFactory.SetLayoutElement(titleHolder, minHeight: 35, flexibleHeight: 0, flexibleWidth: 9999);
 
-            nameText = UIFactory.CreateLabel(titleHolder, "VisibleTitle", "NotSet", TextAnchor.MiddleLeft);
+            nameText = UIFactory.CreateLabel(titleHolder, "VisibleTitle", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft);
             RectTransform namerect = nameText.GetComponent<RectTransform>();
             namerect.anchorMin = new Vector2(0, 0);
             namerect.anchorMax = new Vector2(1, 1);
             nameText.fontSize = 17;
             UIFactory.SetLayoutElement(nameText.gameObject, minHeight: 35, flexibleHeight: 0, minWidth: 300, flexibleWidth: 9999);
 
-            hiddenNameText = UIFactory.CreateInputField(titleHolder, "Title", "not set");
+            hiddenNameText = UIFactory.CreateInputField(titleHolder, "Title", TranslationManager.Get(TranslationKey.NotSet));
             RectTransform hiddenrect = hiddenNameText.Component.gameObject.GetComponent<RectTransform>();
             hiddenrect.anchorMin = new Vector2(0, 0);
             hiddenrect.anchorMax = new Vector2(1, 1);
@@ -436,12 +437,12 @@ namespace UnityExplorer.Inspectors
             hiddenNameText.Component.textComponent.color = Color.clear;
             UIFactory.SetLayoutElement(hiddenNameText.Component.gameObject, minHeight: 35, flexibleHeight: 0, flexibleWidth: 9999);
 
-            makeGenericButton = UIFactory.CreateButton(topRow, "MakeGenericButton", "Construct Generic", new Color(0.2f, 0.3f, 0.2f));
+            makeGenericButton = UIFactory.CreateButton(topRow, "MakeGenericButton", TranslationManager.Get(TranslationKey.ConstructGeneric), new Color(0.2f, 0.3f, 0.2f));
             UIFactory.SetLayoutElement(makeGenericButton.GameObject, minWidth: 140, minHeight: 25);
             makeGenericButton.OnClick += OnMakeGenericClicked;
             makeGenericButton.GameObject.SetActive(false);
 
-            ButtonRef copyButton = UIFactory.CreateButton(topRow, "CopyButton", "Copy to Clipboard", new Color(0.2f, 0.2f, 0.2f, 1));
+            ButtonRef copyButton = UIFactory.CreateButton(topRow, "CopyButton", TranslationManager.Get(TranslationKey.CopyToClipboard), new Color(0.2f, 0.2f, 0.2f, 1));
             copyButton.ButtonText.color = Color.yellow;
             UIFactory.SetLayoutElement(copyButton.Component.gameObject, minHeight: 25, minWidth: 120, flexibleWidth: 0);
             copyButton.OnClick += OnCopyClicked;
@@ -451,10 +452,10 @@ namespace UnityExplorer.Inspectors
             GameObject asmRow = UIFactory.CreateHorizontalGroup(UIRoot, "AssemblyRow", false, false, true, true, 5, default, new(1, 1, 1, 0));
             UIFactory.SetLayoutElement(asmRow, flexibleWidth: 9999, minHeight: 25);
 
-            assemblyText = UIFactory.CreateLabel(asmRow, "AssemblyLabel", "not set", TextAnchor.MiddleLeft);
+            assemblyText = UIFactory.CreateLabel(asmRow, "AssemblyLabel", TranslationManager.Get(TranslationKey.NotSet), TextAnchor.MiddleLeft);
             UIFactory.SetLayoutElement(assemblyText.gameObject, minHeight: 25, flexibleWidth: 9999);
 
-            dnSpyButton = UIFactory.CreateButton(asmRow, "DnSpyButton", "View in dnSpy");
+            dnSpyButton = UIFactory.CreateButton(asmRow, "DnSpyButton", TranslationManager.Get(TranslationKey.ViewInDnSpy));
             UIFactory.SetLayoutElement(dnSpyButton.GameObject, minWidth: 120, minHeight: 25);
             dnSpyButton.OnClick += OnDnSpyButtonClicked;
 
@@ -495,7 +496,7 @@ namespace UnityExplorer.Inspectors
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(rowObj, true, true, true, true, 5, 2, 2, 2, 2);
             UIFactory.SetLayoutElement(rowObj, minHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
 
-            Text nameLabel = UIFactory.CreateLabel(rowObj, "NameFilterLabel", "Filter names:", TextAnchor.MiddleLeft, Color.grey);
+            Text nameLabel = UIFactory.CreateLabel(rowObj, "NameFilterLabel", TranslationManager.Get(TranslationKey.FilterNames), TextAnchor.MiddleLeft, Color.grey);
             UIFactory.SetLayoutElement(nameLabel.gameObject, minHeight: 25, minWidth: 90, flexibleWidth: 0);
 
             filterInputField = UIFactory.CreateInputField(rowObj, "NameFilterInput", "...");
@@ -507,14 +508,14 @@ namespace UnityExplorer.Inspectors
 
             // Update button and toggle
 
-            ButtonRef updateButton = UIFactory.CreateButton(rowObj, "UpdateButton", "Update displayed values", new Color(0.22f, 0.28f, 0.22f));
+            ButtonRef updateButton = UIFactory.CreateButton(rowObj, "UpdateButton", TranslationManager.Get(TranslationKey.UpdateDisplayedValues), new Color(0.22f, 0.28f, 0.22f));
             UIFactory.SetLayoutElement(updateButton.Component.gameObject, minHeight: 25, minWidth: 175, flexibleWidth: 0);
             updateButton.OnClick += OnUpdateClicked;
 
             GameObject toggleObj = UIFactory.CreateToggle(rowObj, "AutoUpdateToggle", out autoUpdateToggle, out Text toggleText);
             UIFactory.SetLayoutElement(toggleObj, minWidth: 125, minHeight: 25);
             autoUpdateToggle.isOn = false;
-            toggleText.text = "Auto-update";
+            toggleText.text = TranslationManager.Get(TranslationKey.AutoUpdate);
         }
 
         // Second row
@@ -527,7 +528,7 @@ namespace UnityExplorer.Inspectors
 
             // Scope buttons
 
-            Text scopeLabel = UIFactory.CreateLabel(rowObj, "ScopeLabel", "Scope:", TextAnchor.MiddleLeft, Color.grey);
+            Text scopeLabel = UIFactory.CreateLabel(rowObj, "ScopeLabel", TranslationManager.Get(TranslationKey.Scope), TextAnchor.MiddleLeft, Color.grey);
             UIFactory.SetLayoutElement(scopeLabel.gameObject, minHeight: 25, minWidth: 60, flexibleWidth: 0);
             AddScopeFilterButton(rowObj, BindingFlags.Default, true);
             AddScopeFilterButton(rowObj, BindingFlags.Instance);
@@ -546,7 +547,7 @@ namespace UnityExplorer.Inspectors
 
         void AddScopeFilterButton(GameObject parent, BindingFlags flags, bool setAsActive = false)
         {
-            string lbl = flags == BindingFlags.Default ? "All" : flags.ToString();
+            string lbl = flags == BindingFlags.Default ? TranslationManager.Get(TranslationKey.All) : flags.ToString();
             Color color = setAsActive ? enabledButtonColor : disabledButtonColor;
 
             ButtonRef button = UIFactory.CreateButton(parent, "Filter_" + flags, lbl, color);

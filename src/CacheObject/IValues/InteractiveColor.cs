@@ -1,3 +1,4 @@
+using UnityExplorer.Translation;
 ﻿using UniverseLib.UI;
 using UniverseLib.UI.Models;
 
@@ -160,7 +161,7 @@ namespace UnityExplorer.CacheObject.IValues
 
             // apply button
 
-            applyButton = UIFactory.CreateButton(horiGroup, "ApplyButton", "Apply", new Color(0.2f, 0.26f, 0.2f));
+            applyButton = UIFactory.CreateButton(horiGroup, "ApplyButton", TranslationManager.Get(TranslationKey.Apply), new Color(0.2f, 0.26f, 0.2f));
             UIFactory.SetLayoutElement(applyButton.Component.gameObject, minHeight: 25, minWidth: 90);
             applyButton.OnClick += SetValueToOwner;
 

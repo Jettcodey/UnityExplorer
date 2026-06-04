@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityExplorer.Translation;
 using UniverseLib.UI;
 using UniverseLib.UI.Models;
 #if UNHOLLOWER
@@ -106,7 +107,7 @@ internal class TimeScaleWidget
     {
         Color color = locked ? new Color(0.3f, 0.3f, 0.2f) : new Color(0.2f, 0.2f, 0.2f);
         RuntimeHelper.SetColorBlock(lockBtn.Component, color, color * 1.2f, color * 0.7f);
-        lockBtn.ButtonText.text = locked ? "Unlock" : "Lock";
+        lockBtn.ButtonText.text = locked ? TranslationManager.Get(TranslationKey.Unlock) : TranslationManager.Get(TranslationKey.Lock);
     }
 
     // Only allow Time.timeScale to be set if the user hasn't "locked" it or if we are setting the value internally.

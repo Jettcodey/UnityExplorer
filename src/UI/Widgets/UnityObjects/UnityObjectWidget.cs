@@ -1,5 +1,6 @@
 ﻿using UnityExplorer.Inspectors;
 using UniverseLib.UI;
+using UnityExplorer.Translation;
 using UniverseLib.UI.Models;
 using UniverseLib.UI.ObjectPool;
 
@@ -111,7 +112,7 @@ namespace UnityExplorer.UI.Widgets
             Text nameLabel = UIFactory.CreateLabel(UIRoot, "NameLabel", TranslationManager.Get(TranslationKey.Name), TextAnchor.MiddleLeft, Color.grey);
             UIFactory.SetLayoutElement(nameLabel.gameObject, minHeight: 25, minWidth: 45, flexibleWidth: 0);
 
-            nameInput = UIFactory.CreateInputField(UIRoot, "NameInput", "untitled");
+            nameInput = UIFactory.CreateInputField(UIRoot, "NameInput", TranslationManager.Get(TranslationKey.Untitled));
             UIFactory.SetLayoutElement(nameInput.UIRoot, minHeight: 25, minWidth: 100, flexibleWidth: 1000);
             nameInput.Component.readOnly = true;
 
@@ -122,7 +123,7 @@ namespace UnityExplorer.UI.Widgets
             Text instanceLabel = UIFactory.CreateLabel(UIRoot, "InstanceLabel", TranslationManager.Get(TranslationKey.InstanceId), TextAnchor.MiddleRight, Color.grey);
             UIFactory.SetLayoutElement(instanceLabel.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 0);
 
-            instanceIdInput = UIFactory.CreateInputField(UIRoot, "InstanceIDInput", "ERROR");
+            instanceIdInput = UIFactory.CreateInputField(UIRoot, "InstanceIDInput", TranslationManager.Get(TranslationKey.Error));
             UIFactory.SetLayoutElement(instanceIdInput.UIRoot, minHeight: 25, minWidth: 100, flexibleWidth: 0);
             instanceIdInput.Component.readOnly = true;
 

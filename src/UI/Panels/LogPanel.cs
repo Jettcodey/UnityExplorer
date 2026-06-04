@@ -166,7 +166,7 @@ namespace UnityExplorer.UI.Panels
 
             GameObject unityToggle = UIFactory.CreateToggle(optionsRow, "UnityLogToggle", out Toggle toggle, out Text toggleText);
             UIFactory.SetLayoutElement(unityToggle, minHeight: 25, minWidth: 150);
-            toggleText.text = "Log Unity Debug?";
+            toggleText.text = TranslationManager.Get(TranslationKey.LogUnityDebug);
             toggle.isOn = ConfigManager.Log_Unity_Debug.Value;
             ConfigManager.Log_Unity_Debug.OnValueChanged += (bool val) => toggle.isOn = val;
             toggle.onValueChanged.AddListener((bool val) => ConfigManager.Log_Unity_Debug.Value = val);

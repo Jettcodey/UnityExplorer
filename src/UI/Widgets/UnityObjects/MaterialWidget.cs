@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityExplorer.Config;
+using UnityExplorer.Translation;
 using UnityExplorer.Inspectors;
 using UnityExplorer.UI.Panels;
 using UniverseLib.Runtime;
@@ -115,7 +116,7 @@ namespace UnityExplorer.UI.Widgets
 
                 textureViewerWanted = false;
                 textureViewerRoot.SetActive(false);
-                toggleButton.ButtonText.text = "View Material";
+                toggleButton.ButtonText.text = TranslationManager.Get(TranslationKey.ViewMaterial);
 
                 owner.ContentRoot.SetActive(true);
             }
@@ -133,7 +134,7 @@ namespace UnityExplorer.UI.Widgets
 
                 textureViewerWanted = true;
                 textureViewerRoot.SetActive(true);
-                toggleButton.ButtonText.text = "Hide Material";
+                toggleButton.ButtonText.text = TranslationManager.Get(TranslationKey.HideMaterial);
 
                 owner.ContentRoot.gameObject.SetActive(false);
             }
@@ -296,7 +297,7 @@ namespace UnityExplorer.UI.Widgets
             Text dropdownLabel = UIFactory.CreateLabel(dropdownRow, "DropdownLabel", TranslationManager.Get(TranslationKey.Texture));
             UIFactory.SetLayoutElement(dropdownLabel.gameObject, minWidth: 75, minHeight: 25);
 
-            GameObject dropdownObj = UIFactory.CreateDropdown(dropdownRow, "TextureDropdown", out textureDropdown, "NOT SET", 13, OnTextureDropdownChanged);
+            GameObject dropdownObj = UIFactory.CreateDropdown(dropdownRow, "TextureDropdown", out textureDropdown, TranslationManager.Get(TranslationKey.NotSet), 13, OnTextureDropdownChanged);
             UIFactory.SetLayoutElement(dropdownObj, minWidth: 350, minHeight: 25);
 
             // Save helper

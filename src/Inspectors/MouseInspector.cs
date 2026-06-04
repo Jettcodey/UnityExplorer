@@ -1,5 +1,6 @@
 ﻿using UnityExplorer.Config;
 using UnityExplorer.Inspectors.MouseInspectors;
+using UnityExplorer.Translation;
 using UnityExplorer.UI;
 using UnityExplorer.UI.Panels;
 using UniverseLib.Input;
@@ -87,7 +88,7 @@ namespace UnityExplorer.Inspectors
         {
             CurrentInspector.ClearHitData();
 
-            objNameLabel.text = "No hits...";
+            objNameLabel.text = TranslationManager.Get(TranslationKey.NoHits);
             objPathLabel.text = "";
         }
 
@@ -193,7 +194,7 @@ namespace UnityExplorer.Inspectors
             lastMousePos = mousePos;
 
             // use the raw mouse pos for the label
-            mousePosLabel.text = $"<color=grey>Mouse Position:</color> {mousePos.ToString()}";
+            mousePosLabel.text = $"<color=grey>{TranslationManager.Get(TranslationKey.MousePosition)}</color> {mousePos.ToString()}";
 
             // constrain the mouse pos we use within certain bounds
             if (mousePos.x < 350)
@@ -237,9 +238,9 @@ namespace UnityExplorer.Inspectors
                 TextAnchor.MiddleCenter);
             UIFactory.SetLayoutElement(inspectorLabelTitle.gameObject, flexibleWidth: 9999);
 
-            mousePosLabel = UIFactory.CreateLabel(inspectContent, "MousePosLabel", "Mouse Position:", TextAnchor.MiddleCenter);
+            mousePosLabel = UIFactory.CreateLabel(inspectContent, "MousePosLabel", TranslationManager.Get(TranslationKey.MousePosition), TextAnchor.MiddleCenter);
 
-            objNameLabel = UIFactory.CreateLabel(inspectContent, "HitLabelObj", "No hits...", TextAnchor.MiddleLeft);
+            objNameLabel = UIFactory.CreateLabel(inspectContent, "HitLabelObj", TranslationManager.Get(TranslationKey.NoHits), TextAnchor.MiddleLeft);
             objNameLabel.horizontalOverflow = HorizontalWrapMode.Overflow;
 
             objPathLabel = UIFactory.CreateLabel(inspectContent, "PathLabel", "", TextAnchor.MiddleLeft);
