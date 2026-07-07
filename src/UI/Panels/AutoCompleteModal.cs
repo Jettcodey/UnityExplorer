@@ -242,7 +242,7 @@ namespace UnityExplorer.UI.Panels
                 if (!input.Component.isFocused)
                     return;
 
-                TextGenerator textGen = input.Component.cachedInputTextGenerator;
+                var textGen = (TextGenerator)typeof(InputField).GetProperty("cachedInputTextGenerator", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(input.Component, null);
                 int caretIdx = Math.Max(0, Math.Min(textGen.characterCount - 1, input.Component.caretPosition));
 
                 // normalize the caret horizontal position

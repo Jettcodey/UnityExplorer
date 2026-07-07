@@ -102,7 +102,9 @@ namespace UnityExplorer.Inspectors
 
             Dropdown drop = InspectorPanel.Instance.MouseInspectDropdown;
             if (drop.transform.Find("Dropdown List") is Transform list)
-                drop.DestroyDropdownList(list.gameObject);
+            {
+                typeof(Dropdown).GetMethod("DestroyDropdownList", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(drop, [list.gameObject]);
+            }
 
             UIRoot.SetActive(false);
         }

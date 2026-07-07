@@ -41,7 +41,9 @@ namespace UnityExplorer.UI.Widgets
 
             GameObject sliderObj = UIFactory.CreateSlider(parent, $"Slider_{title}", out Slider slider);
             UIFactory.SetLayoutElement(sliderObj, minHeight: 25, minWidth: 75, flexibleWidth: 0);
-            slider.m_FillImage.color = Color.clear;
+
+            var fillImage = (Image)typeof(Slider).GetField("m_FillImage", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(slider);
+            if (fillImage != null) fillImage.color = Color.clear;
 
             slider.minValue = -0.1f;
             slider.maxValue = 0.1f;

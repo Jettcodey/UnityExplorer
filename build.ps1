@@ -81,6 +81,23 @@ Move-Item -Path $Path/UniverseLib.Mono.dll -Destination $Path/UserLibs -Force
 Remove-Item $Path/../UnityExplorer.MelonLoader.Mono.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../UnityExplorer.MelonLoader.Mono.zip
 
+# ----------- MelonLoader Unity 6.3 Mono -----------
+dotnet build src/UnityExplorer.sln -c Release_ML_Unity63_Mono
+$Path = "Release/UnityExplorer.MelonLoader.Unity63.Mono"
+# ILRepack
+lib/ILRepack.exe /target:library /lib:lib/net472 /lib:lib/net35 /lib:lib/unity63 /lib:$Path /internalize /out:$Path/UnityExplorer.ML.Unity63.Mono.dll $Path/UnityExplorer.ML.Unity63.Mono.dll $Path/mcs.dll
+# (cleanup and move files)
+Remove-Item $Path/Tomlet.dll
+Remove-Item $Path/mcs.dll
+Remove-Item $Path/UnityExplorer.ML.Unity63.Mono.pdb
+New-Item -Path "$Path" -Name "Mods" -ItemType "directory" -Force
+Move-Item -Path $Path/UnityExplorer.ML.Unity63.Mono.dll -Destination $Path/Mods -Force
+New-Item -Path "$Path" -Name "UserLibs" -ItemType "directory" -Force
+Move-Item -Path $Path/UniverseLib.Unity63.Mono.dll -Destination $Path/UserLibs -Force
+# (create zip archive)
+Remove-Item $Path/../UnityExplorer.MelonLoader.Unity63.Mono.zip -ErrorAction SilentlyContinue
+compress-archive .\$Path\* $Path/../UnityExplorer.MelonLoader.Unity63.Mono.zip
+
 # ----------- BepInEx IL2CPP -----------
 dotnet build src/UnityExplorer.sln -c Release_BIE_Cpp
 $Path = "Release/UnityExplorer.BepInEx.IL2CPP"
@@ -161,6 +178,23 @@ Move-Item -Path $Path/UniverseLib.Mono.dll -Destination $Path/plugins/sinai-dev-
 Remove-Item $Path/../UnityExplorer.BepInEx5.Mono.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../UnityExplorer.BepInEx5.Mono.zip
 
+# ----------- BepInEx 5 Unity 6.3 Mono -----------
+dotnet build src/UnityExplorer.sln -c Release_BIE5_Unity63_Mono
+$Path = "Release/UnityExplorer.BepInEx5.Unity63.Mono"
+# ILRepack
+lib/ILRepack.exe /target:library /lib:lib/net472 /lib:lib/net35/BepInEx /lib:lib/unity63 /lib:$Path /internalize /out:$Path/UnityExplorer.BIE5.Unity63.Mono.dll $Path/UnityExplorer.BIE5.Unity63.Mono.dll $Path/mcs.dll $Path/Tomlet.dll
+# (cleanup and move files)
+Remove-Item $Path/Tomlet.dll
+Remove-Item $Path/mcs.dll
+Remove-Item $Path/UnityExplorer.BIE5.Unity63.Mono.pdb
+New-Item -Path "$Path" -Name "plugins" -ItemType "directory" -Force
+New-Item -Path "$Path" -Name "plugins/sinai-dev-UnityExplorer" -ItemType "directory" -Force
+Move-Item -Path $Path/UnityExplorer.BIE5.Unity63.Mono.dll -Destination $Path/plugins/sinai-dev-UnityExplorer -Force
+Move-Item -Path $Path/UniverseLib.Unity63.Mono.dll -Destination $Path/plugins/sinai-dev-UnityExplorer -Force
+# (create zip archive)
+Remove-Item $Path/../UnityExplorer.BepInEx5.Unity63.Mono.zip -ErrorAction SilentlyContinue
+compress-archive .\$Path\* $Path/../UnityExplorer.BepInEx5.Unity63.Mono.zip
+
 # ----------- BepInEx 6 Mono -----------
 dotnet build src/UnityExplorer.sln -c Release_BIE6_Mono
 $Path = "Release/UnityExplorer.BepInEx6.Mono"
@@ -177,6 +211,23 @@ Move-Item -Path $Path/UniverseLib.Mono.dll -Destination $Path/plugins/sinai-dev-
 # (create zip archive)
 Remove-Item $Path/../UnityExplorer.BepInEx6.Mono.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../UnityExplorer.BepInEx6.Mono.zip
+
+# ----------- BepInEx 6 Unity 6.3 Mono -----------
+dotnet build src/UnityExplorer.sln -c Release_BIE6_Unity63_Mono
+$Path = "Release/UnityExplorer.BepInEx6.Unity63.Mono"
+# ILRepack
+lib/ILRepack.exe /target:library /lib:lib/net472 /lib:lib/net35/BepInEx/build423~577 /lib:lib/unity63 /lib:$Path /internalize /out:$Path/UnityExplorer.BIE6.Unity63.Mono.dll $Path/UnityExplorer.BIE6.Unity63.Mono.dll $Path/mcs.dll $Path/Tomlet.dll
+# (cleanup and move files)
+Remove-Item $Path/Tomlet.dll
+Remove-Item $Path/mcs.dll
+Remove-Item $Path/UnityExplorer.BIE6.Unity63.Mono.pdb
+New-Item -Path "$Path" -Name "plugins" -ItemType "directory" -Force
+New-Item -Path "$Path" -Name "plugins/sinai-dev-UnityExplorer" -ItemType "directory" -Force
+Move-Item -Path $Path/UnityExplorer.BIE6.Unity63.Mono.dll -Destination $Path/plugins/sinai-dev-UnityExplorer -Force
+Move-Item -Path $Path/UniverseLib.Unity63.Mono.dll -Destination $Path/plugins/sinai-dev-UnityExplorer -Force
+# (create zip archive)
+Remove-Item $Path/../UnityExplorer.BepInEx6.Unity63.Mono.zip -ErrorAction SilentlyContinue
+compress-archive .\$Path\* $Path/../UnityExplorer.BepInEx6.Unity63.Mono.zip
 
 # ----------- BepInEx 6 Unity Mono -----------
 dotnet build src/UnityExplorer.sln -c Release_BIE6_Unity_Mono
@@ -204,8 +255,22 @@ lib/ILRepack.exe /target:library /lib:lib/net35 /lib:$Path /internalize /out:$Pa
 Remove-Item $Path/Tomlet.dll
 Remove-Item $Path/mcs.dll
 Remove-Item $Path/UnityExplorer.Standalone.Mono.pdb
+# (create zip archive)
 Remove-Item $Path/../UnityExplorer.Standalone.Mono.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../UnityExplorer.Standalone.Mono.zip
+
+# ----------- Standalone Unity 6.3 Mono -----------
+dotnet build src/UnityExplorer.sln -c Release_STANDALONE_Unity63_Mono
+$Path = "Release/UnityExplorer.Standalone.Unity63.Mono"
+# ILRepack
+lib/ILRepack.exe /target:library /lib:lib/net472 /lib:lib/unity63 /lib:$Path /internalize /out:$Path/UnityExplorer.Standalone.Unity63.Mono.dll $Path/UnityExplorer.Standalone.Unity63.Mono.dll $Path/mcs.dll $Path/Tomlet.dll
+# (cleanup and move files)
+Remove-Item $Path/Tomlet.dll
+Remove-Item $Path/mcs.dll
+Remove-Item $Path/UnityExplorer.Standalone.Unity63.Mono.pdb
+# (create zip archive)
+Remove-Item $Path/../UnityExplorer.Standalone.Unity63.Mono.zip -ErrorAction SilentlyContinue
+compress-archive .\$Path\* $Path/../UnityExplorer.Standalone.Unity63.Mono.zip
 
 # ----------- Standalone IL2CPP -----------
 dotnet build src/UnityExplorer.sln -c Release_STANDALONE_Cpp
@@ -218,6 +283,7 @@ Remove-Item $Path/mcs.dll
 Remove-Item $Path/Iced.dll
 Remove-Item $Path/UnhollowerBaseLib.dll
 Remove-Item $Path/UnityExplorer.Standalone.IL2CPP.pdb
+# (create zip archive)
 Remove-Item $Path/../UnityExplorer.Standalone.IL2CPP.zip -ErrorAction SilentlyContinue
 compress-archive .\$Path\* $Path/../UnityExplorer.Standalone.IL2CPP.zip
 

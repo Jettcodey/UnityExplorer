@@ -1,4 +1,7 @@
-﻿using UnityEngine.SceneManagement;
+﻿using System.Collections;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #nullable enable
 
@@ -46,7 +49,11 @@ public static class SceneHandler
     internal static int DefaultSceneCount => 1 + (DontDestroyExists ? 1 : 0);
 
     /// <summary>Whether or not we are currently inspecting the "HideAndDontSave" asset scene.</summary>
+#if UNITY_6000_3_OR_NEWER
+    public static bool InspectingAssetScene => SelectedScene.HasValue && SelectedScene.Value.handle == (SceneHandle)(-1);
+#else
     public static bool InspectingAssetScene => SelectedScene.HasValue && SelectedScene.Value.handle == -1;
+#endif
 
     /// <summary>Whether or not we successfuly retrieved the names of the scenes in the build settings.</summary>
     public static bool WasAbleToGetScenesInBuild { get; private set; }
@@ -62,26 +69,31 @@ public static class SceneHandler
         try
         {
             Type? sceneType = ReflectionUtility.GetTypeByName("UnityEngine.SceneManagement.Scene");
-            if (sceneType == null)
-            {
-                throw new Exception("This version of Unity does not ship with the 'Scene' class, or it was not unstripped.");
-            }
+            if (sceneType == null) throw new Exception("This version of Unity does not ship with the 'Scene' class.");
+            
             MethodInfo? method = sceneType.GetMethod("GetNameInternal", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            string? sceneName = (string?)method?.Invoke(null, [-12]);
-            if (string.IsNullOrEmpty(sceneName))
-            {
-                throw new Exception("Scene.GetNameInternal returned null for DontDestroyOnLoad scene.");
-            }
+            
+            object[] args = new object[1];
+#if UNITY_6000_3_OR_NEWER
+            // get runtime type of SceneHandle to prevent reflection identity mismatches
+            Type handleType = method!.GetParameters()[0].ParameterType;
+            MethodInfo? implicitCast = handleType.GetMethod("op_Implicit", new Type[] { typeof(int) });
+            args[0] = implicitCast!.Invoke(null, new object[] { -12 });
+#else
+            args[0] = -12;
+#endif
+                
+            string? sceneName = (string?)method?.Invoke(null, args);
+            
+            if (string.IsNullOrEmpty(sceneName)) throw new Exception("Scene.GetNameInternal returned null for DontDestroyOnLoad scene.");
             DontDestroyExists = sceneName == dontDestroyName;
         }
         catch (Exception ex)
         {
-            ExplorerCore.LogWarning($"Unable to check for existence of DontDestroyOnLoad scene via Scene.GetNameInternal: {ex}");
-#pragma warning disable CS0618 // 型またはメンバーが旧型式です
-            ExplorerCore.LogWarning("Falling back to checking loaded scenes for DontDestroyOnLoad via SceneManager.GetAllScenes(). This uses a deprecated API.");
-            // 非推奨APIだけど、6年近くたってもまだ使われてるので仕方なく使う
+            ExplorerCore.LogWarning($"Unable to check for existence of DontDestroyOnLoad scene via Scene.GetNameInternal: {ex.Message}");
+#pragma warning disable CS0618
             DontDestroyExists = SceneManager.GetAllScenes().Any(s => s.name == dontDestroyName);
-#pragma warning restore CS0618 // 型またはメンバーが旧型式です
+#pragma warning restore CS0618
         }
 
         // Try to get all scenes in the build settings. This may not work.
@@ -114,13 +126,27 @@ public static class SceneHandler
         }
     }
 
+    // bypass private m_Handle protection level via Reflection
+    private static Scene CreateSceneWithHandle(int id)
+    {
+        object sceneObj = new Scene();
+#if UNITY_6000_3_OR_NEWER
+        object handle = (SceneHandle)id;
+#else
+        object handle = id;
+#endif
+        typeof(Scene).GetField("m_Handle", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(sceneObj, handle);
+        return (Scene)sceneObj;
+    }
+
     internal static void Update()
     {
         // Inspected scene will exist if it's DontDestroyOnLoad or HideAndDontSave
-        bool inspectedExists =
-            SelectedScene.HasValue
-            && ((DontDestroyExists && SelectedScene.Value.handle == -12)
-                || SelectedScene.Value.handle == -1);
+#if UNITY_6000_3_OR_NEWER
+        bool inspectedExists = SelectedScene.HasValue && ((DontDestroyExists && SelectedScene.Value.handle == (SceneHandle)(-12)) || SelectedScene.Value.handle == (SceneHandle)(-1));
+#else
+        bool inspectedExists = SelectedScene.HasValue && ((DontDestroyExists && SelectedScene.Value.handle == -12) || SelectedScene.Value.handle == -1);
+#endif
 
         LoadedScenes.Clear();
 
@@ -143,9 +169,9 @@ public static class SceneHandler
 
         if (DontDestroyExists)
         {
-            LoadedScenes.Add(new Scene { m_Handle = -12 });
+            LoadedScenes.Add(CreateSceneWithHandle(-12));
         }
-        LoadedScenes.Add(new Scene { m_Handle = -1 });
+        LoadedScenes.Add(CreateSceneWithHandle(-1));
 
         // Default to first scene if none selected or previous selection no longer exists.
         if (!inspectedExists)

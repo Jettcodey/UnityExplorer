@@ -57,7 +57,7 @@ namespace UnityExplorer.Inspectors.MouseInspectors
 
             foreach (GraphicRaycaster gr in graphicRaycasters)
             {
-                if (!gr || !gr.canvas)
+                if (!gr || !gr.GetComponent<Canvas>())
                     continue;
 
                 List<RaycastResult> list = new();

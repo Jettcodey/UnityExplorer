@@ -194,6 +194,9 @@ namespace UnityExplorer.UI.Widgets
 
         public void OnSaveClipClicked()
         {
+#if UNITY_6000_3_OR_NEWER
+            ExplorerCore.LogWarning("AudioClip .WAV exporting is currently disabled for Unity 6000.3+ due to .NET Standard 2.1 Span<T> compiler restrictions.");
+#else
             if (!audioClip)
             {
                 ExplorerCore.LogWarning("AudioClip is null, maybe it was destroyed?");
@@ -216,6 +219,7 @@ namespace UnityExplorer.UI.Widgets
                 File.Delete(path);
 
             SavWav.Save(audioClip, path);
+#endif
         }
 
         public override GameObject CreateContent(GameObject uiRoot)
@@ -275,6 +279,7 @@ namespace UnityExplorer.UI.Widgets
     }
 
 #region SavWav
+#if !UNITY_6000_3_OR_NEWER
 
     //	Copyright (c) 2012 Calvin Rien
     //        http://the.darktable.com
@@ -404,7 +409,7 @@ namespace UnityExplorer.UI.Widgets
 
             stream.Seek(0, SeekOrigin.Begin);
         }
-
-#endregion
     }
+#endif
+#endregion
 }

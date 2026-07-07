@@ -101,13 +101,21 @@ namespace UnityExplorer.UI.Widgets
             if (typeof(Behaviour).IsAssignableFrom(type))
             {
                 cell.BehaviourToggle.interactable = true;
+#if UNITY_6000_3_OR_NEWER
+                cell.BehaviourToggle.SetIsOnWithoutNotify(comp.TryCast<Behaviour>().enabled);
+#else
                 cell.BehaviourToggle.Set(comp.TryCast<Behaviour>().enabled, false);
+#endif
                 cell.BehaviourToggle.graphic.color = new Color(0.8f, 1, 0.8f, 0.3f);
             }
             else
             {
                 cell.BehaviourToggle.interactable = false;
+#if UNITY_6000_3_OR_NEWER
+                cell.BehaviourToggle.SetIsOnWithoutNotify(true);
+#else
                 cell.BehaviourToggle.Set(true, false);
+#endif
                 //RuntimeHelper.SetColorBlock(cell.BehaviourToggle,)
                 cell.BehaviourToggle.graphic.color = new Color(0.2f, 0.2f, 0.2f);
             }

@@ -517,12 +517,13 @@ public class ConsoleController
     // For Home and End keys
     private void JumpToStartOrEndOfLine(bool toStart)
     {
-        // Determine the current and next line
+        var cachedGenerator = (UnityEngine.TextGenerator)typeof(UnityEngine.UI.InputField).GetProperty("cachedInputTextGenerator", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Input.Component, null);
+
         UILineInfo thisline = default;
         UILineInfo? nextLine = null;
-        for (int i = 0; i < Input.Component.cachedInputTextGenerator.lineCount; i++)
+        for (int i = 0; i < cachedGenerator.lineCount; i++)
         {
-            UILineInfo line = Input.Component.cachedInputTextGenerator.lines[i];
+            UILineInfo line = cachedGenerator.lines[i];
 
             if (line.startCharIdx > lastCaretPosition)
             {
@@ -573,7 +574,7 @@ public class ConsoleController
             return;
         }
 
-        // Calculate the visible lines
+        var cachedGenerator = (TextGenerator)typeof(InputField).GetProperty("cachedInputTextGenerator", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(Input.Component, null);
 
         int topLine = -1;
         int bottomLine = -1;
@@ -583,9 +584,9 @@ public class ConsoleController
         float viewportMin = Input.Transform.rect.height - Input.Transform.anchoredPosition.y - (Input.Transform.rect.height * 0.5f);
         float viewportMax = viewportMin - _panel.InputScroller.ViewportRect.rect.height;
 
-        for (int i = 0; i < Input.TextGenerator.lineCount; i++)
+        for (int i = 0; i < cachedGenerator.lineCount; i++)
         {
-            UILineInfo line = Input.TextGenerator.lines[i];
+            UILineInfo line = cachedGenerator.lines[i];
             // if not set the top line yet, and top of line is below the viewport top
             if (topLine == -1 && line.topY <= viewportMin)
             {
@@ -599,14 +600,12 @@ public class ConsoleController
         }
 
         topLine = Math.Max(0, topLine - 1);
-        bottomLine = Math.Min(Input.TextGenerator.lineCount - 1, bottomLine + 1);
+        bottomLine = Math.Min(cachedGenerator.lineCount - 1, bottomLine + 1);
 
-        int startIdx = Input.TextGenerator.lines[topLine].startCharIdx;
-        int endIdx = (bottomLine >= Input.TextGenerator.lineCount - 1)
+        int startIdx = cachedGenerator.lines[topLine].startCharIdx;
+        int endIdx = (bottomLine >= cachedGenerator.lineCount - 1)
             ? Input.Text.Length - 1
-            : (Input.TextGenerator.lines[bottomLine + 1].startCharIdx - 1);
-
-
+            : (cachedGenerator.lines[bottomLine + 1].startCharIdx - 1);
         // Highlight the visible text with the LexerBuilder
 
         _panel.HighlightText.text = _lexer.BuildHighlightedString(Input.Text, startIdx, endIdx, topLine, lastCaretPosition, out inStringOrComment);
@@ -638,7 +637,7 @@ public class ConsoleController
         {
             if (i > 0)
             {
-                lastPrev = Input.Text[Input.TextGenerator.lines[i].startCharIdx - 1];
+                lastPrev = Input.Text[cachedGenerator.lines[i].startCharIdx - 1];
             }
 
             // previous line ended with a newline character, this is an actual new line.

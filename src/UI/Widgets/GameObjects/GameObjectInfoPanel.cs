@@ -81,13 +81,21 @@ namespace UnityExplorer.UI.Widgets
 
             if (force || Target.activeSelf != ActiveSelfToggle.isOn)
             {
+#if UNITY_6000_3_OR_NEWER
+                ActiveSelfToggle.SetIsOnWithoutNotify(Target.activeSelf);
+#else
                 ActiveSelfToggle.Set(Target.activeSelf, false);
+#endif
                 ActiveSelfText.color = ActiveSelfToggle.isOn ? Color.green : Color.red;
             }
 
             if (force || Target.isStatic != IsStaticToggle.isOn)
             {
+#if UNITY_6000_3_OR_NEWER
+                IsStaticToggle.SetIsOnWithoutNotify(Target.isStatic);
+#else
                 IsStaticToggle.Set(Target.isStatic, false);
+#endif
             }
 
             if (force || Target.scene.handle != lastSceneHandle)
