@@ -6,46 +6,23 @@
   🔍 An in-game UI for exploring, debugging and modifying Unity games.
 </p>
 <p align="center">
-  ✔️ Supports most Unity versions from 5.2 to 2021+ (IL2CPP and Mono).
-</p>
-<p align="center">
-  ✨ Powered by <a href="https://github.com/Jettcodey/UniverseLib">Jettcodey's UniverseLib fork</a> (derived from <a href="https://github.com/yukieiji/UniverseLib">yukieiji's fork</a> of <a href="https://github.com/sinai-dev/UniverseLib">sinai-dev</a>)<br>
-  🛠️ Based on <a href="https://github.com/yukieiji/UnityExplorer">UnityExplorer by yukieiji</a>, a fork of the original by <a href="https://github.com/sinai-dev/UnityExplorer">sinai-dev</a><br>
-  ✔️ Specific focus on <b>Unity Engine 6.3 Mono</b> support </br>
-  ⚠️ <i>(IL2CPP and newer Unity versions are not currently planned or supported)</i></small>
+  Powered by <a href="https://github.com/Jettcodey/UniverseLib">Jettcodey's UniverseLib fork</a><br>
+  Based on <a href="https://github.com/yukieiji/UnityExplorer">UnityExplorer</a> by yukieiji (originally by <a href="https://github.com/sinai-dev/UnityExplorer">sinai-dev</a>)<br>
+  This fork is focused on <b>Unity 6.3 Mono</b> support<br>
+  <sub>Support for IL2CPP and newer Unity versions is currently not planned.</sub><br>
+  If there are any bugs or features you want, please open a <a href="https://github.com/Jettcodey/UnityExplorer/issues/">New Issue</a>
 </p>
 
-## Changes from original 
-- Bug fixes due to continued development
-  - Il2CPP and Mono support for BepInEx 6.x be.647+([DL:Il2CPP](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.Unity.IL2CPP.CoreCLR.zip)/[DL:Mono](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Unity.Mono.zip))
-  - Compatible with MelonLoader 0.6.x(OpenBeta) or later([DL](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.CoreCLR.zip))
-  - and etc..
-- Unity Engine 6.3 Mono support.
-- Some new featuree
-- Stabilize overall performance by adjusting project settings, etc.
-
-If there are any bugs or features you want, please create a [ticket](https://github.com/Jettcodey/UnityExplorer/issues/new/choose)!
-
-### Comparison with other forks
-- New features while keeping high compatibility
-- stability
-
-# Releases  [![](https://img.shields.io/github/downloads/Jettcodey/UnityExplorer/total.svg)](../../releases)
-
+# Releases
 [![](https://img.shields.io/github/release/Jettcodey/UnityExplorer.svg?label=version)](../../releases/latest) [![](https://img.shields.io/github/downloads/Jettcodey/UnityExplorer/latest/total.svg)](../../releases/latest)
-
-
-## Release schedule
-
-Releases will be posted at most once per week, generally on weekends. 
 
 ## BepInEx
 
-| Release | IL2CPP(Il2CppInterop) | IL2CPP(Unhollower) | Mono |
-| ------- | ------ |  ------ | ---- |
-| BIE 6.X be.647+ or BIE 6.0-pre.2+ | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.Unity.IL2CPP.CoreCLR.zip) | ✖️ n/a | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Unity.Mono.zip) |
-| BIE 6.X be.472 to be.577 or BIE 6.0-pre.1(**NOT pre.2**) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.IL2CPP.CoreCLR.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.IL2CPP.zip)  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Mono.zip) |
-| BIE 5.X | ✖️ n/a |  ✖️ n/a |  ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx5.Mono.zip) |
+| Release | IL2CPP(Il2CppInterop) | IL2CPP(Unhollower) | Mono | Unity 6.3 Mono |
+| ------- | ------ |  ------ | ---- | ---- |
+| BIE 6.X be.647+ or BIE 6.0-pre.2+ | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.Unity.IL2CPP.CoreCLR.zip) | ✖️ n/a | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Unity.Mono.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Unity63.Mono.zip)
+| BIE 6.X be.472 to be.577 or BIE 6.0-pre.1(**NOT pre.2**) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.IL2CPP.CoreCLR.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.IL2CPP.zip)  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Mono.zip) | ✖️ n/a |
+| BIE 5.X | ✖️ n/a |  ✖️ n/a |  ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx5.Mono.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx5.Unity63.Mono.zip) |
 
 1. Unzip the release file into a folder
 2. Take the `plugins/sinai-dev-UnityExplorer` folder and place it in `BepInEx/plugins/`
@@ -54,11 +31,11 @@ Releases will be posted at most once per week, generally on weekends.
 
 ## MelonLoader
 
-| Release | IL2CPP | Mono |
-| ------- | ------ | ---- |
-| ML 0.6+  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.CoreCLR.zip) | ✖️ |
-| ML 0.6(**ONLY 0.6 ALPHA BUILD, NOT BETA**)  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.net6preview.zip) | ✖️ |
-| ML 0.5  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.Mono.zip) | 
+| Release | IL2CPP | Mono | Unity 6.3 Mono |
+| ------- | ------ | ---- | ---- |
+| ML 0.6+  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.CoreCLR.zip) | ✖️ n/a | ✖️ n/a |
+| ML 0.6(**ONLY 0.6 ALPHA BUILD, NOT BETA**)  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.net6preview.zip) | ✖️ n/a | ✖️ n/a |
+| ML 0.5  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.Mono.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.unity63.Mono.zip) |
 
 1. Unzip the release file into a folder
 2. Copy the DLL inside the `Mods` folder into your MelonLoader `Mods` folder
@@ -66,9 +43,9 @@ Releases will be posted at most once per week, generally on weekends.
 
 ## Standalone
 
-| Il2CppInterop | Unhollower | Mono |
-| ------ | ------ | ---- |
-| ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.IL2CPP.CoreCLR.zip)| ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.IL2CPP.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.Mono.zip) | 
+| Il2CppInterop | Unhollower | Mono | Unity 6.3 Mono |
+| ------ | ------ | ---- | ---- |
+| ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.IL2CPP.CoreCLR.zip)| ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.IL2CPP.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.Mono.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.unity63.Mono.zip)
 
 The standalone release can be used with any injector or loader of your choice, but it requires you to load the dependencies manually.
 
@@ -196,7 +173,7 @@ The inspector is used to see detailed information on objects of any type and man
 Building individual configurations from your IDE is fine, though note that the intial build process builds into `Release/<version>/...` instead of the subfolders that the powershell script uses. Batch building is not currently supported with the project.
 
 # Acknowledgments
-* [Yukieiji](https://github.com/yukieiji) for Maintaining the Original [UnityExplorer](https://github.com/sinai-dev/UnityExplorer).
+- [yukieiji](https://github.com/yukieiji) for maintaining their fork of [UnityExplorer](https://github.com/yukieiji/UnityExplorer), originally created by [sinai-dev](https://github.com/sinai-dev/UnityExplorer).
 * [ManlyMarco](https://github.com/ManlyMarco) for [Runtime Unity Editor](https://github.com/ManlyMarco/RuntimeUnityEditor) \[[license](THIRDPARTY_LICENSES.md#runtimeunityeditor-license)\], the ScriptEvaluator from RUE's REPL console was used as the base for UnityExplorer's C# console.
 * [Geoffrey Horsington](https://github.com/ghorsington) for [mcs-unity](https://github.com/sinai-dev/mcs-unity) \[no license\], used as the `Mono.CSharp` reference for the C# Console.
 
