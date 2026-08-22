@@ -27,30 +27,11 @@ namespace UnityExplorer.UI.Widgets
             base.OnBorrowed(target, targetType, inspector);
 
             if (target.TryCast<Cubemap>() is Cubemap cubemap)
-            {
-                texture = TextureHelper.UnwrapCubemap(cubemap);
-                shouldDestroyTexture = true;
-            }
+                SetTextureFromCubemap(cubemap);
             else if (target.TryCast<Sprite>() is Sprite sprite)
-            {
-                if (sprite.packed && sprite.packingMode == SpritePackingMode.Tight)
-                    texture = sprite.texture;
-                else
-                {
-                    texture = TextureHelper.CopyTexture(sprite.texture, sprite.textureRect);
-                    shouldDestroyTexture = true;
-                }
-            }
+                SetTextureFromSprite(sprite);
             else if (target.TryCast<Image>() is Image image)
-            {
-                if (image.sprite.packed && image.sprite.packingMode == SpritePackingMode.Tight)
-                    texture = image.sprite.texture;
-                else
-                {
-                    texture = TextureHelper.CopyTexture(image.sprite.texture, image.sprite.textureRect);
-                    shouldDestroyTexture = true;
-                }
-            }
+                SetTextureFromSprite(image.sprite);
             else
                 texture = target.TryCast<Texture2D>();
 
@@ -58,6 +39,44 @@ namespace UnityExplorer.UI.Widgets
                 textureViewerRoot.transform.SetParent(inspector.UIRoot.transform);
 
             InspectorPanel.Instance.Dragger.OnFinishResize += OnInspectorFinishResize;
+        }
+
+        // Unwrapping is not supported for some Cubemaps, show no preview instead of breaking the inspector
+        void SetTextureFromCubemap(Cubemap cubemap)
+        {
+            try
+            {
+                texture = TextureHelper.UnwrapCubemap(cubemap);
+
+                if (texture)
+                    shouldDestroyTexture = true;
+            }
+            catch (Exception ex)
+            {
+                ExplorerCore.LogWarning($"Could not unwrap the Cubemap: {ex}");
+                texture = null;
+            }
+        }
+
+        // Crops the sprite's rect out of its atlas texture where possible
+        void SetTextureFromSprite(Sprite sprite)
+        {
+            if (sprite.packed && sprite.packingMode == SpritePackingMode.Tight)
+            {
+                texture = sprite.texture;
+                return;
+            }
+
+            texture = TextureHelper.CopyTexture(sprite.texture, sprite.textureRect);
+
+            if (texture)
+                shouldDestroyTexture = true;
+            else
+            {
+                // couldn't copy the rect out of the atlas, just show the full texture
+                ExplorerCore.LogWarning("Could not copy the Sprite's texture rect, showing the full texture instead.");
+                texture = sprite.texture;
+            }
         }
 
         public override void OnReturnToPool()
@@ -96,6 +115,12 @@ namespace UnityExplorer.UI.Widgets
             else
             {
                 // enable
+                if (!texture)
+                {
+                    ExplorerCore.LogWarning("Texture is null, maybe it was destroyed?");
+                    return;
+                }
+
                 if (!image.sprite)
                     SetupTextureViewer();
 
@@ -140,6 +165,10 @@ namespace UnityExplorer.UI.Widgets
         {
             // let unity rebuild layout etc
             yield return null;
+
+            // the widget may have been returned to the pool while we waited
+            if (!imageLayout || !texture)
+                yield break;
 
             RectTransform imageRect = InspectorPanel.Instance.Rect;
 
