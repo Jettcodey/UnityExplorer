@@ -17,22 +17,44 @@
   </PropertyGroup>
 
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <ItemGroup Condition="'$(Configuration)'=='ML_Cpp_net6' or '$(Configuration)'=='ML_Cpp_net472' or '$(Configuration)'=='STANDALONE_Cpp' or '$(Configuration)'=='BIE_Cpp'">
-      <Exec Command="dotnet build ..\UniverseLib\src\UniverseLib.sln -c Release_IL2CPP_Unhollower" />
+  <!-- Release build of every package, on Windows and Linux: dotnet msbuild src/UnityExplorer.csproj -t:BuildRelease -->
+  <ItemGroup>
+    <ReleaseConfiguration Include="ML_Cpp_net6;ML_Cpp_CoreCLR;ML_Cpp_net472;ML_Mono;ML_Unity63_Mono;BIE_Cpp;BIE_Cpp_CoreCLR;BIE_Unity_Cpp_CoreCLR;BIE6_Mono;BIE6_Unity63_Mono;BIE6_Unity_Mono;BIE5_Mono;BIE5_Unity63_Mono;STANDALONE_Mono;STANDALONE_Unity63_Mono;STANDALONE_Cpp;STANDALONE_Cpp_CoreCLR" />
+  </ItemGroup>
+
+  <Target Name="BuildRelease">
+    <Exec Command="dotnet build &quot;$(MSBuildProjectFullPath)&quot; -c %(ReleaseConfiguration.Identity) -p:ReleasePackage=true" />
+    <Copy SourceFiles="../Release/UnityExplorer.Standalone.Mono/UnityExplorer.STANDALONE.Mono.dll" DestinationFiles="../UnityEditorPackage/Runtime/UnityExplorer.Standalone.Mono.dll" />
+    <Copy SourceFiles="../Release/UnityExplorer.Standalone.Mono/UniverseLib.Mono.dll" DestinationFolder="../UnityEditorPackage/Runtime" />
+    <ZipDirectory SourceDirectory="../UnityEditorPackage" DestinationFile="../Release/UnityExplorer.Editor.zip" Overwrite="true" />
+  </Target>
+
+  <Target Name="BuildUniverseLib" BeforeTargets="ResolveAssemblyReferences" Condition="'$(UniverseLibConfig)' != ''">
+    <Exec Command="dotnet build ../UniverseLib/src/UniverseLib.csproj -c $(UniverseLibConfig)" />
+  </Target>
+
+  <!-- Merges mcs (and Tomlet) into UnityExplorer, keeps only the two DLLs in the loader's layout and zips the package -->
+  <Target Name="Package" AfterTargets="Build" Condition="'$(ReleasePackage)' == 'true'">
+    <PropertyGroup>
+      <ILRepack>"$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '../lib/ILRepack.exe'))"</ILRepack>
+      <ILRepack Condition="'$(OS)' != 'Windows_NT'">mono $(ILRepack)</ILRepack>
+      <PackageOut>$(OutputPath.Replace('\', '/'))</PackageOut>
+      <PackageName>$([System.IO.Path]::GetFileName($(PackageOut.TrimEnd('/'))))</PackageName>
+    </PropertyGroup>
+    <!-- the folders of everything the build referenced, so ILRepack also finds the .NET 6 assemblies on Linux -->
+    <ItemGroup>
+      <RepackLib Include="$([System.IO.Path]::GetDirectoryName('%(ReferencePath.FullPath)'))" />
+      <RepackLib Include="$(PackageOut)" />
+      <RepackFile Include="$(RepackFiles)" />
     </ItemGroup>
-    <ItemGroup Condition="'$(Configuration)'=='BIE_Cpp_CoreCLR' or '$(Configuration)'=='BIE_Unity_Cpp_CoreCLR' or '$(Configuration)'=='STANDALONE_Cpp_CoreCLR'">
-      <Exec Command="dotnet build ..\UniverseLib\src\UniverseLib.sln -c Release_IL2CPP_Interop_BIE" />
+    <Exec Command="$(ILRepack) /target:library @(RepackLib->Distinct()->'&quot;/lib:%(Identity)&quot;', ' ') /internalize /out:$(PackageOut)$(AssemblyName).dll $(PackageOut)$(AssemblyName).dll @(RepackFile->'$(PackageOut)%(Identity)', ' ')" />
+    <ItemGroup>
+      <PackageLeftover Include="$(PackageOut)*" Exclude="$(PackageOut)$(AssemblyName).dll;$(PackageOut)$(UniverseLibDll)" />
     </ItemGroup>
-    <ItemGroup Condition="'$(Configuration)'=='ML_Cpp_CoreCLR'">
-      <Exec Command="dotnet build ..\UniverseLib\src\UniverseLib.sln -c Release_IL2CPP_Interop_ML" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(Configuration)'=='BIE6_Mono' or '$(Configuration)'=='BIE6_Unity_Mono' or '$(Configuration)'=='BIE5_Mono' or '$(Configuration)'=='ML_Mono' or '$(Configuration)'=='STANDALONE_Mono'">
-      <Exec Command="dotnet build ..\UniverseLib\src\UniverseLib.sln -c Release_Mono" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(Configuration)'=='BIE6_Unity63_Mono' or '$(Configuration)'=='BIE5_Unity63_Mono' or '$(Configuration)'=='ML_Unity63_Mono' or '$(Configuration)'=='STANDALONE_Unity63_Mono'">
-      <Exec Command="dotnet build ..\UniverseLib\src\UniverseLib.sln -c Release_Unity63_Mono" />
-    </ItemGroup>
+    <Delete Files="@(PackageLeftover)" />
+    <Move SourceFiles="$(PackageOut)$(AssemblyName).dll" DestinationFolder="$(PackageOut)$(PackageDir)" Condition="'$(PackageDir)' != ''" />
+    <Move SourceFiles="$(PackageOut)$(UniverseLibDll)" DestinationFolder="$(PackageOut)$(PackageLibDir)" Condition="'$(PackageLibDir)' != ''" />
+    <ZipDirectory SourceDirectory="$(PackageOut)" DestinationFile="../Release/$(PackageName).zip" Overwrite="true" />
   </Target>
 
   <ItemGroup>
@@ -46,6 +68,11 @@
     <OutputPath>..\Release\UnityExplorer.MelonLoader.IL2CPP.net6preview\</OutputPath>
     <DefineConstants>CPP,ML,UNHOLLOWER</DefineConstants>
     <AssemblyName>UnityExplorer.ML.IL2CPP.net6preview</AssemblyName>
+    <UniverseLibConfig>Release_IL2CPP_Unhollower</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.IL2CPP.Unhollower.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll</RepackFiles>
+    <PackageDir>Mods</PackageDir>
+    <PackageLibDir>UserLibs</PackageLibDir>
   </PropertyGroup>
   <!-- ML IL2CPP net472 (TEMP) -->
   <PropertyGroup Condition="'$(Configuration)'=='ML_Cpp_net472'">
@@ -53,6 +80,11 @@
     <OutputPath>..\Release\UnityExplorer.MelonLoader.IL2CPP\</OutputPath>
     <DefineConstants>CPP,ML,UNHOLLOWER</DefineConstants>
     <AssemblyName>UnityExplorer.ML.IL2CPP</AssemblyName>
+    <UniverseLibConfig>Release_IL2CPP_Unhollower</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.IL2CPP.Unhollower.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll</RepackFiles>
+    <PackageDir>Mods</PackageDir>
+    <PackageLibDir>UserLibs</PackageLibDir>
   </PropertyGroup>
   <!-- ML IL2CPP CoreCLR -->
   <PropertyGroup Condition="'$(Configuration)'=='ML_Cpp_CoreCLR'">
@@ -60,6 +92,11 @@
     <OutputPath>..\Release\UnityExplorer.MelonLoader.IL2CPP.CoreCLR\</OutputPath>
     <DefineConstants>CPP,ML,INTEROP</DefineConstants>
     <AssemblyName>UnityExplorer.ML.IL2CPP.CoreCLR</AssemblyName>
+    <UniverseLibConfig>Release_IL2CPP_Interop_ML</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.ML.IL2CPP.Interop.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll</RepackFiles>
+    <PackageDir>Mods</PackageDir>
+    <PackageLibDir>UserLibs</PackageLibDir>
   </PropertyGroup>
   <!-- ML Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='ML_Mono'">
@@ -67,6 +104,11 @@
     <OutputPath>..\Release\UnityExplorer.MelonLoader.Mono\</OutputPath>
     <DefineConstants>MONO,ML</DefineConstants>
     <AssemblyName>UnityExplorer.ML.Mono</AssemblyName>
+    <UniverseLibConfig>Release_Mono</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.Mono.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll</RepackFiles>
+    <PackageDir>Mods</PackageDir>
+    <PackageLibDir>UserLibs</PackageLibDir>
   </PropertyGroup>
   <!-- ML Unity 6.3 Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='ML_Unity63_Mono'">
@@ -74,6 +116,11 @@
     <OutputPath>..\Release\UnityExplorer.MelonLoader.Unity63.Mono\</OutputPath>
     <DefineConstants>MONO;ML;UNITY_6000_3_OR_NEWER</DefineConstants>
     <AssemblyName>UnityExplorer.ML.Unity63.Mono</AssemblyName>
+    <UniverseLibConfig>Release_Unity63_Mono</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.Unity63.Mono.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll</RepackFiles>
+    <PackageDir>Mods</PackageDir>
+    <PackageLibDir>UserLibs</PackageLibDir>
   </PropertyGroup>
   <!-- BepInEx IL2CPP -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE_Cpp'">
@@ -81,6 +128,11 @@
     <OutputPath>..\Release\UnityExplorer.BepInEx.IL2CPP\</OutputPath>
     <DefineConstants>CPP,BIE,BIE6,UNHOLLOWER</DefineConstants>
     <AssemblyName>UnityExplorer.BIE.IL2CPP</AssemblyName>
+    <UniverseLibConfig>Release_IL2CPP_Unhollower</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.IL2CPP.Unhollower.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
+    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
+    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
   <!-- BepInEx IL2CPP CoreCLR -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE_Cpp_CoreCLR'">
@@ -88,6 +140,11 @@
     <OutputPath>..\Release\UnityExplorer.BepInEx.IL2CPP.CoreCLR\</OutputPath>
     <DefineConstants>CPP,BIE,BIE6,INTEROP</DefineConstants>
     <AssemblyName>UnityExplorer.BIE.IL2CPP.CoreCLR</AssemblyName>
+    <UniverseLibConfig>Release_IL2CPP_Interop_BIE</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.BIE.IL2CPP.Interop.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
+    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
+    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
   <!-- BepInEx Unity IL2CPP CoreCLR -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE_Unity_Cpp_CoreCLR'">
@@ -95,6 +152,11 @@
     <OutputPath>..\Release\UnityExplorer.BepInEx.Unity.IL2CPP.CoreCLR\</OutputPath>
     <DefineConstants>CPP,BIE,BIE6,BIPUNITY,INTEROP</DefineConstants>
     <AssemblyName>UnityExplorer.BIE.Unity.IL2CPP.CoreCLR</AssemblyName>
+    <UniverseLibConfig>Release_IL2CPP_Interop_BIE</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.BIE.IL2CPP.Interop.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
+    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
+    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
   <!-- BepInEx 6 Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE6_Mono'">
@@ -102,6 +164,11 @@
     <OutputPath>..\Release\UnityExplorer.BepInEx6.Mono\</OutputPath>
     <DefineConstants>MONO,BIE,BIE6</DefineConstants>
     <AssemblyName>UnityExplorer.BIE6.Mono</AssemblyName>
+    <UniverseLibConfig>Release_Mono</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.Mono.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
+    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
+    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
   <!-- BepInEx 6 Unity Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE6_Unity_Mono'">
@@ -109,6 +176,11 @@
     <OutputPath>..\Release\UnityExplorer.BepInEx6.Unity.Mono\</OutputPath>
     <DefineConstants>MONO,BIE,BIPUNITY,BIE6</DefineConstants>
     <AssemblyName>UnityExplorer.BIE6.Unity.Mono</AssemblyName>
+    <UniverseLibConfig>Release_Mono</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.Mono.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
+    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
+    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
   <!-- BepInEx 6 Unity 6.3 Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE6_Unity63_Mono'">
@@ -116,6 +188,11 @@
     <OutputPath>..\Release\UnityExplorer.BepInEx6.Unity63.Mono\</OutputPath>
     <DefineConstants>MONO;BIE;BIE6;UNITY_6000_3_OR_NEWER</DefineConstants>
     <AssemblyName>UnityExplorer.BIE6.Unity63.Mono</AssemblyName>
+    <UniverseLibConfig>Release_Unity63_Mono</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.Unity63.Mono.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
+    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
+    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
   <!-- BepInEx 5 Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE5_Mono'">
@@ -123,6 +200,11 @@
     <OutputPath>..\Release\UnityExplorer.BepInEx5.Mono\</OutputPath>
     <DefineConstants>MONO,BIE,BIE5</DefineConstants>
     <AssemblyName>UnityExplorer.BIE5.Mono</AssemblyName>
+    <UniverseLibConfig>Release_Mono</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.Mono.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
+    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
+    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
   <!-- BepInEx 5 Unity 6.3 Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE5_Unity63_Mono'">
@@ -130,6 +212,11 @@
     <OutputPath>..\Release\UnityExplorer.BepInEx5.Unity63.Mono\</OutputPath>
     <DefineConstants>MONO;BIE;BIE5;UNITY_6000_3_OR_NEWER</DefineConstants>
     <AssemblyName>UnityExplorer.BIE5.Unity63.Mono</AssemblyName>
+    <UniverseLibConfig>Release_Unity63_Mono</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.Unity63.Mono.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
+    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
+    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
   <!-- Standalone Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='STANDALONE_Mono'">
@@ -137,6 +224,9 @@
     <OutputPath>..\Release\UnityExplorer.Standalone.Mono\</OutputPath>
     <DefineConstants>MONO,STANDALONE</DefineConstants>
     <AssemblyName>UnityExplorer.STANDALONE.Mono</AssemblyName>
+    <UniverseLibConfig>Release_Mono</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.Mono.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
   </PropertyGroup>
   <!-- Standalone Unity 6.3 Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='STANDALONE_Unity63_Mono'">
@@ -144,6 +234,9 @@
     <OutputPath>..\Release\UnityExplorer.Standalone.Unity63.Mono\</OutputPath>
     <DefineConstants>MONO;STANDALONE;UNITY_6000_3_OR_NEWER</DefineConstants>
     <AssemblyName>UnityExplorer.STANDALONE.Unity63.Mono</AssemblyName>
+    <UniverseLibConfig>Release_Unity63_Mono</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.Unity63.Mono.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
   </PropertyGroup>
   <!-- Standalone IL2CPP -->
   <PropertyGroup Condition="'$(Configuration)'=='STANDALONE_Cpp'">
@@ -151,6 +244,9 @@
     <OutputPath>..\Release\UnityExplorer.Standalone.IL2CPP\</OutputPath>
     <DefineConstants>CPP,STANDALONE,UNHOLLOWER</DefineConstants>
     <AssemblyName>UnityExplorer.STANDALONE.IL2CPP</AssemblyName>
+    <UniverseLibConfig>Release_IL2CPP_Unhollower</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.IL2CPP.Unhollower.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
   </PropertyGroup>
   <!-- Standalone IL2CPP CoreCLR -->
   <PropertyGroup Condition="'$(Configuration)'=='STANDALONE_Cpp_CoreCLR'">
@@ -158,6 +254,9 @@
     <OutputPath>..\Release\UnityExplorer.Standalone.IL2CPP.CoreCLR\</OutputPath>
     <DefineConstants>CPP,STANDALONE,INTEROP</DefineConstants>
     <AssemblyName>UnityExplorer.STANDALONE.IL2CPP.CoreCLR</AssemblyName>
+    <UniverseLibConfig>Release_IL2CPP_Interop_BIE</UniverseLibConfig>
+    <UniverseLibDll>UniverseLib.BIE.IL2CPP.Interop.dll</UniverseLibDll>
+    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
   </PropertyGroup>
 
   <!-- ~~~~~ NUGET ~~~~~ -->

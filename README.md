@@ -168,9 +168,11 @@ The inspector is used to see detailed information on objects of any type and man
 
 # Building
 
-1. Run the `build.ps1` powershell script to build UnityExplorer. Releases are found in the `Release` folder.
+Works on Windows and Linux. You need the .NET 8 SDK or newer, and on Linux Mono (for ILRepack).
 
-Building individual configurations from your IDE is fine, though note that the intial build process builds into `Release/<version>/...` instead of the subfolders that the powershell script uses. Batch building is not currently supported with the project.
+1. Run `dotnet msbuild src/UnityExplorer.csproj -t:BuildRelease`. It builds the `UniverseLib` folder and every UnityExplorer release, merges and zips them into the `Release` folder.
+
+Building a single configuration from your IDE or with `dotnet build src/UnityExplorer.csproj -c BIE5_Mono` builds the UniverseLib it needs as well. Add `-p:ReleasePackage=true` to get the merged and zipped release for it too.
 
 # Acknowledgments
 - [yukieiji](https://github.com/yukieiji) for maintaining their fork of [UnityExplorer](https://github.com/yukieiji/UnityExplorer), originally created by [sinai-dev](https://github.com/sinai-dev/UnityExplorer).
