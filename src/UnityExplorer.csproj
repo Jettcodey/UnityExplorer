@@ -13,13 +13,13 @@
     <RootNamespace>UnityExplorer</RootNamespace>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Optimize>true</Optimize>
-    <Configurations>BIE_Cpp;BIE_Cpp_CoreCLR;BIE_Unity_Cpp_CoreCLR;BIE5_Mono;BIE6_Mono;BIE6_Unity_Mono;ML_Cpp_net6;ML_Cpp_CoreCLR;ML_Cpp_net472;ML_Mono;STANDALONE_Mono;STANDALONE_Cpp;STANDALONE_Cpp_CoreCLR;BIE5_Unity63_Mono;BIE6_Unity63_Mono;ML_Unity63_Mono;STANDALONE_Unity63_Mono</Configurations>
+    <Configurations>BIE_Cpp;BIE_Cpp_CoreCLR;BIE_Unity_Cpp_CoreCLR;BIE5_Mono;BIE6_Mono;BIE6_Unity_Mono;ML_Cpp_net6;ML_Cpp_CoreCLR;ML_Cpp_net472;ML_Mono;STANDALONE_Mono;STANDALONE_Cpp;STANDALONE_Cpp_CoreCLR</Configurations>
   </PropertyGroup>
 
 
   <!-- Release build of every package, on Windows and Linux: dotnet msbuild src/UnityExplorer.csproj -t:BuildRelease -->
   <ItemGroup>
-    <ReleaseConfiguration Include="ML_Cpp_net6;ML_Cpp_CoreCLR;ML_Cpp_net472;ML_Mono;ML_Unity63_Mono;BIE_Cpp;BIE_Cpp_CoreCLR;BIE_Unity_Cpp_CoreCLR;BIE6_Mono;BIE6_Unity63_Mono;BIE6_Unity_Mono;BIE5_Mono;BIE5_Unity63_Mono;STANDALONE_Mono;STANDALONE_Unity63_Mono;STANDALONE_Cpp;STANDALONE_Cpp_CoreCLR" />
+    <ReleaseConfiguration Include="ML_Cpp_net6;ML_Cpp_CoreCLR;ML_Cpp_net472;ML_Mono;BIE_Cpp;BIE_Cpp_CoreCLR;BIE_Unity_Cpp_CoreCLR;BIE6_Mono;BIE6_Unity_Mono;BIE5_Mono;STANDALONE_Mono;STANDALONE_Cpp;STANDALONE_Cpp_CoreCLR" />
   </ItemGroup>
 
   <Target Name="BuildRelease">
@@ -110,18 +110,6 @@
     <PackageDir>Mods</PackageDir>
     <PackageLibDir>UserLibs</PackageLibDir>
   </PropertyGroup>
-  <!-- ML Unity 6.3 Mono -->
-  <PropertyGroup Condition="'$(Configuration)'=='ML_Unity63_Mono'">
-    <TargetFramework>net472</TargetFramework>
-    <OutputPath>..\Release\UnityExplorer.MelonLoader.Unity63.Mono\</OutputPath>
-    <DefineConstants>MONO;ML;UNITY_6000_3_OR_NEWER</DefineConstants>
-    <AssemblyName>UnityExplorer.ML.Unity63.Mono</AssemblyName>
-    <UniverseLibConfig>Release_Unity63_Mono</UniverseLibConfig>
-    <UniverseLibDll>UniverseLib.Unity63.Mono.dll</UniverseLibDll>
-    <RepackFiles>mcs.dll</RepackFiles>
-    <PackageDir>Mods</PackageDir>
-    <PackageLibDir>UserLibs</PackageLibDir>
-  </PropertyGroup>
   <!-- BepInEx IL2CPP -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE_Cpp'">
     <TargetFramework>net472</TargetFramework>
@@ -182,18 +170,6 @@
     <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
     <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
-  <!-- BepInEx 6 Unity 6.3 Mono -->
-  <PropertyGroup Condition="'$(Configuration)'=='BIE6_Unity63_Mono'">
-    <TargetFramework>net472</TargetFramework>
-    <OutputPath>..\Release\UnityExplorer.BepInEx6.Unity63.Mono\</OutputPath>
-    <DefineConstants>MONO;BIE;BIE6;UNITY_6000_3_OR_NEWER</DefineConstants>
-    <AssemblyName>UnityExplorer.BIE6.Unity63.Mono</AssemblyName>
-    <UniverseLibConfig>Release_Unity63_Mono</UniverseLibConfig>
-    <UniverseLibDll>UniverseLib.Unity63.Mono.dll</UniverseLibDll>
-    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
-    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
-    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
-  </PropertyGroup>
   <!-- BepInEx 5 Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='BIE5_Mono'">
     <TargetFramework>net35</TargetFramework>
@@ -206,18 +182,6 @@
     <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
     <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
   </PropertyGroup>
-  <!-- BepInEx 5 Unity 6.3 Mono -->
-  <PropertyGroup Condition="'$(Configuration)'=='BIE5_Unity63_Mono'">
-    <TargetFramework>net472</TargetFramework>
-    <OutputPath>..\Release\UnityExplorer.BepInEx5.Unity63.Mono\</OutputPath>
-    <DefineConstants>MONO;BIE;BIE5;UNITY_6000_3_OR_NEWER</DefineConstants>
-    <AssemblyName>UnityExplorer.BIE5.Unity63.Mono</AssemblyName>
-    <UniverseLibConfig>Release_Unity63_Mono</UniverseLibConfig>
-    <UniverseLibDll>UniverseLib.Unity63.Mono.dll</UniverseLibDll>
-    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
-    <PackageDir>plugins/sinai-dev-UnityExplorer</PackageDir>
-    <PackageLibDir>plugins/sinai-dev-UnityExplorer</PackageLibDir>
-  </PropertyGroup>
   <!-- Standalone Mono -->
   <PropertyGroup Condition="'$(Configuration)'=='STANDALONE_Mono'">
     <TargetFramework>net35</TargetFramework>
@@ -226,16 +190,6 @@
     <AssemblyName>UnityExplorer.STANDALONE.Mono</AssemblyName>
     <UniverseLibConfig>Release_Mono</UniverseLibConfig>
     <UniverseLibDll>UniverseLib.Mono.dll</UniverseLibDll>
-    <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
-  </PropertyGroup>
-  <!-- Standalone Unity 6.3 Mono -->
-  <PropertyGroup Condition="'$(Configuration)'=='STANDALONE_Unity63_Mono'">
-    <TargetFramework>net472</TargetFramework>
-    <OutputPath>..\Release\UnityExplorer.Standalone.Unity63.Mono\</OutputPath>
-    <DefineConstants>MONO;STANDALONE;UNITY_6000_3_OR_NEWER</DefineConstants>
-    <AssemblyName>UnityExplorer.STANDALONE.Unity63.Mono</AssemblyName>
-    <UniverseLibConfig>Release_Unity63_Mono</UniverseLibConfig>
-    <UniverseLibDll>UniverseLib.Unity63.Mono.dll</UniverseLibDll>
     <RepackFiles>mcs.dll;Tomlet.dll</RepackFiles>
   </PropertyGroup>
   <!-- Standalone IL2CPP -->
@@ -308,14 +262,6 @@
     </Reference>
   </ItemGroup>
 
-  <!-- Mono Unity 6.3 NuGet -->
-  <ItemGroup Condition="'$(Configuration)'=='BIE6_Unity63_Mono' or '$(Configuration)'=='BIE5_Unity63_Mono' or '$(Configuration)'=='ML_Unity63_Mono' or '$(Configuration)'=='STANDALONE_Unity63_Mono'">
-    <Reference Include="UniverseLib">
-      <HintPath>..\UniverseLib\Release\UniverseLib.Unity63.Mono\UniverseLib.Unity63.Mono.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)'=='net6'">
     <Reference Include="mcs">
       <HintPath>..\lib\net6\mcs.dll</HintPath>
@@ -337,21 +283,21 @@
     </Reference>
   </ItemGroup>
   <!-- MelonLoader net35 -->
-  <ItemGroup Condition="'$(Configuration)'=='ML_Mono' or '$(Configuration)'=='ML_Cpp_net472' or '$(Configuration)'=='ML_Unity63_Mono'">
+  <ItemGroup Condition="'$(Configuration)'=='ML_Mono' or '$(Configuration)'=='ML_Cpp_net472'">
     <Reference Include="MelonLoader">
       <HintPath>..\lib\net35\MelonLoader.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <!-- BepInEx 5 Mono -->
-  <ItemGroup Condition="'$(Configuration)'=='BIE5_Mono' or '$(Configuration)'=='BIE5_Unity63_Mono'">
+  <ItemGroup Condition="'$(Configuration)'=='BIE5_Mono'">
     <Reference Include="BepInEx">
       <HintPath>..\lib\net35\BepInEx\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <!-- BepInEx 6 Mono -->
-  <ItemGroup Condition="'$(Configuration)'=='BIE6_Mono' or '$(Configuration)'=='BIE6_Unity63_Mono'">
+  <ItemGroup Condition="'$(Configuration)'=='BIE6_Mono'">
     <Reference Include="BepInEx">
       <HintPath>..\lib\net35\BepInEx\build423~577\BepInEx.Core.dll</HintPath>
       <Private>False</Private>
@@ -487,49 +433,6 @@
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\lib\interop\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <!-- Unity 6.3 Mono ML, BepInEx, Standalone -->
-  <ItemGroup Condition="'$(Configuration)'=='BIE6_Unity63_Mono' or '$(Configuration)'=='BIE5_Unity63_Mono' or '$(Configuration)'=='ML_Unity63_Mono' or '$(Configuration)'=='STANDALONE_Unity63_Mono'">
-    <Reference Include="netstandard">
-      <HintPath>..\lib\unity63\netstandard.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\UniverseLib\lib\unity63\UnityEngine_publicized.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\UniverseLib\lib\unity63\UnityEngine.CoreModule_publicized.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\UniverseLib\lib\unity63\UnityEngine.UI_publicized.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\lib\unity63\UnityEngine.UIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\lib\unity63\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\lib\unity63\UnityEngine.PhysicsModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\lib\unity63\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\lib\unity63\UnityEngine.AudioModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>..\lib\unity63\UnityEngine.AssetBundleModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

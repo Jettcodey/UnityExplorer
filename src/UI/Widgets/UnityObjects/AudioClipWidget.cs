@@ -333,13 +333,7 @@ namespace UnityExplorer.UI.Widgets
             AudioClip.GetData(clip, samples, clip.samples, 0);
 #else
             float[] samples = new float[clip.samples * clip.channels];
-#if UNITY_6000_3_OR_NEWER
-            object clipObj = clip;
-            MethodInfo method = clipObj.GetType().GetMethod("GetData", new Type[] { typeof(float[]), typeof(int) });
-            method?.Invoke(clipObj, new object[] { samples, 0 });
-#else
             clip.GetData(samples, 0);
-#endif
 #endif
 
             int len = samples.Length;
