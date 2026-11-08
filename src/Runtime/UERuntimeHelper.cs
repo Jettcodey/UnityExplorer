@@ -34,8 +34,8 @@ namespace UnityExplorer.Runtime
         {
             try
             {
-                if (string.IsNullOrEmpty(blacklist) && !Instance.DefaultReflectionBlacklist.Any())
-                    return;
+                // Rebuilt from the current option on every change, so removed entries don't stay hidden
+                currentBlacklist.Clear();
 
                 try
                 {
