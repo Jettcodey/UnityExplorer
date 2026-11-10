@@ -517,7 +517,7 @@ public class ConsoleController
     // For Home and End keys
     private void JumpToStartOrEndOfLine(bool toStart)
     {
-        var cachedGenerator = (UnityEngine.TextGenerator)typeof(UnityEngine.UI.InputField).GetProperty("cachedInputTextGenerator", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Input.Component, null);
+        var cachedGenerator = (UnityEngine.TextGenerator)typeof(UnityEngine.UI.InputField).GetProperty("cachedInputTextGenerator", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).GetValue(Input.Component, null);
 
         UILineInfo thisline = default;
         UILineInfo? nextLine = null;
@@ -574,7 +574,7 @@ public class ConsoleController
             return;
         }
 
-        var cachedGenerator = (TextGenerator)typeof(InputField).GetProperty("cachedInputTextGenerator", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(Input.Component, null);
+        var cachedGenerator = (TextGenerator)typeof(InputField).GetProperty("cachedInputTextGenerator", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(Input.Component, null);
 
         int topLine = -1;
         int bottomLine = -1;
