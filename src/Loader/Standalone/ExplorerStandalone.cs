@@ -94,14 +94,13 @@ namespace UnityExplorer
         {
             if (explorerFolderDest == null)
             {
-                string location =
-#if NET6_0
-                    typeof(ExplorerCore).Assembly.Location;
-#else
-                    typeof(ExplorerCore).Assembly.CodeBase;
+                string location = typeof(ExplorerCore).Assembly.Location;
+#if !NET6_0
+                // An assembly loaded from memory has no Location. CodeBase is a URI, which cuts a path at '#', so it is only the fallback
+                if (string.IsNullOrEmpty(location))
+                    location = Uri.UnescapeDataString(new Uri(typeof(ExplorerCore).Assembly.CodeBase).AbsolutePath);
 #endif
-                string assemblyLocation = Uri.UnescapeDataString(new Uri(location).AbsolutePath);
-                explorerFolderDest = Path.GetDirectoryName(assemblyLocation);
+                explorerFolderDest = Path.GetDirectoryName(location);
             }
         }
     }
