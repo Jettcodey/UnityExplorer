@@ -64,20 +64,24 @@ namespace UnityExplorer.UI.Panels
         static void CacheMainCamera()
         {
             Camera currentMain = Camera.main;
+            // Only the camera that is main right now gets disabled and re-enabled later, never one kept from an earlier start
+            lastMainCamera = currentMain;
             if (currentMain)
             {
-                lastMainCamera = currentMain;
                 originalCameraPosition = currentMain.transform.position;
                 originalCameraRotation = currentMain.transform.rotation;
-
-                if (currentUserCameraPosition == null)
-                {
-                    currentUserCameraPosition = currentMain.transform.position;
-                    currentUserCameraRotation = currentMain.transform.rotation;
-                }
             }
             else
+            {
+                originalCameraPosition = Vector3.zero;
                 originalCameraRotation = Quaternion.identity;
+            }
+
+            if (currentUserCameraPosition == null)
+            {
+                currentUserCameraPosition = originalCameraPosition;
+                currentUserCameraRotation = originalCameraRotation;
+            }
         }
 
         static void SetupFreeCamera()
@@ -117,6 +121,19 @@ namespace UnityExplorer.UI.Panels
 
             ourCamera.transform.position = (Vector3)currentUserCameraPosition;
             ourCamera.transform.rotation = (Quaternion)currentUserCameraRotation;
+
+            if (!usingGameCamera)
+            {
+                // Draws over the cameras the game still renders with, a camera not tagged MainCamera is never disabled above
+                float depth = 0f;
+                foreach (UnityEngine.Object obj in RuntimeHelper.FindObjectsOfTypeAll(typeof(Camera)))
+                {
+                    Camera camera = obj.TryCast<Camera>();
+                    if (camera && camera != ourCamera && camera.isActiveAndEnabled && camera.depth >= depth)
+                        depth = camera.depth + 1;
+                }
+                ourCamera.depth = depth;
+            }
 
             ourCamera.gameObject.SetActive(true);
             ourCamera.enabled = true;

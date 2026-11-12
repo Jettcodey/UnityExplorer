@@ -8,7 +8,6 @@
 <p align="center">
   Powered by <a href="https://github.com/Jettcodey/UniverseLib">Jettcodey's UniverseLib fork</a><br>
   Based on <a href="https://github.com/yukieiji/UnityExplorer">UnityExplorer</a> by yukieiji (originally by <a href="https://github.com/sinai-dev/UnityExplorer">sinai-dev</a>)<br>
-  One release per loader works on every supported Unity version, <b>Unity 6.3+</b> included, for both Mono and IL2CPP. There are no separate Unity 6.3 builds anymore<br>
   If there are any bugs or features you want, please open a <a href="https://github.com/Jettcodey/UnityExplorer/issues/">New Issue</a>
 </p>
 
@@ -147,7 +146,7 @@ The inspector is used to see detailed information on objects of any type and man
 
 * UnityExplorer provides a basic Free Camera which you can control with your keyboard and mouse.
 * Unlike all other features of UnityExplorer, you can still use Freecam while UnityExplorer's menu is hidden.
-* Supports using the game's main Camera or a separate custom Camera.
+* Supports using the game's main Camera or a separate custom Camera. The custom Camera also works when the game has no main Camera.
 * See the Freecam panel for further instructions and details.
 
 ### Clipboard
