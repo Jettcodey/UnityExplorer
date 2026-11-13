@@ -49,11 +49,7 @@ public static class SceneHandler
     internal static int DefaultSceneCount => 1 + (DontDestroyExists ? 1 : 0);
 
     /// <summary>Whether or not we are currently inspecting the "HideAndDontSave" asset scene.</summary>
-#if UNITY_6000_3_OR_NEWER
-    public static bool InspectingAssetScene => SelectedScene.HasValue && SelectedScene.Value.handle == (SceneHandle)(-1);
-#else
-    public static bool InspectingAssetScene => SelectedScene.HasValue && SelectedScene.Value.handle == -1;
-#endif
+    public static bool InspectingAssetScene => SelectedScene.HasValue && SelectedScene.Value.GetHandle() == -1;
 
     /// <summary>Whether or not we successfuly retrieved the names of the scenes in the build settings.</summary>
     public static bool WasAbleToGetScenesInBuild { get; private set; }
@@ -68,22 +64,10 @@ public static class SceneHandler
         // Check if the game has "DontDestroyOnLoad"
         try
         {
-            Type? sceneType = ReflectionUtility.GetTypeByName("UnityEngine.SceneManagement.Scene");
-            if (sceneType == null) throw new Exception("This version of Unity does not ship with the 'Scene' class.");
+            // typeof(Scene) and not GetTypeByName, BepInEx 5 can have a second UnityEngine.CoreModule loaded whose SceneHandle doesn't match ours
+            MethodInfo? method = typeof(Scene).GetMethod("GetNameInternal", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             
-            MethodInfo? method = sceneType.GetMethod("GetNameInternal", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            
-            object[] args = new object[1];
-#if UNITY_6000_3_OR_NEWER
-            // get runtime type of SceneHandle to prevent reflection identity mismatches
-            Type handleType = method!.GetParameters()[0].ParameterType;
-            MethodInfo? implicitCast = handleType.GetMethod("op_Implicit", new Type[] { typeof(int) });
-            args[0] = implicitCast!.Invoke(null, new object[] { -12 });
-#else
-            args[0] = -12;
-#endif
-                
-            string? sceneName = (string?)method?.Invoke(null, args);
+            string? sceneName = (string?)method?.Invoke(null, [ UnityHelpers.ToSceneHandle(-12) ]);
             
             if (string.IsNullOrEmpty(sceneName)) throw new Exception("Scene.GetNameInternal returned null for DontDestroyOnLoad scene.");
             DontDestroyExists = sceneName == dontDestroyName;
@@ -130,23 +114,15 @@ public static class SceneHandler
     private static Scene CreateSceneWithHandle(int id)
     {
         object sceneObj = new Scene();
-#if UNITY_6000_3_OR_NEWER
-        object handle = (SceneHandle)id;
-#else
-        object handle = id;
-#endif
-        typeof(Scene).GetField("m_Handle", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(sceneObj, handle);
+        object handle = UnityHelpers.ToSceneHandle(id);
+        typeof(Scene).GetField("m_Handle", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).SetValue(sceneObj, handle);
         return (Scene)sceneObj;
     }
 
     internal static void Update()
     {
         // Inspected scene will exist if it's DontDestroyOnLoad or HideAndDontSave
-#if UNITY_6000_3_OR_NEWER
-        bool inspectedExists = SelectedScene.HasValue && ((DontDestroyExists && SelectedScene.Value.handle == (SceneHandle)(-12)) || SelectedScene.Value.handle == (SceneHandle)(-1));
-#else
-        bool inspectedExists = SelectedScene.HasValue && ((DontDestroyExists && SelectedScene.Value.handle == -12) || SelectedScene.Value.handle == -1);
-#endif
+        bool inspectedExists = SelectedScene.HasValue && ((DontDestroyExists && SelectedScene.Value.GetHandle() == -12) || SelectedScene.Value.GetHandle() == -1);
 
         LoadedScenes.Clear();
 
