@@ -80,9 +80,7 @@ public static class SearchProvider
 
             if (type == typeof(GameObject))
                 go = obj.TryCast<GameObject>();
-            else if (
-                typeof(Component).IsAssignableFrom(type) &&
-                obj is Component comp)
+            else if (typeof(Component).IsAssignableFrom(type) && obj.TryCast<Component>() is Component comp)
                 go = comp.gameObject;
 
             if (go)

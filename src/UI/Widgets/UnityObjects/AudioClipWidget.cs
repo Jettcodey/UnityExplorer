@@ -13,6 +13,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnhollowerRuntimeLib;
 using UnhollowerBaseLib;
 #endif
+using UniverseLib.Runtime.Il2Cpp;
 #endif
 
 namespace UnityExplorer.UI.Widgets
@@ -329,8 +330,26 @@ namespace UnityExplorer.UI.Widgets
         static void ConvertAndWrite(FileStream fileStream, AudioClip clip)
         {
 #if CPP
-            Il2CppStructArray<float> samples = new float[clip.samples * clip.channels];
-            AudioClip.GetData(clip, samples, clip.samples, 0);
+            float[] samples = new float[clip.samples * clip.channels];
+            // Unity 6 replaced the GetData iCall with GetData_Injected, which takes the native clip and a span of the samples
+            if (ICallManager.TryGetICall<d_GetData_Injected>("UnityEngine.AudioClip::GetData_Injected", out d_GetData_Injected getData))
+            {
+                unsafe
+                {
+                    fixed (float* data = samples)
+                    {
+                        ManagedSpanWrapper span = new() { begin = data, length = samples.Length };
+                        getData(clip.m_CachedPtr, ref span, 0);
+                    }
+                }
+            }
+            else
+            {
+                Il2CppStructArray<float> il2cppSamples = new(samples.Length);
+                ICallManager.GetICall<d_GetData>("UnityEngine.AudioClip::GetData")
+                    .Invoke(clip.Pointer, il2cppSamples.Pointer, clip.samples, 0);
+                samples = il2cppSamples;
+            }
 #else
             float[] samples = new float[clip.samples * clip.channels];
             clip.GetData(samples, 0);
@@ -353,6 +372,12 @@ namespace UnityExplorer.UI.Widgets
 
             fileStream.Write(bytesData, 0, bytesData.Length);
         }
+
+#if CPP
+        delegate bool d_GetData(IntPtr clip, IntPtr data, int numSamples, int samplesOffset);
+
+        delegate bool d_GetData_Injected(IntPtr clip, ref ManagedSpanWrapper data, int samplesOffset);
+#endif
 
         static void WriteHeader(FileStream stream, AudioClip clip)
         {

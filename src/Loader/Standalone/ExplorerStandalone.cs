@@ -68,16 +68,18 @@ namespace UnityExplorer
                 return Instance;
 
             var instance = new ExplorerStandalone();
-            instance.Init();
             instance.CheckExplorerFolder();
 
             if (logListener != null)
                 OnLog += logListener;
 
+            // ExplorerCore.Init passes this folder to UniverseLib, so it is set first
             if (string.IsNullOrEmpty(unhollowedModulesPath) || !Directory.Exists(unhollowedModulesPath))
-                instance.unhollowedPath = Path.Combine(ExplorerCore.ExplorerFolder, "Modules");
+                instance.unhollowedPath = Path.Combine(Path.Combine(explorerFolderDest, instance.ExplorerFolderName), "Modules");
             else
                 instance.unhollowedPath = unhollowedModulesPath;
+
+            instance.Init();
 
             return instance;
         }
