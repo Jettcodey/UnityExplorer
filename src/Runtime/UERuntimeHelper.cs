@@ -28,6 +28,9 @@ namespace UnityExplorer.Runtime
 
         private static readonly HashSet<string> currentBlacklist = new();
 
+        // Members only the C# console has to skip (see ScriptEvaluator), the inspector still shows them
+        internal static readonly HashSet<string> ConsoleBlacklist = new();
+
         public virtual string[] DefaultReflectionBlacklist => new string[0];
 
         public static void LoadBlacklistString(string blacklist)
@@ -60,7 +63,7 @@ namespace UnityExplorer.Runtime
                         currentBlacklist.Add(sig);
                 }
 
-                Mono.CSharp.IL2CPP.Blacklist.SignatureBlacklist = currentBlacklist;
+                Mono.CSharp.IL2CPP.Blacklist.SignatureBlacklist = new HashSet<string>(currentBlacklist.Concat(ConsoleBlacklist));
             }
             catch (Exception ex)
             {

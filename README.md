@@ -8,6 +8,7 @@
 <p align="center">
   Powered by <a href="https://github.com/Jettcodey/UniverseLib">Jettcodey's UniverseLib fork</a><br>
   Based on <a href="https://github.com/yukieiji/UnityExplorer">UnityExplorer</a> by yukieiji (originally by <a href="https://github.com/sinai-dev/UnityExplorer">sinai-dev</a>)<br>
+  One release per loader works on every supported Unity version, <b>Unity 6.3+</b> included, for both Mono and IL2CPP. There are no separate Unity 6.3 builds anymore<br>
   If there are any bugs or features you want, please open a <a href="https://github.com/Jettcodey/UnityExplorer/issues/">New Issue</a>
 </p>
 
@@ -25,7 +26,7 @@
 1. Unzip the release file into a folder
 2. Take the `plugins/sinai-dev-UnityExplorer` folder and place it in `BepInEx/plugins/`
 
-<i>Note: BepInEx 6 is obtainable via [builds.bepinex.dev](https://builds.bepinex.dev/projects/bepinex_be)</i>
+<i>Note: BepInEx 6 is obtainable via [builds.bepinex.dev](https://builds.bepinex.dev/projects/bepinex_be). For IL2CPP games, be.777 or newer is recommended: it ships Il2CppInterop 1.5.3, which fixes calling methods with `[Out]` array parameters.</i>
 
 ## MelonLoader
 
@@ -69,10 +70,13 @@ To adjust the settings, open the config file:
 * Standalone: `sinai-dev-UnityExplorer\config.cfg`
 
 Try adjusting the following settings and see if it fixes your issues:
-* `Startup_Delay_Time` - increase to 5-10 seconds (or more as needed), can fix issues with UnityExplorer being destroyed or corrupted during startup.
-* `Disable_EventSystem_Override` - if input is not working properly, try setting this to `true`.
-* `Disable_Setup_Force_ReLoad_ManagedAssemblies` - if Mono game fails to resolve assembly dependencies at startup, try setting this to `true`(detail : yukieiji/UniverseLib#4).
-* `Bypass_UniverseLib_ICall` - If you have errors when inspecting Sprites or similar objects in some games, try setting this to `true`.
+* `Startup Delay Time` - increase to 5-10 seconds (or more as needed), can fix issues with UnityExplorer being destroyed or corrupted during startup.
+* `Disable EventSystem override` - if input is not working properly, try setting this to `true`.
+* `Disable Force reload ManagedAssemblies` - if a Mono game fails to resolve assembly dependencies at startup, try setting this to `true` (details: [yukieiji/UniverseLib#4](https://github.com/yukieiji/UniverseLib/issues/4)).
+* `Bypass UniverseLib ICall` - if you have errors when inspecting Sprites or similar objects in some games, try setting this to `true`.
+* `Member Signature Blacklist` - if inspecting a certain member crashes the game, add its signature here, separated with `;` (for example `UnityEngine.Camera.main;`).
+
+On IL2CPP games, MelonLoader (0.7.3 and older) ships an Il2CppInterop older than 1.5.3. With it, calling methods that have `[Out]` array parameters can crash the game. UnityExplorer doesn't auto-evaluate properties that run into this, such as `Camera.allCameras` in some games.
 
 If these fixes do not work, please create an issue in this repo and I'll do my best to look into it.
 

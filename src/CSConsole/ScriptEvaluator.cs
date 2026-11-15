@@ -73,8 +73,108 @@ public sealed class ScriptEvaluator : Evaluator, IDisposable
             }
         }
 
+#if CPP
+        if (asm.GetReferencedAssemblies().Any(it => it.Name == "Il2CppInterop.Runtime"))
+        {
+            BlacklistUnimportableMethods(asm);
+            BlacklistBrokenOutArrayMethods(asm);
+        }
+#endif
         ReferenceAssembly(asm);
     }
+
+#if CPP
+    // mcs fails a whole interop type with CS0584 on one method it can't import, so those methods are left out of the console
+    private static void BlacklistUnimportableMethods(Assembly asm)
+    {
+        foreach (Type type in asm.TryGetTypes())
+        {
+            try
+            {
+                IEnumerable<MethodBase> methods = type.GetMethods(ReflectionUtility.FLAGS | BindingFlags.DeclaredOnly)
+                    .Concat<MethodBase>(type.GetConstructors(ReflectionUtility.FLAGS | BindingFlags.DeclaredOnly));
+
+                foreach (MethodBase method in methods)
+                {
+                    bool unimportable;
+                    try
+                    {
+                        // reading the signature throws when the interop type breaks a generic constraint
+                        unimportable = method.GetParameters().Any(it => it.Attributes.HasFlag(ParameterAttributes.HasDefault) && it.RawDefaultValue == Missing.Value);
+                    }
+                    catch (TypeLoadException)
+                    {
+                        unimportable = true;
+                    }
+
+                    if (unimportable)
+                        BlacklistByName(method);
+                }
+            }
+            catch (TypeLoadException) { }
+        }
+    }
+
+    // Il2CppInterop before 1.5.3 breaks [Out] array parameters, calling such a method (or a restored one that calls it) crashes the game
+    private static bool foundBrokenOutArray;
+    private static readonly List<Assembly> outArrayScanned = new();
+
+    private static void BlacklistBrokenOutArrayMethods(Assembly asm)
+    {
+        if (outArrayScanned.Contains(asm))
+            return;
+        outArrayScanned.Add(asm);
+
+        bool wasFound = foundBrokenOutArray;
+        foreach (MethodInfo method in GetDeclaredMethods(asm))
+        {
+            if (!CacheObject.CacheProperty.CallsBrokenOutArray(method, false))
+                continue;
+            foundBrokenOutArray = true;
+            BlacklistByName(method);
+        }
+
+        if (!foundBrokenOutArray)
+            return;
+
+        // the assemblies scanned before the first find get their restored methods walked too, from a copy since walking can load more
+        foreach (Assembly scanned in wasFound ? new[] { asm } : outArrayScanned.ToArray())
+        {
+            foreach (MethodInfo method in GetDeclaredMethods(scanned))
+            {
+                if (method.IsPublic && CacheObject.CacheProperty.CallsBrokenOutArray(method))
+                    BlacklistByName(method);
+            }
+        }
+    }
+
+    private static List<MethodInfo> GetDeclaredMethods(Assembly asm)
+    {
+        List<MethodInfo> methods = new();
+        foreach (Type type in asm.TryGetTypes())
+        {
+            try
+            {
+                methods.AddRange(type.GetMethods(ReflectionUtility.FLAGS | BindingFlags.DeclaredOnly));
+            }
+            catch (TypeLoadException) { }
+        }
+        return methods;
+    }
+
+    // The console imports properties, not their accessors, so a property getter or setter blacklists the property
+    private static void BlacklistByName(MethodBase method)
+    {
+        Type type = method.DeclaringType!;
+        string name = method.IsSpecialName && (method.Name.StartsWith("get_") || method.Name.StartsWith("set_"))
+            ? method.Name.Substring(4)
+            : method.Name;
+
+        string sig = $"{type.Namespace}.{type.Name.Split('`')[0]}.{name}";
+        Runtime.UERuntimeHelper.ConsoleBlacklist.Add(sig);
+        Mono.CSharp.IL2CPP.Blacklist.SignatureBlacklist.Add(sig);
+    }
+#endif
 
     private static CompilerContext BuildContext(TextWriter tw)
     {

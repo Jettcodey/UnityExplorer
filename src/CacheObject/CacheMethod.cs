@@ -10,6 +10,9 @@ namespace UnityExplorer.CacheObject
         public override bool IsStatic => MethodInfo.IsStatic;
 
         public override bool ShouldAutoEvaluate => false;
+#if CPP
+        private bool? m_callsBrokenOutArray;
+#endif
 
         public CacheMethod(MethodInfo mi)
         {
@@ -27,6 +30,15 @@ namespace UnityExplorer.CacheObject
 
         protected override object TryEvaluate()
         {
+#if CPP
+            // Checked on the first call only, the IL walk is too slow for every method of an inspected type
+            m_callsBrokenOutArray ??= CacheProperty.CallsBrokenOutArray(MethodInfo);
+            if (m_callsBrokenOutArray.Value)
+            {
+                LastException = new NotSupportedException(CacheProperty.BrokenOutArrayMessage);
+                return null;
+            }
+#endif
             try
             {
                 MethodInfo methodInfo = MethodInfo;
