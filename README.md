@@ -9,6 +9,7 @@
   Powered by <a href="https://github.com/Jettcodey/UniverseLib">Jettcodey's UniverseLib fork</a><br>
   Based on <a href="https://github.com/yukieiji/UnityExplorer">UnityExplorer</a> by yukieiji (originally by <a href="https://github.com/sinai-dev/UnityExplorer">sinai-dev</a>)<br>
   One release per loader works on every supported Unity version, <b>Unity 6.3+</b> included, for both Mono and IL2CPP. There are no separate Unity 6.3 builds anymore<br>
+  This fork no longer supports Unhollower (Il2CppAssemblyUnhollower). IL2CPP games need a loader that uses Il2CppInterop: BepInEx 6 be.647+ or 6.0-pre.2+, or MelonLoader 0.6+<br>
   If there are any bugs or features you want, please open a <a href="https://github.com/Jettcodey/UnityExplorer/issues/">New Issue</a>
 </p>
 
@@ -17,11 +18,11 @@
 
 ## BepInEx
 
-| Release | IL2CPP(Il2CppInterop) | IL2CPP(Unhollower) | Mono |
-| ------- | ------ |  ------ | ---- |
-| BIE 6.X be.647+ or BIE 6.0-pre.2+ | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.Unity.IL2CPP.CoreCLR.zip) | ✖️ n/a | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Unity.Mono.zip) |
-| BIE 6.X be.472 to be.577 or BIE 6.0-pre.1(**NOT pre.2**) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.IL2CPP.CoreCLR.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.IL2CPP.zip)  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Mono.zip) |
-| BIE 5.X | ✖️ n/a |  ✖️ n/a |  ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx5.Mono.zip) |
+| Release | IL2CPP | Mono |
+| ------- | ------ | ---- |
+| BIE 6.X be.647+ or BIE 6.0-pre.2+ | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx.Unity.IL2CPP.CoreCLR.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Unity.Mono.zip) |
+| BIE 6.X be.472 to be.577 or BIE 6.0-pre.1(**NOT pre.2**) | ✖️ n/a | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx6.Mono.zip) |
+| BIE 5.X | ✖️ n/a | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.BepInEx5.Mono.zip) |
 
 1. Unzip the release file into a folder
 2. Take the `plugins/sinai-dev-UnityExplorer` folder and place it in `BepInEx/plugins/`
@@ -32,9 +33,8 @@
 
 | Release | IL2CPP | Mono |
 | ------- | ------ | ---- |
-| ML 0.6+  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.CoreCLR.zip) | ✖️ n/a |
-| ML 0.6(**ONLY 0.6 ALPHA BUILD, NOT BETA**)  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.net6preview.zip) | ✖️ n/a |
-| ML 0.5  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.Mono.zip) |
+| ML 0.6+  | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.IL2CPP.CoreCLR.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.Mono.zip) |
+| ML 0.5  | ✖️ n/a | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.MelonLoader.Mono.zip) |
 
 1. Unzip the release file into a folder
 2. Copy the DLL inside the `Mods` folder into your MelonLoader `Mods` folder
@@ -42,17 +42,18 @@
 
 ## Standalone
 
-| Il2CppInterop | Unhollower | Mono |
-| ------ | ------ | ---- |
-| ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.IL2CPP.CoreCLR.zip)| ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.IL2CPP.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.Mono.zip) |
+| IL2CPP | Mono |
+| ------ | ---- |
+| ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.IL2CPP.CoreCLR.zip) | ✅ [link](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Standalone.Mono.zip) |
 
 The standalone release can be used with any injector or loader of your choice, but it requires you to load the dependencies manually.
 
-1. Ensure the required libs are loaded - UniverseLib, HarmonyX and MonoMod. Take them from the [`UnityExplorer.Editor`](https://github.com/sinai-dev/UnityExplorer/releases/latest/download/UnityExplorer.Editor.zip) release if you need them.
-2. For IL2CPP, load Il2CppAssemblyUnhollower and start an [Il2CppAssemblyUnhollower runtime](https://github.com/knah/Il2CppAssemblyUnhollower#required-external-setup)
-2. Load the UnityExplorer DLL
-3. Create an instance of Unity Explorer with `UnityExplorer.ExplorerStandalone.CreateInstance();`
-4. Optionally subscribe to the `ExplorerStandalone.OnLog` event to handle logging if you wish
+1. Ensure the required libs are loaded - UniverseLib (included in the zip), HarmonyX and MonoMod. Take them from the [`UnityExplorer.Editor`](https://github.com/Jettcodey/UnityExplorer/releases/latest/download/UnityExplorer.Editor.zip) release if you need them.
+2. For IL2CPP, the Il2CppInterop runtime has to be set up (BepInEx 6 and MelonLoader do this), and UnityExplorer needs the folder with the generated interop assemblies (see step 4).
+3. Load the UnityExplorer DLL
+4. Create an instance of Unity Explorer with `UnityExplorer.ExplorerStandalone.CreateInstance();`
+   * On IL2CPP, pass the interop folder with `CreateInstance(logListener, "path/to/interop")`. Without it, `sinai-dev-UnityExplorer\Modules` is used.
+5. Optionally subscribe to the `ExplorerStandalone.OnLog` event to handle logging if you wish
 
 ## Unity Editor
 

@@ -27,18 +27,6 @@ jobs:
         run: dotnet msbuild src/UnityExplorer.csproj -t:BuildRelease
 
       #  Upload artifacts
-      - name: Upload BepInEx.IL2CPP
-        uses: actions/upload-artifact@v7
-        with:
-          name: UnityExplorer.BepInEx.IL2CPP
-          path: ./Release/UnityExplorer.BepInEx.IL2CPP/
-
-      - name: Upload BepInEx.IL2CPP.CoreCLR
-        uses: actions/upload-artifact@v7
-        with:
-          name: UnityExplorer.BepInEx.IL2CPP.CoreCLR
-          path: ./Release/UnityExplorer.BepInEx.IL2CPP.CoreCLR/
-
       - name: Upload BepInEx.Unity.IL2CPP.CoreCLR
         uses: actions/upload-artifact@v7
         with:
@@ -63,18 +51,6 @@ jobs:
           name: UnityExplorer.BepInEx6.Unity.Mono
           path: ./Release/UnityExplorer.BepInEx6.Unity.Mono/
 
-      - name: Upload MelonLoader.IL2CPP
-        uses: actions/upload-artifact@v7
-        with:
-          name: UnityExplorer.MelonLoader.IL2CPP
-          path: ./Release/UnityExplorer.MelonLoader.IL2CPP/
-
-      - name: Upload MelonLoader.IL2CPP.net6preview
-        uses: actions/upload-artifact@v7
-        with:
-          name: UnityExplorer.MelonLoader.IL2CPP.net6preview
-          path: ./Release/UnityExplorer.MelonLoader.IL2CPP.net6preview/
-
       - name: Upload MelonLoader.IL2CPP.CoreCLR
         uses: actions/upload-artifact@v7
         with:
@@ -86,12 +62,6 @@ jobs:
         with:
           name: UnityExplorer.MelonLoader.Mono
           path: ./Release/UnityExplorer.MelonLoader.Mono/
-
-      - name: Upload Standalone.IL2CPP
-        uses: actions/upload-artifact@v7
-        with:
-          name: UnityExplorer.Standalone.IL2CPP
-          path: ./Release/UnityExplorer.Standalone.IL2CPP/
 
       - name: Upload Standalone.IL2CPP.CoreCLR
         uses: actions/upload-artifact@v7

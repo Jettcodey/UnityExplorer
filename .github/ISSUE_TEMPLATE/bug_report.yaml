@@ -29,17 +29,13 @@ body:
       label: Which release are you using?
       description: Please select your environment for UnityExplorer.
       options:
-        - BepInEx IL2CPP
-        - BepInEx IL2CPP CoreCLR
         - BepInEx Unity IL2CPP CoreCLR
         - BepInEx 6.X Mono
         - BepInEx 6.X Unity Mono
         - BepInEx 5.X Mono
-        - MelonLoader IL2CPP
-        - MelonLoader IL2CPP net6preview
         - MelonLoader IL2CPP CoreCLR
         - MelonLoader Mono
-        - Standalone IL2CPP
+        - Standalone IL2CPP CoreCLR
         - Standalone Mono
     validations:
       required: true
