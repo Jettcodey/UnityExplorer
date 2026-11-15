@@ -156,8 +156,15 @@ namespace UnityExplorer.UI.Widgets
                 if (input.EndsWith("/"))
                     input = input.Remove(input.Length - 1);
 
-                // try the easy way
-                if (GameObject.Find(input) is GameObject found)
+                // try the easy way, the search below still works when Il2CppInterop's restored Find throws
+                GameObject found = null;
+                try
+                {
+                    found = GameObject.Find(input);
+                }
+                catch (MissingMethodException) { }
+
+                if (found)
                 {
                     parentToSet = found.transform;
                 }
@@ -214,7 +221,7 @@ namespace UnityExplorer.UI.Widgets
         {
             try
             {
-                Target.tag = value;
+                Target.SetTag(value);
                 UpdateGameObjectInfo(false, true);
             }
             catch (Exception ex)

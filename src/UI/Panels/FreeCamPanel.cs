@@ -111,9 +111,18 @@ namespace UnityExplorer.UI.Panels
             if (!ourCamera)
             {
                 ourCamera = new GameObject("UE_Freecam").AddComponent<Camera>();
-                ourCamera.gameObject.tag = "MainCamera";
                 GameObject.DontDestroyOnLoad(ourCamera.gameObject);
                 ourCamera.gameObject.hideFlags = HideFlags.HideAndDontSave;
+
+                // Lets Camera.main return the free camera. The free camera works without it if the tag can't be set
+                try
+                {
+                    ourCamera.gameObject.SetTag("MainCamera");
+                }
+                catch (Exception ex)
+                {
+                    ExplorerCore.LogWarning($"Could not tag the free camera as MainCamera: {ex.ReflectionExToString()}");
+                }
             }
 
             if (!freeCamScript)
