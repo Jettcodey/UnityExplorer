@@ -18,6 +18,8 @@ public class ConsoleController
     private readonly HashSet<string> usingDirectives = [];
 
     private bool sreNotSupported { get; set; }
+    // Hooks compile their patches with the same compiler, so they can't be created either
+    internal static bool ReflectionEmitNotSupported => _instance?.sreNotSupported == true;
     private int lastCaretPosition { get;  set; }
     // Fix: Assignment to DefaultInputFieldAlpha failed due to instance not being created before Init
     public static float DefaultInputFieldAlpha { get; set; }
@@ -729,6 +731,12 @@ public class ConsoleController
         sreNotSupported = true;
         Input.Component.readOnly = true;
         Input.Component.textComponent.color = "5d8556".ToColor();
+
+        // the explanation below is only in the console's text box, so log readers see why the console, startup.cs and hooks don't work
+        ExplorerCore.LogWarning(ex is NotSupportedException
+            ? "The C# Console is disabled: System.Reflection.Emit threw a NotSupportedException (the game's mscorlib is stripped). " +
+              "startup.cs isn't run and hooks can't be created. The C# Console tab explains how to replace mscorlib."
+            : $"The C# Console is disabled: {ex.GetType().Name}: {ex.Message}. startup.cs isn't run.");
 
         if (ex is NotSupportedException)
         {

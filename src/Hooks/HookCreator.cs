@@ -142,6 +142,13 @@ namespace UnityExplorer.Hooks
         {
             HookManagerPanel.Instance.SetPage(HookManagerPanel.Pages.ClassMethodSelector);
 
+            if (ConsoleController.ReflectionEmitNotSupported)
+            {
+                ExplorerCore.LogWarning("Hooks can't be created in this game: its mscorlib has no working System.Reflection.Emit, which the hook patches are compiled with. " +
+                    "The C# Console tab explains how to replace mscorlib.");
+                return;
+            }
+
             string sig = method.FullDescription();
             if (HookList.hookedSignatures.Contains(sig))
             {
