@@ -13,6 +13,7 @@ namespace UnityExplorer.Config
 
         // Actual UE Settings
         public static ConfigElement<KeyCode> Master_Toggle;
+        public static ConfigElement<bool> Exclude_Native_IL2CPP_Pointers;
         public static ConfigElement<bool> Hide_On_Startup;
         public static ConfigElement<float> Startup_Delay_Time;
         public static ConfigElement<bool> Disable_EventSystem_Override;
@@ -90,6 +91,14 @@ namespace UnityExplorer.Config
             Hide_On_Startup = new("Hide On Startup",
                 "Should UnityExplorer be hidden on startup?",
                 false);
+            
+            #if CPP 
+            
+            Exclude_Native_IL2CPP_Pointers = new("Exclude Native Pointers [BETA]",
+                "Should UnityExplorer automatically exclude native pointers for IL2CPP Games?",
+                true);
+            
+            #endif
 
             Startup_Delay_Time = new("Startup Delay Time",
                 "The delay on startup before the UI is created.",

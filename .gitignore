@@ -354,3 +354,5 @@ MigrationBackup/
 
 /UnityEditorPackage/Runtime/UniverseLib.Mono.dll
 /UnityEditorPackage/Runtime/UnityExplorer.STANDALONE.Mono.dll
+/src/.idea
+/UnityEditorPackage/Runtime

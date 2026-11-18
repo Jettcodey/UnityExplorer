@@ -206,9 +206,9 @@ namespace UnityExplorer.UI.Widgets
             UpdateGameObjectInfo(false, true);
         }
 
-        void OnCopyClicked()
+        void OnCopyClicked(object obj)
         {
-            ClipboardPanel.Copy(this.Target);
+            ClipboardPanel.Copy(obj);
         }
 
         void OnActiveSelfToggled(bool value)
@@ -306,7 +306,7 @@ namespace UnityExplorer.UI.Widgets
             ButtonRef copyButton = UIFactory.CreateButton(firstRow, "CopyButton", "Copy to Clipboard", new Color(0.2f, 0.2f, 0.2f, 1));
             copyButton.ButtonText.color = Color.yellow;
             UIFactory.SetLayoutElement(copyButton.Component.gameObject, minHeight: 25, minWidth: 120);
-            copyButton.OnClick += OnCopyClicked;
+            copyButton.OnClick += () => { OnCopyClicked(this.Target); };
 
             PathInput.Component.GetOnEndEdit().AddListener((string val) => { OnPathEndEdit(val); });
 

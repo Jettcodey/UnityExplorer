@@ -9,7 +9,10 @@ namespace UnityExplorer.CacheObject
     {
         public abstract Type DeclaringType { get; }
         public string NameForFiltering { get; protected set; }
-        public object DeclaringInstance => IsStatic ? null : (m_declaringInstance ??= Owner.Target.TryCast(DeclaringType));
+
+        public object DeclaringInstance =>
+            IsStatic ? null : (m_declaringInstance ??= Owner.Target.TryCast(DeclaringType));
+
         private object m_declaringInstance;
 
         public abstract bool IsStatic { get; }
@@ -48,7 +51,8 @@ namespace UnityExplorer.CacheObject
         public override void UnlinkFromView()
         {
             if (this.Evaluator != null)
-                this.Evaluator.UIRoot.transform.SetParent(Pool<EvaluateWidget>.Instance.InactiveHolder.transform, false);
+                this.Evaluator.UIRoot.transform.SetParent(Pool<EvaluateWidget>.Instance.InactiveHolder.transform,
+                    false);
 
             base.UnlinkFromView();
         }
@@ -100,19 +104,22 @@ namespace UnityExplorer.CacheObject
                 if (HasArguments)
                 {
                     if (!Evaluating)
-                        cell.EvaluateButton.ButtonText.text = $"Evaluate ({Arguments.Length + GenericArguments.Length})";
+                        cell.EvaluateButton.ButtonText.text =
+                            $"Evaluate ({Arguments.Length + GenericArguments.Length})";
                     else
                     {
                         cell.EvaluateButton.ButtonText.text = "Hide";
                         Evaluator.UIRoot.transform.SetParent(cell.EvaluateHolder.transform, false);
-                        RuntimeHelper.SetColorBlock(cell.EvaluateButton.Component, evalEnabledColor, evalEnabledColor * 1.3f);
+                        RuntimeHelper.SetColorBlock(cell.EvaluateButton.Component, evalEnabledColor,
+                            evalEnabledColor * 1.3f);
                     }
                 }
                 else
                     cell.EvaluateButton.ButtonText.text = "Evaluate";
 
                 if (!Evaluating)
-                    RuntimeHelper.SetColorBlock(cell.EvaluateButton.Component, evalDisabledColor, evalDisabledColor * 1.3f);
+                    RuntimeHelper.SetColorBlock(cell.EvaluateButton.Component, evalDisabledColor,
+                        evalDisabledColor * 1.3f);
             }
 
             if (State == ValueState.NotEvaluated && !ShouldAutoEvaluate)
@@ -127,6 +134,11 @@ namespace UnityExplorer.CacheObject
                 Evaluate();
 
             return true;
+        }
+
+        public string NonExcludedString()
+        {
+            return this.NameForFiltering.Substring(1);
         }
 
         public void OnEvaluateClicked()

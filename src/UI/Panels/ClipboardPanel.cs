@@ -1,113 +1,152 @@
-﻿using UniverseLib.UI;
+﻿using UnityEngine.EventSystems;
+using UniverseLib.UI;
+using UniverseLib.UI.Widgets.ButtonList;
+using UniverseLib.UI.Widgets.ScrollView;
 
 namespace UnityExplorer.UI.Panels
 {
-    public class ClipboardPanel : UEPanel
+    public class ClipboardPanel : UEPanel, ICellPoolDataSource<ButtonCell>
     {
-        public static object Current { get; private set; }
-
+        private static readonly List<object> Items = new();
+        public static object Current => Items.Count > 0 ? Items[Items.Count - 1] : null;
+        
+        private static readonly Dictionary<ButtonCell, int> cellIndices = new();
         public override string Name => "Clipboard";
         public override UIManager.Panels PanelType => UIManager.Panels.Clipboard;
-
         public override int MinWidth => 500;
         public override int MinHeight => 95;
         public override Vector2 DefaultAnchorMin => new(0.1f, 0.05f);
         public override Vector2 DefaultAnchorMax => new(0.4f, 0.15f);
-
         public override bool CanDragAndResize => true;
         public override bool NavButtonWanted => true;
         public override bool ShouldSaveActiveState => true;
         public override bool ShowByDefault => true;
 
-        private static Text CurrentPasteLabel;
+        private static ScrollPool<ButtonCell> scrollPool;
+        private static Text currentPasteLabel;
 
-        public ClipboardPanel(UIBase owner) : base(owner)
+        public ClipboardPanel(UIBase owner) : base(owner) { }
+
+        public int ItemCount => Items.Count;
+
+        public void OnCellBorrowed(ButtonCell cell)
         {
+            cell.Button.OnClick += () =>
+            {
+                if (cellIndices.TryGetValue(cell, out int idx))
+                    OnEntryClicked(idx);
+            };
+            
+            EventTrigger trigger = cell.Button.Component.gameObject.AddComponent<EventTrigger>();
+            EventTrigger.Entry entry = new() { eventID = EventTriggerType.PointerClick };
+            entry.callback.AddListener(data =>
+            {
+#if CPP
+                PointerEventData ped = data.TryCast<PointerEventData>();
+#else
+        PointerEventData ped = data as PointerEventData;
+#endif
+                if (ped == null || ped.button != PointerEventData.InputButton.Right)
+                    return;
+
+                if (cellIndices.TryGetValue(cell, out int idx))
+                    OnEntryRightClicked(idx);
+            });
+            trigger.triggers.Add(entry);
+        }
+
+        public void SetCell(ButtonCell cell, int index)
+        {
+            if (index < 0 || index >= Items.Count)
+            {
+                cell.Disable();
+                return;
+            }
+
+            cellIndices[cell] = index;
+            cell.Button.ButtonText.text = ToStringUtility.ToStringWithType(Items[index], typeof(object), false);
+        }
+
+        private void OnEntryClicked(int index)
+        {
+            if (index >= 0 && index < Items.Count)
+                InspectorManager.Inspect(Items[index]);
+        }
+        
+        private static void OnEntryRightClicked(int index)
+        {
+            if (index < 0 || index >= Items.Count)
+                return;
+
+            object obj = Items[index];
+            Items.RemoveAt(index);
+            Items.Add(obj);
+
+            Notification.ShowMessage("Copied!");
+            Refresh();
         }
 
         public static void Copy(object obj)
         {
-            Current = obj;
+            if (obj == null) return;
+            Items.Add(obj);
             Notification.ShowMessage("Copied!");
-            UpdateCurrentPasteInfo();
+            Refresh();
         }
 
         public static bool TryPaste(Type targetType, out object paste)
         {
             paste = Current;
-            Type pasteType = Current?.GetActualType();
+            if (paste == null) return false;
 
-            if (Current != null && !targetType.IsAssignableFrom(pasteType))
+            Type pasteType = paste.GetActualType();
+            if (!targetType.IsAssignableFrom(pasteType))
             {
                 Notification.ShowMessage($"Cannot assign '{pasteType.Name}' to '{targetType.Name}'!");
                 return false;
             }
-
             Notification.ShowMessage("Pasted!");
             return true;
         }
 
         public static void ClearClipboard()
         {
-            Current = null;
-            UpdateCurrentPasteInfo();
+            Items.Clear();
+            Refresh();
         }
 
-        private static void UpdateCurrentPasteInfo()
+        private static void Refresh()
         {
-            CurrentPasteLabel.text = ToStringUtility.ToStringWithType(Current, typeof(object), false);
-        }
+            if (currentPasteLabel != null)
+                currentPasteLabel.text = Current == null
+                    ? "not set"
+                    : ToStringUtility.ToStringWithType(Current, typeof(object), false);
 
-        private static void InspectClipboard()
-        {
-            if (Current.IsNullOrDestroyed())
-            {
-                Notification.ShowMessage("Cannot inspect a null or destroyed object!");
-                return;
-            }
-
-            InspectorManager.Inspect(Current);
+            scrollPool?.Refresh(true, false);
         }
 
         public override void SetDefaultSizeAndPosition()
         {
             base.SetDefaultSizeAndPosition();
-
-            this.Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, MinWidth);
-            this.Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, MinHeight);
+            Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, MinWidth);
+            Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, MinHeight);
         }
 
         protected override void ConstructPanelContent()
         {
-            this.UIRoot.GetComponent<Image>().color = new(0.1f, 0.1f, 0.1f);
+            UIRoot.GetComponent<Image>().color = new(0.1f, 0.1f, 0.1f);
+            //
+            // GameObject firstRow = UIFactory.CreateHorizontalGroup(ContentRoot, "FirstRow", false, false, true, true, 5,
+            //     new(2, 1, 2, 2), new(1, 1, 1, 0));
+            // UIFactory.SetLayoutElement(firstRow, minHeight: 25, flexibleWidth: 999);
 
-            // Actual panel content
+            scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "CopyPasteScroller",
+                out GameObject scrollObj, out GameObject _, new Color(0.09f, 0.09f, 0.09f));
 
-            GameObject firstRow = UIFactory.CreateHorizontalGroup(ContentRoot, "FirstRow", false, false, true, true, 5, new(2, 2, 2, 2), new(1, 1, 1, 0));
-            UIFactory.SetLayoutElement(firstRow, minHeight: 25, flexibleWidth: 999);
+            UIFactory.SetLayoutElement(scrollObj, minHeight: 25, flexibleHeight: 9999, flexibleWidth: 9999);
 
-            // Title for "Current Paste:"
-            Text currentPasteTitle = UIFactory.CreateLabel(firstRow, "CurrentPasteTitle", "Current paste:", TextAnchor.MiddleLeft, color: Color.grey);
-            UIFactory.SetLayoutElement(currentPasteTitle.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 999);
-
-            // Clear clipboard button
-            UniverseLib.UI.Models.ButtonRef clearButton = UIFactory.CreateButton(firstRow, "ClearPasteButton", "Clear Clipboard");
-            UIFactory.SetLayoutElement(clearButton.Component.gameObject, minWidth: 120, minHeight: 25, flexibleWidth: 0);
-            clearButton.OnClick += () => Copy(null);
-
-            // Current Paste info row
-            GameObject currentPasteHolder = UIFactory.CreateHorizontalGroup(ContentRoot, "SecondRow", false, false, true, true, 0,
-                new(2, 2, 2, 2), childAlignment: TextAnchor.UpperCenter);
-
-            // Actual current paste info label
-            CurrentPasteLabel = UIFactory.CreateLabel(currentPasteHolder, "CurrentPasteInfo", "not set", TextAnchor.UpperLeft);
-            UIFactory.SetLayoutElement(CurrentPasteLabel.gameObject, minHeight: 25, minWidth: 100, flexibleWidth: 999, flexibleHeight: 999);
-            UpdateCurrentPasteInfo();
-
-            // Inspect button
-            UniverseLib.UI.Models.ButtonRef inspectButton = UIFactory.CreateButton(currentPasteHolder, "InspectButton", "Inspect");
-            UIFactory.SetLayoutElement(inspectButton.Component.gameObject, minHeight: 25, flexibleHeight: 0, minWidth: 80, flexibleWidth: 0);
-            inspectButton.OnClick += InspectClipboard;
+            scrollPool.Initialize(this); 
+            Refresh();
         }
     }
 }
