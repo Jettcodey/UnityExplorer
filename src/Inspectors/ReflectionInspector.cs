@@ -257,11 +257,13 @@ namespace UnityExplorer.Inspectors
             {
                 CacheMember member = members[i];
                 
+#if CPP
                 // IL2CPPCases.Contains(member.NameForFiltering.Split("__")[0] ?? "")
                 // this could have some edge cases...
                 if (member.NameForFiltering.ContainsIgnoreCase("native") &&
                     member.FallbackType == typeof(IntPtr) && ConfigManager.Exclude_Native_IL2CPP_Pointers.Value)
                     continue;
+#endif
 
                 if (scopeFlagsFilter != BindingFlags.Default)
                 {
