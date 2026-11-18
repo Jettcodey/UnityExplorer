@@ -257,7 +257,7 @@ namespace UnityExplorer.Inspectors
             {
                 CacheMember member = members[i];
                 
-#if CPP
+#if CPP && ML
                 // IL2CPPCases.Contains(member.NameForFiltering.Split("__")[0] ?? "")
                 // this could have some edge cases...
                 if (member.NameForFiltering.ContainsIgnoreCase("native") &&
