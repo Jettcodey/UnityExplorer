@@ -26,6 +26,13 @@ namespace UnityExplorer.Helpers
         
         public static bool isWin32(string path) => path.Length > 0 && path[1] == ':';
         public static bool isUnix(string path) => path.Length > 0 && path.StartsWith("/");
-        public static bool isCompatibilityLayer() => MelonLoader.MelonUtils.IsUnderWineOrSteamProton();
+        public static bool isCompatibilityLayer()
+        {
+#if ML
+            return MelonLoader.MelonUtils.IsUnderWineOrSteamProton();
+#else
+            return false;
+#endif
+        }
     }
 }
