@@ -24,7 +24,7 @@ namespace UnityExplorer.Loader.ML
         {
             foreach (var entry in ConfigManager.ConfigElements)
             {
-                var key = entry.Key;
+                string key = entry.Key;
                 if (prefCategory.GetEntry(key) is MelonPreferences_Entry)
                 {
                     var config = entry.Value;
