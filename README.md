@@ -103,6 +103,11 @@ UnityExplorer.InspectorManager.Inspect(theObject);
 UnityExplorer.InspectorManager.Inspect(typeof(SomeClass));
 ```
 
+### Nav Bar
+* The Navigation bar contains two value inputs
+  * The `DPI` allows you to scale the UI as big as you like.
+  * The `Time` allows you to set the games speed, this affects GameObjects, Animations and more!
+
 ### Object Explorer
 
 * Use the <b>Scene Explorer</b> tab to traverse the active scenes, as well as the DontDestroyOnLoad and HideAndDontSave objects.

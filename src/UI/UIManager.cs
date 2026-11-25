@@ -44,7 +44,7 @@ namespace UnityExplorer.UI
 
         public static RectTransform NavBarRect;
         public static GameObject NavbarTabButtonHolder;
-        private static readonly Vector2 NAVBAR_DIMENSIONS = new(1020f, 35f);
+        private static readonly Vector2 NAVBAR_DIMENSIONS = new(1145f, 35f);
 
         private static ButtonRef closeBtn;
 
@@ -72,6 +72,10 @@ namespace UnityExplorer.UI
 
             UIRootRect = UIRoot.GetComponent<RectTransform>();
             UICanvas = UIRoot.GetComponent<Canvas>();
+            
+            UICanvas.scaleFactor = ConfigManager.DPI_Scaling_Factor.Value;
+            
+            // override canvas scaleFactor so we can save it for users;
 
             DisplayManager.Init();
 
@@ -240,9 +244,12 @@ namespace UnityExplorer.UI
             UIFactory.SetLayoutElement(NavbarTabButtonHolder, minHeight: 25, flexibleHeight: 999, flexibleWidth: 999);
             UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(NavbarTabButtonHolder, false, true, true, true, 4, 2, 2, 2, 2);
 
+            // dpi factor scaling
+            HiDPIWidget.SetUp(navbarPanel);
+            
             // Time scale widget
             TimeScaleWidget.SetUp(navbarPanel);
-
+            
             //spacer
             GameObject spacer = UIFactory.CreateUIObject("Spacer", navbarPanel);
             UIFactory.SetLayoutElement(spacer, minWidth: 15);

@@ -18,10 +18,7 @@ internal class TimeScaleWidget
 
     public static void SetUp(GameObject parent)
     {
-        if (Instance == null)
-        {
-            Instance = new TimeScaleWidget(parent);
-        }
+        Instance ??= new TimeScaleWidget(parent);
     }
 
     private TimeScaleWidget(GameObject parent)

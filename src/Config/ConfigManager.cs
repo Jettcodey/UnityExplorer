@@ -16,6 +16,7 @@ namespace UnityExplorer.Config
         public static ConfigElement<bool> Exclude_Native_IL2CPP_Pointers;
         public static ConfigElement<bool> Hide_On_Startup;
         public static ConfigElement<float> Startup_Delay_Time;
+        public static ConfigElement<float> DPI_Scaling_Factor;
         public static ConfigElement<bool> Disable_EventSystem_Override;
         public static ConfigElement<bool> Disable_Setup_Force_ReLoad_ManagedAssemblies;
         public static ConfigElement<bool> Bypass_UniverseLib_ICall;
@@ -104,6 +105,8 @@ namespace UnityExplorer.Config
                 "The delay on startup before the UI is created.",
                 1f);
 
+            DPI_Scaling_Factor = new("DPI_Scaling Factor", "Scale the UI if you are on a higher res monitor", 1.0f);
+            
             Target_Display = new("Target Display",
                 "The monitor index for UnityExplorer to use, if you have multiple. 0 is the default display, 1 is secondary, etc. " +
                 "Restart recommended when changing this setting. Make sure your extra monitors are the same resolution as your primary monitor.",
