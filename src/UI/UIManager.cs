@@ -72,9 +72,9 @@ namespace UnityExplorer.UI
 
             UIRootRect = UIRoot.GetComponent<RectTransform>();
             UICanvas = UIRoot.GetComponent<Canvas>();
-            
+
             UICanvas.scaleFactor = ConfigManager.DPI_Scaling_Factor.Value;
-            
+
             // override canvas scaleFactor so we can save it for users;
 
             DisplayManager.Init();
@@ -131,7 +131,8 @@ namespace UnityExplorer.UI
 
             // Check forceUnlockMouse toggle
             if (InputManager.GetKeyDown(ConfigManager.Force_Unlock_Toggle.Value))
-                UniverseLib.Config.ConfigManager.Force_Unlock_Mouse = !UniverseLib.Config.ConfigManager.Force_Unlock_Mouse;
+                UniverseLib.Config.ConfigManager.Force_Unlock_Mouse =
+                    !UniverseLib.Config.ConfigManager.Force_Unlock_Mouse;
 
             // update the timescale value
             TimeScaleWidget.Instance?.Update();
@@ -213,13 +214,13 @@ namespace UnityExplorer.UI
         }
 
 
-
         // UI Construction
 
         private static void CreateTopNavBar()
         {
             GameObject navbarPanel = UIFactory.CreateUIObject("MainNavbar", UIRoot);
-            UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(navbarPanel, false, false, true, true, 5, 4, 4, 4, 4, TextAnchor.MiddleCenter);
+            UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(navbarPanel, false, false, true, true, 5, 4, 4, 4, 4,
+                TextAnchor.MiddleCenter);
             navbarPanel.AddComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f);
             NavBarRect = navbarPanel.GetComponent<RectTransform>();
             NavBarRect.pivot = new Vector2(0.5f, 1f);
@@ -235,21 +236,23 @@ namespace UnityExplorer.UI
             // UnityExplorer title
 
             string titleTxt = $"UE <i><color=grey>{ExplorerCore.VERSION}</color></i>";
-            Text title = UIFactory.CreateLabel(navbarPanel, "Title", titleTxt, TextAnchor.MiddleCenter, default, true, 14);
+            Text title = UIFactory.CreateLabel(navbarPanel, "Title", titleTxt, TextAnchor.MiddleCenter, default, true,
+                14);
             UIFactory.SetLayoutElement(title.gameObject, minWidth: 75, flexibleWidth: 0);
 
             // panel tabs
 
             NavbarTabButtonHolder = UIFactory.CreateUIObject("NavTabButtonHolder", navbarPanel);
             UIFactory.SetLayoutElement(NavbarTabButtonHolder, minHeight: 25, flexibleHeight: 999, flexibleWidth: 999);
-            UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(NavbarTabButtonHolder, false, true, true, true, 4, 2, 2, 2, 2);
+            UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(NavbarTabButtonHolder, false, true, true, true, 4, 2, 2, 2,
+                2);
 
             // dpi factor scaling
             HiDPIWidget.SetUp(navbarPanel);
-            
+
             // Time scale widget
             TimeScaleWidget.SetUp(navbarPanel);
-            
+
             //spacer
             GameObject spacer = UIFactory.CreateUIObject("Spacer", navbarPanel);
             UIFactory.SetLayoutElement(spacer, minWidth: 15);

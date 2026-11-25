@@ -15,6 +15,16 @@ public static class ExplorerKeybind
         {
             UIManager.ShowMenu = !UIManager.ShowMenu;
         }
+
+        // This is for debug only
+        // Some games get upset with the UnityExplorer taking over the mouse and when exiting the UI, the game
+        // wont go back into focus.. We can probably expose some sort of Debugger keybinds.
+        if (InputManager.GetKeyDown(KeyCode.Minus) && InputManager.GetKeyDown(KeyCode.Equals))
+        {
+            Cursor.visible = !Cursor.visible;
+            Cursor.lockState = Cursor.visible ? CursorLockMode.None : CursorLockMode.Locked;
+        }
+        
         TimeScaleKeyBindUpdate();
     }
 
